@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace PIM_Tool_ELCA.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : CustomController
     {
         public ActionResult Index()
         {
