@@ -1,4 +1,5 @@
-﻿using DomainLayer;
+﻿using ContractLayer;
+using DomainLayer;
 using PersistenceLayer;
 using ServiceLayer.Interface;
 using System;
@@ -17,6 +18,20 @@ namespace ServiceLayer
         {
             _projectRepo = projectRepo;
         }
-        public IList<Project> GetProjectList() => _projectRepo.GetProjectList();
+        public IList<ProjectListModel> GetProjectList()
+        {
+            List<ProjectListModel> projectList = new List<ProjectListModel>();
+            _projectRepo.GetProjectList().ToList().ForEach(x => projectList.Add(new ProjectListModel
+            {
+                ID = x.ID,
+                Customer = x.Customer,
+                Name = x.Name,
+                ProjectNumber = x.ProjectNumber,
+                StartDate = x.StartDate,
+                Status = x.Status
+            }));
+            return projectList;
+        }
+
     }
 }

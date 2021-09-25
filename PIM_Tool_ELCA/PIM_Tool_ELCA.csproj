@@ -149,6 +149,7 @@
     <Compile Include="Controllers\CustomController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -176,6 +177,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Style\ProjectList\ProjectList.css" />
     <Content Include="Style\StyleSheet.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -191,6 +193,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Project\ProjectList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -212,9 +215,17 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ContractLayer\ContractLayer.csproj">
+      <Project>{e646851e-3e17-4379-ab11-0df7c7de771d}</Project>
+      <Name>ContractLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PersistenceLayer\PersistenceLayer.csproj">
       <Project>{005b0f34-9364-4bef-8457-3bbd28b8cb21}</Project>
       <Name>PersistenceLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resource\Resource.csproj">
+      <Project>{f9f18339-3fbd-411b-b536-de425224d6f5}</Project>
+      <Name>Resource</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj">
       <Project>{B1A34D15-F03E-4CF9-AFBC-F59868940AFD}</Project>

@@ -56,8 +56,23 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ProjectList\ProjectList.vi-VN.Designer.cs">
-      <DependentUpon>ProjectList.vi-VN.resx</DependentUpon>
+    <Compile Include="Layout\LayoutRe.en-US.Designer.cs">
+      <DependentUpon>LayoutRe.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Layout\LayoutRe.vi-VN.Designer.cs">
+      <DependentUpon>LayoutRe.vi-VN.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Layout\LayoutRe.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LayoutRe.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectList\ProjectListRe.vi-VN.Designer.cs">
+      <DependentUpon>ProjectListRe.vi-VN.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -75,27 +90,39 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AddEditProject\AddEditProjectRe.vi-VN.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AddEditProjectRe.vi-VN.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AddEditProject\AddEditProjectRe.en-US.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AddEditProjectRe.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="AddEditProject\AddEditProjectRe.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AddEditProjectRe.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProjectList\ProjectList.vi-VN.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ProjectList.vi-VN.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="Layout\LayoutRe.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LayoutRe.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutRe.vi-VN.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LayoutRe.vi-VN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutRe.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LayoutRe.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectList\ProjectListRe.vi-VN.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProjectListRe.vi-VN.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectList\ProjectListRe.en-US.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProjectListRe.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectList\ProjectListRe.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProjectListRe.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ContractLayer\ContractLayer.csproj">
+      <Project>{e646851e-3e17-4379-ab11-0df7c7de771d}</Project>
+      <Name>ContractLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DomainLayer\DomainLayer.csproj">
       <Project>{BB6B6A10-F83D-4D61-9B7D-8E3CB46B2BE3}</Project>
       <Name>DomainLayer</Name>

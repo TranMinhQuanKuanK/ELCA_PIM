@@ -117,4 +117,80 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CategoryFilterHolder_Label" xml:space="preserve">
+    <value>Mã số dự án, tên hoặc khách hàng</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="Customer_Header" xml:space="preserve">
+    <value>Khách hàng</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="DeleteSelectedItems_Label" xml:space="preserve">
+    <value>Xóa tất cả mục được chọn</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="Delete_Header" xml:space="preserve">
+    <value>Xóa</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ID_Header" xml:space="preserve">
+    <value>ID</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ItemSelected_Label" xml:space="preserve">
+    <value>dự án được chọn</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="Name_Header" xml:space="preserve">
+    <value>Tên dự án</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectCantBeDeleted_Label" xml:space="preserve">
+    <value>Thao tác không thể thực hiện do những dự án sau không thể bị xóa:</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectList_Label" xml:space="preserve">
+    <value>Danh sách dự án</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectNumber_Header" xml:space="preserve">
+    <value>Mã số</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectStatusFinished_Label" xml:space="preserve">
+    <value>Hoàn thành</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectStatusHolder_Label" xml:space="preserve">
+    <value>Tình trạng</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectStatusInProgress_Label" xml:space="preserve">
+    <value>Đang thực hiện</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectStatusNew_Label" xml:space="preserve">
+    <value>Mới</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectStatusPlanned_Label" xml:space="preserve">
+    <value>Lập kế hoạch</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="ResetSearch_Label" xml:space="preserve">
+    <value>Xóa hết bộ lọc</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="Search_Label" xml:space="preserve">
+    <value>Tìm</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="StartDate_Header" xml:space="preserve">
+    <value>Ngày bắt đầu</value>
+    <comment>ProjectList Page</comment>
+  </data>
+  <data name="Status_Header" xml:space="preserve">
+    <value>Tình trạng</value>
+    <comment>ProjectList Page</comment>
+  </data>
 </root>

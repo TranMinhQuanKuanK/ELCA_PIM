@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewBag.Title = "Project List";
+}
+
+<h2 id="project-list-label">@Resource.ProjectList.ProjectListRe.ProjectList_Label</h2>
+<form id="search-form" action="SearchProject">
+    <input id="search-input" type="text" class="form-control" name="SearchTerm" placeholder="@Resource.ProjectList.ProjectListRe.CategoryFilterHolder_Label">
+    <select id="status-search-input" class="form-control" name="Status">
+        <option value="ALL">@Resource.ProjectList.ProjectListRe.ProjectStatusHolder_Label</option>
+        <option value="NEW">@Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label</option>
+        <option value="PLA">@Resource.ProjectList.ProjectListRe.ProjectStatusPlanned_Label</option>
+        <option value="INP">@Resource.ProjectList.ProjectListRe.ProjectStatusInProgress_Label</option>
+        <option value="FIN">@Resource.ProjectList.ProjectListRe.ProjectStatusFinished_Label</option>
+    </select>
+    <input id="submit-button" class="btn btn-primary" type="submit" value="@Resource.ProjectList.ProjectListRe.Search_Label" />
+    <input id="reset-button" type="reset" value="@Resource.ProjectList.ProjectListRe.ResetSearch_Label" />
+</form>
+
+@*Data table*@
+<div class="wrap-table100">
+    <div class="table100" style="width:70vw;">
+        <table style="width:70vw;">
+            <thead>
+                <tr class="table100-head">
+                    <th style="width:3vw;">...</th>
+                    <th style="width:6vw;">@Resource.ProjectList.ProjectListRe.ProjectNumber_Header</th>
+                    <th>@Resource.ProjectList.ProjectListRe.Name_Header</th>
+                    <th style="width:8vw;">@Resource.ProjectList.ProjectListRe.Status_Header</th>
+                    <th style="width:8vw;">@Resource.ProjectList.ProjectListRe.Customer_Header</th>
+                    <th style="width:6vw;">@Resource.ProjectList.ProjectListRe.StartDate_Header</th>
+                    <th style="width:6vw; text-align:center;">@Resource.ProjectList.ProjectListRe.Delete_Header</th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.AntiForgeryToken()
+                @foreach (var item in ViewBag.ProjectList)
+                {
+
+                }
+                @foreach (var x in ViewBag.ProjectList)
+                {
+                    <tr>
+                        <td><input type="checkbox" onchange='handleChange(this,@x.ID)'></td>
+                        <td>@x.ProjectNumber</td>
+                        <td>@x.Name sdfsdfsdfsdfsdfsđfsdfsdfsdfsf</td>
+                        <td>
+                            @switch (x.Status)
+                            {
+                                case "NEW":
+                                    @Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label;
+                                    break;
+                                case "PLA":
+                                    @Resource.ProjectList.ProjectListRe.ProjectStatusPlanned_Label;
+                                    break;
+                                case "INP":
+                                    @Resource.ProjectList.ProjectListRe.ProjectStatusInProgress_Label;
+                                    break;
+                                case "FIN":
+                                    @Resource.ProjectList.ProjectListRe.ProjectStatusFinished_Label;
+                                    break;
+                            }
+                        </td>
+
+
+
+
+                        <td>@x.Customer</td>
+                        <td>@Convert.ToDateTime(x.StartDate).ToString("dd/MM/yyyy")</td>
+                        <td style="text-align:center;">
+                            @if (x.Status == "NEW")
+                            {
+                                //style="font-size: 20px; font-weight: bold; color: rgb(255, 89, 89);
+                                <i class="fa fa-trash-o delete-icon"></i>
+                            }
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+        <div id="item-count-tr">
+            <div id="num-item-selected-text">
+                <p><span id="item-count">0</span>  @Resource.ProjectList.ProjectListRe.ItemSelected_Label</p>
+            </div>
+            <div id="delete-selected-button">
+                <span id="item-count-text">
+                    <i class="fa fa-trash-o delete-icon"></i> @Resource.ProjectList.ProjectListRe.DeleteSelectedItems_Label
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+</button>
+<ul>
+    <li>Coffee</li>
+    <li>Tea</li>
+    <li>Milk</li>
+</ul>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Warning</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="project-cant-be-deleted-warning">
+                    <p>@Resource.ProjectList.ProjectListRe.ProjectCantBeDeleted_Label</p>
+                    <ul>
+                        <li>SDSF</li>
+                        <li>SDSF</li>
+                        <li>SDSF</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteList = [];
+    var itemcount = 0;
+
+    function handleChange(checkbox, id) {
+        if (checkbox.checked == true) {
+            deleteList.push(id);
+            itemcount++;
+            document.getElementById("item-count").innerHTML = itemcount;
+            document.getElementById("delete-selected-button").style.visibility = "visible";
+        } else {
+            const index = deleteList.indexOf(id);
+            if (index > -1) {
+                deleteList.splice(index, 1);
+            }
+            itemcount--;
+            document.getElementById("item-count").innerHTML = itemcount;
+            if (itemcount == 0) {
+                document.getElementById("delete-selected-button").style.visibility = "hidden";
+            }
+
+        }
+    }
+    function submitDelete() {
+        if (itemcount > 0) {
+            var xhttp = new XMLHttpRequest();
+            var JSONObject = [
+                ...deleteList
+            ];
+            xhttp.open("POST", "DeleteMultiple", true);
+
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.setRequestHeader("Accept", "application/json");
+            xhttp.send(JSON.stringify(JSONObject));
+        }
+    }
+</script>

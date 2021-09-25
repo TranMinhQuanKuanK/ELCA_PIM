@@ -1,4 +1,5 @@
-﻿using DomainLayer;
+﻿using ContractLayer;
+using DomainLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace ServiceLayer.Interface
 {
     public interface IProjectService
     {
-        IList<Project> GetProjectList();
+        IList<ProjectListModel> GetProjectList();
     }
 }

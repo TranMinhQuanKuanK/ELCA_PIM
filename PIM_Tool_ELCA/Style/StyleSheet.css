@@ -81,7 +81,7 @@ a:hover {
     height: 90vh;
     display: flex;
     flex-direction: column;
-    padding: 2% 2% 2% 10vw;
+    padding: 2% 0 2% 10vw;
     border-right: 2px solid rgb(168, 168, 168);
 }
 

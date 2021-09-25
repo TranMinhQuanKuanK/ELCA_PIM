@@ -1,0 +1,85 @@
+﻿body {
+}
+
+#project-list-label {
+    border-bottom: 2px solid rgb(168, 168, 168);
+    border-radius: 2px;
+    width: 70%;
+    padding: 0 0 2vh 0;
+}
+
+#search-form {
+    display: flex;
+    margin: 5px 0 5px 0;
+}
+
+#search-input {
+    margin: 5px;
+}
+
+#status-search-input {
+    margin: 5px;
+    width: 15vw;
+}
+
+#submit-button {
+    margin: 5px;
+    width: 10vw;
+}
+
+#reset-button {
+    margin: 5px;
+}
+
+#item-count-tr {
+    padding: 0 10px 0 10px;
+    display: flex;
+    margin: 10px 0 0 0;
+}
+
+#num-item-selected-text {
+    display: flex;
+    flex-direction: row;
+    text-align: right;
+    padding: 0 0px 0 10px;
+    width: 50%;
+    font-weight: bold;
+    color: rgb(255, 89, 89);
+}
+
+#item-count {
+    color: rgb(255, 89, 89);
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+#delete-selected-button {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 50%;
+    padding: 0 10px 0 0px;
+    visibility: hidden;
+}
+
+#item-count-text {
+    font-weight: bold;
+    color: rgb(255, 89, 89);
+}
+
+.delete-icon {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(255, 89, 89);
+    margin: 0 5px 0 0px;
+}
+
+#project-cant-be-deleted-warning {
+    color: red;
+    padding: 0 0 0 10px;
+}
+
+ul {
+    font-weight: bold;
+    list-style-type: square;
+    list-style-position: inside;
+}

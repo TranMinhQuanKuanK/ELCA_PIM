@@ -117,4 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Brand_Label" xml:space="preserve">
+    <value>Project Information Management</value>
+  </data>
+  <data name="Customer_Label" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="Help_Label" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Logout_Label" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="New_Label" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ProjectList_Label" xml:space="preserve">
+    <value>Project List</value>
+  </data>
+  <data name="Project_Label" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="Supplier_Label" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
 </root>
