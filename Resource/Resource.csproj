@@ -41,6 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddEditProject\AddEditProjectRe.vi-VN.Designer.cs">
+      <DependentUpon>AddEditProjectRe.vi-VN.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AddEditProject\AddEditProjectRe.en-US.Designer.cs">
+      <DependentUpon>AddEditProjectRe.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AddEditProject\AddEditProjectRe.Designer.cs">
+      <DependentUpon>AddEditProjectRe.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ProjectList\ProjectList.vi-VN.Designer.cs">
       <DependentUpon>ProjectList.vi-VN.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -59,6 +74,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AddEditProject\AddEditProjectRe.vi-VN.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AddEditProjectRe.vi-VN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddEditProject\AddEditProjectRe.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AddEditProjectRe.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddEditProject\AddEditProjectRe.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AddEditProjectRe.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProjectList\ProjectList.vi-VN.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ProjectList.vi-VN.Designer.cs</LastGenOutput>
@@ -72,8 +99,6 @@
       <LastGenOutput>ProjectListRe.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Add\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

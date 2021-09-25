@@ -6,37 +6,54 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Style/StyleSheet.css" rel="stylesheet" />
+
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<body style="padding:0">
+    <div id="header-all">
+        <div id="header-left">
+            <div id="elca-logo">
+                <img src="~/Content/ELCALogo.png" alt="Elca logo" style="width: 8vh; height: 8vh; align-self:flex-end; margin: 3px">
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
+            <div id="pim-brand">
+                <a style="color: rgb(84, 84, 84); font-weight: bold; ">Project Information Management Tool </a>
+            </div>
+        </div>
+        <div id="header-right">
+            <div class="right-header-item" id="language-choose">
+                <a style="color: @(ViewBag.CurrentLanguage.Name=="vi-VN"?"blue":"black");align-self: flex-end; margin: 0 5px 0 5px;"
+                   href="@(@ViewBag.CurrentLanguage.Name!="vi-VN"?"/Language?culture=vi-VN":"#") ">VI</a>
+                <span style=" align-self: flex-end; color: black; font-weight:bold;">|</span>
+                <a style=" color: @(ViewBag.CurrentLanguage.Name=="en-US" ?"blue":"black"); align-self: flex-end; margin: 0 5px 0 5px;"
+                   href="@(@ViewBag.CurrentLanguage.Name!="en-US"?"/Language?culture=en-US":"#")">EN</a>
+            </div>
+            <div class="right-header-item" id="help-header">
+                <a style="color: rgb(168, 168, 168); align-self: flex-end;">Help</a>
+            </div>
+            <div class="right-header-item" id="logout-header">
+                <a style="color: rgb(168, 168, 168); align-self: flex-end;">Logout</a>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+    <div style="display: flex;" id="web-body">
+        <div id="left-side-bar">
+            <div style="margin-bottom: 10%; font-weight: bold; font-size: 1.2em;">
+                <a style="color: rgb(84, 84, 84);">Project List</a>
+            </div>
+            <div style="margin-bottom: 5%; font-weight: bold;  font-size:1.2em;"> <p style="color:blue; margin: 0 0 0 0 ;">New</p> </div>
+            <div> <a style="color: rgb(84, 84, 84);">Project</a> </div>
+            <div> <a style="color: rgb(84, 84, 84);">Customer</a> </div>
+            <div> <a style="color: rgb(84, 84, 84);">Supplier</a> </div>
+        </div>
+        <div id="content-body">
+            @RenderBody();
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("scripts", required: false)
+
 </body>
 </html>
