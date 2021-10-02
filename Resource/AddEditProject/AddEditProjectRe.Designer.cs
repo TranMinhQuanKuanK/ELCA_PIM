@@ -59,5 +59,302 @@ namespace Resource.AddEditProject {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new project.
+        /// </summary>
+        public static string AddNewProjectHeader_Label {
+            get {
+                return ResourceManager.GetString("AddNewProjectHeader_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string CanButton_Label {
+            get {
+                return ResourceManager.GetString("CanButton_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer (*).
+        /// </summary>
+        public static string Customer_DisplayName {
+            get {
+                return ResourceManager.GetString("Customer_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer mustn&apos;t be empty.
+        /// </summary>
+        public static string CustomerRequired_ModelError {
+            get {
+                return ResourceManager.GetString("CustomerRequired_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project information.
+        /// </summary>
+        public static string EditProjectHeader_Label {
+            get {
+                return ResourceManager.GetString("EditProjectHeader_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End date.
+        /// </summary>
+        public static string EndDate_DisplayName {
+            get {
+                return ResourceManager.GetString("EndDate_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter all mandatory field!.
+        /// </summary>
+        public static string EnterAllMandatoryField_Warning {
+            get {
+                return ResourceManager.GetString("EnterAllMandatoryField_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string Group_DisplayName {
+            get {
+                return ResourceManager.GetString("Group_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string Group_WordLabel {
+            get {
+                return ResourceManager.GetString("Group_WordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group (*).
+        /// </summary>
+        public static string GroupID_DisplayName {
+            get {
+                return ResourceManager.GetString("GroupID_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a group.
+        /// </summary>
+        public static string GroupIDHolder_Label {
+            get {
+                return ResourceManager.GetString("GroupIDHolder_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group ID must be an number less than 20 digits.
+        /// </summary>
+        public static string GroupIDRange_ModelError {
+            get {
+                return ResourceManager.GetString("GroupIDRange_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group ID mustn&apos;t be empty.
+        /// </summary>
+        public static string GroupIPRequired_ModelError {
+            get {
+                return ResourceManager.GetString("GroupIPRequired_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID.
+        /// </summary>
+        public static string ID_DisplayName {
+            get {
+                return ResourceManager.GetString("ID_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID must be an number less than 20 digits.
+        /// </summary>
+        public static string IDRange_ModelError {
+            get {
+                return ResourceManager.GetString("IDRange_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID mustn&apos;t be empty.
+        /// </summary>
+        public static string IDRequired_ModelError {
+            get {
+                return ResourceManager.GetString("IDRequired_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Members.
+        /// </summary>
+        public static string Members_DisplayName {
+            get {
+                return ResourceManager.GetString("Members_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project name (*).
+        /// </summary>
+        public static string Name_DisplayName {
+            get {
+                return ResourceManager.GetString("Name_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project name mustn&apos;t be empty.
+        /// </summary>
+        public static string NameRequired_ModelError {
+            get {
+                return ResourceManager.GetString("NameRequired_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project number (*).
+        /// </summary>
+        public static string ProjectNumber_DisplayName {
+            get {
+                return ResourceManager.GetString("ProjectNumber_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project number must be an number from 0 to 9999.
+        /// </summary>
+        public static string ProjectNumberRange_ModelError {
+            get {
+                return ResourceManager.GetString("ProjectNumberRange_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project number mustn&apos;t be empty.
+        /// </summary>
+        public static string ProjectNumberRequired_ModelError {
+            get {
+                return ResourceManager.GetString("ProjectNumberRequired_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finished.
+        /// </summary>
+        public static string ProjectStatusFinished_Label {
+            get {
+                return ResourceManager.GetString("ProjectStatusFinished_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project Status.
+        /// </summary>
+        public static string ProjectStatusHolder_Label {
+            get {
+                return ResourceManager.GetString("ProjectStatusHolder_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In progress.
+        /// </summary>
+        public static string ProjectStatusInProgress_Label {
+            get {
+                return ResourceManager.GetString("ProjectStatusInProgress_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string ProjectStatusNew_Label {
+            get {
+                return ResourceManager.GetString("ProjectStatusNew_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planned.
+        /// </summary>
+        public static string ProjectStatusPlanned_Label {
+            get {
+                return ResourceManager.GetString("ProjectStatusPlanned_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date (*).
+        /// </summary>
+        public static string StartDate_DisplayName {
+            get {
+                return ResourceManager.GetString("StartDate_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date mustn&apos;t be empty.
+        /// </summary>
+        public static string StartDateRequired_ModelError {
+            get {
+                return ResourceManager.GetString("StartDateRequired_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status (*).
+        /// </summary>
+        public static string Status_DisplayName {
+            get {
+                return ResourceManager.GetString("Status_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project status mustn&apos;t be empty.
+        /// </summary>
+        public static string StatusRequired_ModelError {
+            get {
+                return ResourceManager.GetString("StatusRequired_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create project.
+        /// </summary>
+        public static string SubmitButtonForCreateNew_Label {
+            get {
+                return ResourceManager.GetString("SubmitButtonForCreateNew_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save changes.
+        /// </summary>
+        public static string SubmitButtonForEdit_Label {
+            get {
+                return ResourceManager.GetString("SubmitButtonForEdit_Label", resourceCulture);
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace ServiceLayer.Interface
 {
     public interface IProjectService
     {
-        IList<ProjectListModel> GetProjectList();
+        IList<ProjectListModel> GetProjectList(string searchTerm, string searchStatus);
+        AddEditProjectModel GetProjectByID(long id);
     }
 }

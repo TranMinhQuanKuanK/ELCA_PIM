@@ -25,7 +25,7 @@ namespace PIM_Tool_ELCA.Controllers
                 cookie.Expires = DateTime.Now.AddYears(1);
             }
             Response.Cookies.Add(cookie);
-            return Redirect(Request.UrlReferrer.AbsolutePath);
+            return Redirect(Request.UrlReferrer.OriginalString);
         }
     }
 }

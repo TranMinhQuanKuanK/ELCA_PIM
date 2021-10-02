@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace PersistenceLayer.Interface
 {
-    public interface IProjectRepo
+    public interface IEmployeeRepo
     {
-        IList<Project> GetProjectList(string searchTerm, string searchStatus);
-        Project GetProjectByID(long id);
+        IList<Employee> GetAllEmployees();
     }
 }

@@ -42,8 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddEditProjectModel.cs" />
+    <Compile Include="DeleteMultipleProjectRequestModel.cs" />
+    <Compile Include="MemberModel.cs" />
     <Compile Include="ProjectListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchProjectModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Resource\Resource.csproj">

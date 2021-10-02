@@ -15,6 +15,7 @@
 
 #search-input {
     margin: 5px;
+    width: 280px;
 }
 
 #status-search-input {
@@ -53,6 +54,13 @@
     font-size: 1.2em;
 }
 
+#delete-selected-form {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 50%;
+    padding: 0 10px 0 0px;
+    visibility: hidden;
+}
 #delete-selected-button {
     display: flex;
     flex-direction: row-reverse;

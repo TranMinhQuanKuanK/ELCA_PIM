@@ -10,7 +10,7 @@ namespace PIM_Tool_ELCA.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return Redirect("Project/ProjectList");
         }
 
         public ActionResult About()
@@ -25,6 +25,10 @@ namespace PIM_Tool_ELCA.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+        public ActionResult NotFound()
+        {
+            return View("NotFound");
         }
     }
 }

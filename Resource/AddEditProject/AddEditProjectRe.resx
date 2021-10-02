@@ -117,4 +117,103 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddNewProjectHeader_Label" xml:space="preserve">
+    <value>Add new project</value>
+  </data>
+  <data name="CanButton_Label" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CustomerRequired_ModelError" xml:space="preserve">
+    <value>Customer mustn't be empty</value>
+  </data>
+  <data name="Customer_DisplayName" xml:space="preserve">
+    <value>Customer (*)</value>
+  </data>
+  <data name="EditProjectHeader_Label" xml:space="preserve">
+    <value>Project information</value>
+  </data>
+  <data name="EndDate_DisplayName" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="EnterAllMandatoryField_Warning" xml:space="preserve">
+    <value>Please enter all mandatory field!</value>
+  </data>
+  <data name="GroupIDHolder_Label" xml:space="preserve">
+    <value>Choose a group</value>
+  </data>
+  <data name="GroupIDRange_ModelError" xml:space="preserve">
+    <value>Group ID must be an number less than 20 digits</value>
+  </data>
+  <data name="GroupID_DisplayName" xml:space="preserve">
+    <value>Group (*)</value>
+  </data>
+  <data name="GroupIPRequired_ModelError" xml:space="preserve">
+    <value>Group ID mustn't be empty</value>
+  </data>
+  <data name="Group_DisplayName" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="Group_WordLabel" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="IDRange_ModelError" xml:space="preserve">
+    <value>ID must be an number less than 20 digits</value>
+  </data>
+  <data name="IDRequired_ModelError" xml:space="preserve">
+    <value>ID mustn't be empty</value>
+  </data>
+  <data name="ID_DisplayName" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Members_DisplayName" xml:space="preserve">
+    <value>Members</value>
+  </data>
+  <data name="NameRequired_ModelError" xml:space="preserve">
+    <value>Project name mustn't be empty</value>
+  </data>
+  <data name="Name_DisplayName" xml:space="preserve">
+    <value>Project name (*)</value>
+  </data>
+  <data name="ProjectNumberRange_ModelError" xml:space="preserve">
+    <value>Project number must be an number from 0 to 9999</value>
+  </data>
+  <data name="ProjectNumberRequired_ModelError" xml:space="preserve">
+    <value>Project number mustn't be empty</value>
+  </data>
+  <data name="ProjectNumber_DisplayName" xml:space="preserve">
+    <value>Project number (*)</value>
+  </data>
+  <data name="ProjectStatusFinished_Label" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="ProjectStatusHolder_Label" xml:space="preserve">
+    <value>Project Status</value>
+  </data>
+  <data name="ProjectStatusInProgress_Label" xml:space="preserve">
+    <value>In progress</value>
+  </data>
+  <data name="ProjectStatusNew_Label" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ProjectStatusPlanned_Label" xml:space="preserve">
+    <value>Planned</value>
+  </data>
+  <data name="StartDateRequired_ModelError" xml:space="preserve">
+    <value>Start date mustn't be empty</value>
+  </data>
+  <data name="StartDate_DisplayName" xml:space="preserve">
+    <value>Start date (*)</value>
+  </data>
+  <data name="StatusRequired_ModelError" xml:space="preserve">
+    <value>Project status mustn't be empty</value>
+  </data>
+  <data name="Status_DisplayName" xml:space="preserve">
+    <value>Status (*)</value>
+  </data>
+  <data name="SubmitButtonForCreateNew_Label" xml:space="preserve">
+    <value>Create project</value>
+  </data>
+  <data name="SubmitButtonForEdit_Label" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
 </root>

@@ -121,6 +121,18 @@
     <value>Project number, name, customer name</value>
     <comment>ProjectList Page</comment>
   </data>
+  <data name="Close_WordLabel" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="ConfirmDelete_Warning" xml:space="preserve">
+    <value>Are you sure to delete this project?</value>
+  </data>
+  <data name="ConfirmMultipleDelete_Warning" xml:space="preserve">
+    <value>Are you sure to delete these project?</value>
+  </data>
+  <data name="Confirm_WordLabel" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
   <data name="Customer_Header" xml:space="preserve">
     <value>Customer</value>
     <comment>ProjectList Page</comment>
@@ -132,6 +144,9 @@
   <data name="Delete_Header" xml:space="preserve">
     <value>Delete</value>
     <comment>ProjectList Page</comment>
+  </data>
+  <data name="Delete_WordLabel" xml:space="preserve">
+    <value>Delete</value>
   </data>
   <data name="ID_Header" xml:space="preserve">
     <value>ID</value>
@@ -156,6 +171,9 @@
   <data name="ProjectNumber_Header" xml:space="preserve">
     <value>Number</value>
     <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectsFoundLabel" xml:space="preserve">
+    <value>Projects found: </value>
   </data>
   <data name="ProjectStatusFinished_Label" xml:space="preserve">
     <value>Finished</value>

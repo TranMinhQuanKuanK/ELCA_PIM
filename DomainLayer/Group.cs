@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer
 {
-    class Group
+    public class Group
     {
         public long ID { get; set; }
         public long GroupLeaderID { get; set; }

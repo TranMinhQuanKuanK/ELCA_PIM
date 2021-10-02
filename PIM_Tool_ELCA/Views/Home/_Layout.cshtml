@@ -4,18 +4,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Expires" CONTENT="0">
-    <meta http-equiv="Cache-Control" CONTENT="no-cache">
-    <meta http-equiv="Pragma" CONTENT="no-cache">
-    <title>Project Information Management</title>
+    <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Style/util.css" rel="stylesheet" />
     <link href="~/Style/main.css" rel="stylesheet" />
-    <link href="~/Style/StyleSheet.css" rel="stylesheet" />
+    <link href="~/Style/ErrorPageStyle.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="~/Style/ProjectList/ProjectList.css" rel="stylesheet" />
-    <link href="~/Style/css-loader.css" rel="stylesheet" />
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.0/slimselect.min.css" rel="stylesheet"></link>
 
@@ -27,7 +23,7 @@
                 <img src="~/Content/ELCALogo.png" alt="Elca logo" style="width: 8vh; height: 8vh; align-self:flex-end; margin: 3px">
             </div>
             <div id="pim-brand">
-                <a style="color: rgb(84, 84, 84); font-weight: bold; " href="/Project">@Resource.Layout.LayoutRe.Brand_Label</a>
+                <a style="color: rgb(84, 84, 84); font-weight: bold; ">@Resource.Layout.LayoutRe.Brand_Label</a>
             </div>
         </div>
         <div id="header-right">
@@ -47,15 +43,6 @@
         </div>
     </div>
     <div style="display: flex;" id="web-body">
-        <div id="left-side-bar">
-            <div style="margin-bottom: 10%; font-weight: bold; font-size: 1.2em;">
-                <a style="color: rgb(84, 84, 84);" href="/Project">@Resource.Layout.LayoutRe.ProjectList_Label</a>
-            </div>
-            <div style="margin-bottom: 5%; font-weight: bold;  font-size:1.2em;"> <p style="color:blue; margin: 0 0 0 0 ;">@Resource.Layout.LayoutRe.New_Label</p> </div>
-            <div> <a style="color: rgb(84, 84, 84);" href="/Project/NewProject">@Resource.Layout.LayoutRe.Project_Label</a> </div>
-            <div> <a style="color: rgb(84, 84, 84);">@Resource.Layout.LayoutRe.Customer_Label</a> </div>
-            <div> <a style="color: rgb(84, 84, 84);">@Resource.Layout.LayoutRe.Supplier_Label</a> </div>
-        </div>
         <div id="content-body">
             @RenderBody()
         </div>
@@ -63,7 +50,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
     @RenderSection("scripts", required: false)
 
 </body>

@@ -1,0 +1,236 @@
+﻿@model ContractLayer.AddEditProjectModel
+@{
+    ViewBag.Title = "Add/Edit Project";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 style="padding: 0 0 15px 0; width:800px; border-bottom:2px rgb(168, 168, 168) solid">
+    @(ViewBag.NewOREdit == "New"
+        ? Resource.AddEditProject.AddEditProjectRe.AddNewProjectHeader_Label
+        : Resource.AddEditProject.AddEditProjectRe.EditProjectHeader_Label )
+</h3>
+<div id="spinning-submit-form" class="loader loader-default" data-text="Submiting form"></div>
+
+@using (Html.BeginForm(ViewBag.NewOREdit == "Edit" ? $"EditProject/{Model.ID}" : "NewProject", "Project", FormMethod.Post,
+    new { id = "main-form", onSubmit = "displaySpinning()" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="margin: 20px 0 20px 0;">
+        @if (!ViewContext.ViewData.ModelState.IsValid)
+        {
+            @:<div class="alert alert-danger alert-dismissable" role="alert">
+                @Resource.AddEditProject.AddEditProjectRe.EnterAllMandatoryField_Warning
+                @: <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            @:</div>
+        }
+
+        @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+        @*ProjectNumber------------------------*@
+        <div class="form-group @(ViewData.ModelState["ProjectNumber"] != null && ViewData.ModelState["ProjectNumber"].Errors.Any() ? "has-error" : "")">
+            @Html.LabelFor(model => model.ProjectNumber, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProjectNumber, new { htmlAttributes = new { @class = "form-control", style = "width:200px;" } })
+                @Html.ValidationMessageFor(model => model.ProjectNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*Name------------------------*@
+        <div class="form-group @(ViewData.ModelState["Name"] != null && ViewData.ModelState["Name"].Errors.Any() ? "has-error" : "")">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", style = "width: 600px;" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*Customer------------------------*@
+        <div class="form-group @(ViewData.ModelState["Customer"] != null && ViewData.ModelState["Customer"].Errors.Any() ? "has-error" : "")">
+            @Html.LabelFor(model => model.Customer, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Customer, new { htmlAttributes = new { @class = "form-control", style = "width: 600px;" } })
+                @Html.ValidationMessageFor(model => model.Customer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*GroupID------------------------*@
+        <div class="form-group @(ViewData.ModelState["GroupID"] != null && ViewData.ModelState["GroupID"].Errors.Any() ? "has-error" : "")">
+            @Html.LabelFor(model => model.GroupID, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
+            <div class="col-md-10">
+                @{
+                    List<SelectListItem> groupList = new List<SelectListItem>();
+                    foreach (var item in ViewBag.GroupList)
+                    {
+                        groupList.Add(new SelectListItem
+                        {
+                            Text = Resource.AddEditProject.AddEditProjectRe.Group_WordLabel + " " + item.ToString(),
+                            Value = item.ToString(),
+                            Selected = Model.GroupID == item
+                        });
+                    }
+
+                }
+                @Html.DropDownListFor(model => model.GroupID, groupList,
+     ViewBag.NewOREdit == "New"
+     ? Resource.AddEditProject.AddEditProjectRe.GroupIDHolder_Label
+     : ""
+     , new { @class = "form-control", style = "width: 200px;" })
+                @Html.ValidationMessageFor(model => model.GroupID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*Members------------------------*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Members, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.Members, new { name = "Members" })
+                @*@Html.EditorFor(model => model.Members, new { htmlAttributes = new { @class = "form-control" } })*@
+                <select id="member-select" class="info__select" multiple style="width:600px;">
+                    @foreach (var item in ViewBag.VisaList)
+                    {
+                        <option value="@item.Visa">@item.Visa: @item.FirstName @item.LastName</option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.Members, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*Status------------------------*@
+        <div class="form-group  @(ViewData.ModelState["Status"] != null && ViewData.ModelState["Status"].Errors.Any() ? "has-error" : "")">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
+            <div class="col-md-10">
+                @{
+                    List<SelectListItem> statusList = new List<SelectListItem>();
+                    statusList.Add(new SelectListItem
+                    {
+                        Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusNew_Label,
+                        Value = "NEW",
+                        Selected = Model.Status == "NEW"
+                    });
+                    statusList.Add(new SelectListItem
+                    {
+                        Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusPlanned_Label,
+                        Value = "PLA",
+                        Selected = Model.Status == "PLA"
+                    });
+                    statusList.Add(new SelectListItem
+                    {
+                        Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusInProgress_Label,
+                        Value = "INP",
+                        Selected = Model.Status == "INP"
+                    });
+                    statusList.Add(new SelectListItem
+                    {
+                        Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusFinished_Label,
+                        Value = "FIN",
+                        Selected = Model.Status == "FIN"
+                    });
+                }
+                @Html.DropDownListFor(model => model.Status, statusList,
+                            ViewBag.NewOREdit == "New"
+                            ? Resource.AddEditProject.AddEditProjectRe.ProjectStatusHolder_Label
+                            : ""
+                            , new { @class = "form-control", style = "width: 200px;" })
+                @*@Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*StartDate and EndDate div*@
+        <div class="form-group" style="padding:0;margin: -20px 0 -20px 0;">
+            @*StartDate------------------------*@
+            <div class="form-group col-md-6 @(ViewData.ModelState["StartDate"] != null && ViewData.ModelState["StartDate"].Errors.Any() ? "has-error" : "")">
+                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-4", style = "text-align: left; padding-left:34px;" })
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => model.StartDate, new
+               {
+                   @type = "date",
+                   @class = "form-control datepicker",
+                   @style = "width: 200px;",
+                   @Value = Model.StartDate.ToString("yyyy-MM-dd")
+               })
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+
+            @*EndDate------------------------*@
+            <div style="margin-left: -120px;" class="form-group col-md-6 @(ViewData.ModelState["EndDate"] != null && ViewData.ModelState["EndDate"].Errors.Any() ? "has-error" : "")">
+                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.EndDate, new
+               {
+                   @type = "date",
+                   @class = "form-control datepicker",
+                   @style = "width: 200px;",
+                   @Value = Model.EndDate?.ToString("yyyy-MM-dd")
+               })
+                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div style="width: 800px; border-top: 2px rgb(168, 168, 168) solid; padding: 20px 0 0 0; " class="form-group">
+        <div style="display:inline-block;width: 585px;text-align:right;padding: 0 20px 0 0;">
+            <input type="button" style="width:160px;" value="@Resource.AddEditProject.AddEditProjectRe.CanButton_Label" class="btn btn-default" onclick="location.href = '/Project';">
+        </div>
+        <div style="display: inline-block;width: 205px;text-align: right;">
+            <input type="button" style="width: 160px;" value="@( ViewBag.NewOREdit == "New" ? Resource.AddEditProject.AddEditProjectRe.SubmitButtonForCreateNew_Label : Resource.AddEditProject.AddEditProjectRe.SubmitButtonForEdit_Label)" class="btn btn-primary" onclick="appendVisaBeforeSubmit();">
+        </div>
+    </div>
+}
+
+
+
+
+<script>
+
+    ///-----------------------
+    var memberSelect = new SlimSelect({
+        select: '#member-select'
+    })
+    RenderOriginalMember();
+    @if (ViewBag.NewOREdit == "Edit")
+    {
+    @:$("#ID").prop('disabled', true);
+    }
+
+
+    function RenderOriginalMember() {
+        var selectedMember = [];
+        @foreach (var item in Model.MembersList)
+            {
+                @:selectedMember.push("@item");
+            }
+        memberSelect.set(selectedMember);
+    }
+    function appendVisaBeforeSubmit() {
+        var selectedVisa = memberSelect.selected();
+        var memberString = "";
+        selectedVisa.forEach(element => memberString += element+",");
+        document.getElementById("Members").value = memberString;
+
+        $("#main-form").submit();
+        @*$("#main-form").bind('ajax:complete', function () {
+
+        });*@
+        @*$("#main-form").submit(function () {
+            document.getElementById("spinning-submit-form").classList.add("is-active");
+        });*@
+    }
+    @*$(document).ready(function () {
+        $("main-form").submit(function () {
+            document.getElementById("spinning-submit-form").classList.add("is-active");
+        });
+    });*@
+    document.getElementById("main-form").addEventListener('submit', displaySpinning);
+
+    function displaySpinning(event) {
+        if ($("#main-form").valid()) {
+            document.getElementById("spinning-submit-form").classList.add("is-active");
+        }
+    }
+</script>
+

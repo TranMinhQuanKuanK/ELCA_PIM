@@ -18,10 +18,10 @@ namespace ServiceLayer
         {
             _projectRepo = projectRepo;
         }
-        public IList<ProjectListModel> GetProjectList()
+        public IList<ProjectListModel> GetProjectList(string searchTerm, string searchStatus)
         {
             List<ProjectListModel> projectList = new List<ProjectListModel>();
-            _projectRepo.GetProjectList().ToList().ForEach(x => projectList.Add(new ProjectListModel
+            _projectRepo.GetProjectList(searchTerm, searchStatus).ToList().ForEach(x => projectList.Add(new ProjectListModel
             {
                 ID = x.ID,
                 Customer = x.Customer,
@@ -32,6 +32,30 @@ namespace ServiceLayer
             }));
             return projectList;
         }
+        public AddEditProjectModel GetProjectByID(long id)
+        {
+            var x = _projectRepo.GetProjectByID(id);
+            return new AddEditProjectModel
+            {
+                ID = x.ID,
+                Customer = x.Customer,
+                Name = x.Name,
+                ProjectNumber = x.ProjectNumber,
+                StartDate = x.StartDate,
+                Status = x.Status,
+                EndDate = x.EndDate,
+                GroupID = x.GroupID,
+                Members = "TMQ,NTH,QLN,",
+                MembersList = new List<string>
+                {
+                  "TMQ","NTH","QLN"
+                }
+            };
+        }
 
+        public bool DeleteProject(long id)
+        {
+            return false;
+        }
     }
 }

@@ -121,6 +121,18 @@
     <value>Mã số dự án, tên hoặc khách hàng</value>
     <comment>ProjectList Page</comment>
   </data>
+  <data name="Close_WordLabel" xml:space="preserve">
+    <value>Quay về</value>
+  </data>
+  <data name="ConfirmDelete_Warning" xml:space="preserve">
+    <value>Bạn có chắc muốn xóa dự án này?</value>
+  </data>
+  <data name="ConfirmMultipleDelete_Warning" xml:space="preserve">
+    <value>Bạn có chắc muốn xóa những dự án này?</value>
+  </data>
+  <data name="Confirm_WordLabel" xml:space="preserve">
+    <value>Xác nhận</value>
+  </data>
   <data name="Customer_Header" xml:space="preserve">
     <value>Khách hàng</value>
     <comment>ProjectList Page</comment>
@@ -132,6 +144,9 @@
   <data name="Delete_Header" xml:space="preserve">
     <value>Xóa</value>
     <comment>ProjectList Page</comment>
+  </data>
+  <data name="Delete_WordLabel" xml:space="preserve">
+    <value>Xóa</value>
   </data>
   <data name="ID_Header" xml:space="preserve">
     <value>ID</value>
@@ -156,6 +171,9 @@
   <data name="ProjectNumber_Header" xml:space="preserve">
     <value>Mã số</value>
     <comment>ProjectList Page</comment>
+  </data>
+  <data name="ProjectsFoundLabel" xml:space="preserve">
+    <value>Số dự án tìm được: </value>
   </data>
   <data name="ProjectStatusFinished_Label" xml:space="preserve">
     <value>Hoàn thành</value>

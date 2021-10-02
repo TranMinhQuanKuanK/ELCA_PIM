@@ -150,6 +150,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="DefaultMessageRe.Designer.cs">
+      <DependentUpon>DefaultMessageRe.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -160,6 +165,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cross_icon.png" />
+    <Content Include="Content\ELCALogo.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -177,8 +184,12 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Style\css-loader.css" />
+    <Content Include="Style\main.css" />
+    <Content Include="Style\ErrorPageStyle.css" />
     <Content Include="Style\ProjectList\ProjectList.css" />
     <Content Include="Style\StyleSheet.css" />
+    <Content Include="Style\util.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -194,6 +205,10 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Project\ProjectList.cshtml" />
+    <Content Include="Views\Project\AddEditProject.cshtml" />
+    <Content Include="Views\Home\_Layout.cshtml" />
+    <Content Include="Views\Home\_ViewStart.cshtml" />
+    <Content Include="Views\Home\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -235,6 +250,12 @@
       <Project>{f1221c2c-1b92-4ed3-814e-0d34227e781c}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DefaultMessageRe.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DefaultMessageRe.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

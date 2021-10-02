@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmployeeRepo.cs" />
+    <Compile Include="GroupRepo.cs" />
+    <Compile Include="Interface\IEmployeeRepo.cs" />
+    <Compile Include="Interface\IGroupRepo.cs" />
     <Compile Include="Interface\IProjectRepo.cs" />
     <Compile Include="ProjectRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -67,9 +67,12 @@ namespace PIM_Tool_ELCA.App_Start
         {
             //-------------------Repo------------------------
             kernel.Bind<IProjectRepo>().To<ProjectRepo>();
-
+            kernel.Bind<IEmployeeRepo>().To<EmployeeRepo>();
+            kernel.Bind<IGroupRepo>().To<GroupRepo>();
             //--------------Service--------------------------
             kernel.Bind<IProjectService>().To<ProjectService>();
+            kernel.Bind<IEmployeeService>().To<EmployeeService>();
+            kernel.Bind<IGroupService>().To<GroupService>();
         }
     }
 }

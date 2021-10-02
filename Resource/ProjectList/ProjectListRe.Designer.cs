@@ -70,6 +70,42 @@ namespace Resource.ProjectList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close_WordLabel {
+            get {
+                return ResourceManager.GetString("Close_WordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        public static string Confirm_WordLabel {
+            get {
+                return ResourceManager.GetString("Confirm_WordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure to delete this project?.
+        /// </summary>
+        public static string ConfirmDelete_Warning {
+            get {
+                return ResourceManager.GetString("ConfirmDelete_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure to delete these project?.
+        /// </summary>
+        public static string ConfirmMultipleDelete_Warning {
+            get {
+                return ResourceManager.GetString("ConfirmMultipleDelete_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer.
         /// </summary>
         public static string Customer_Header {
@@ -84,6 +120,15 @@ namespace Resource.ProjectList {
         public static string Delete_Header {
             get {
                 return ResourceManager.GetString("Delete_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete_WordLabel {
+            get {
+                return ResourceManager.GetString("Delete_WordLabel", resourceCulture);
             }
         }
         
@@ -147,6 +192,15 @@ namespace Resource.ProjectList {
         public static string ProjectNumber_Header {
             get {
                 return ResourceManager.GetString("ProjectNumber_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects found: .
+        /// </summary>
+        public static string ProjectsFoundLabel {
+            get {
+                return ResourceManager.GetString("ProjectsFoundLabel", resourceCulture);
             }
         }
         

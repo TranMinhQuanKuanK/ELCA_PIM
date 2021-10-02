@@ -4,19 +4,49 @@
 }
 
 <h2 id="project-list-label">@Resource.ProjectList.ProjectListRe.ProjectList_Label</h2>
-<form id="search-form" action="SearchProject">
-    <input id="search-input" type="text" class="form-control" name="SearchTerm" placeholder="@Resource.ProjectList.ProjectListRe.CategoryFilterHolder_Label">
-    <select id="status-search-input" class="form-control" name="Status">
-        <option value="ALL">@Resource.ProjectList.ProjectListRe.ProjectStatusHolder_Label</option>
-        <option value="NEW">@Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label</option>
-        <option value="PLA">@Resource.ProjectList.ProjectListRe.ProjectStatusPlanned_Label</option>
-        <option value="INP">@Resource.ProjectList.ProjectListRe.ProjectStatusInProgress_Label</option>
-        <option value="FIN">@Resource.ProjectList.ProjectListRe.ProjectStatusFinished_Label</option>
-    </select>
+<form id="search-form" action="/Project/SearchProject">
+    <input id="search-input" type="text" class="form-control"
+           name="SearchTerm" placeholder="@Resource.ProjectList.ProjectListRe.CategoryFilterHolder_Label"
+           value="@Session["SearchTerm"]">
+    @*<select id="status-search-input" class="form-control" name="Status">
+            <option value="ALL">@Resource.ProjectList.ProjectListRe.ProjectStatusHolder_Label</option>
+            <option value="NEW">@Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label</option>
+            <option value="PLA">@Resource.ProjectList.ProjectListRe.ProjectStatusPlanned_Label</option>
+            <option value="INP">@Resource.ProjectList.ProjectListRe.ProjectStatusInProgress_Label</option>
+            <option value="FIN">@Resource.ProjectList.ProjectListRe.ProjectStatusFinished_Label</option>
+        </select>*@
+    @{
+        List<SelectListItem> statusList = new List<SelectListItem>();
+        statusList.Add(new SelectListItem
+        {
+            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label,
+            Value = "NEW",
+            Selected = Session["SearchStatus"]?.ToString() == "NEW"
+        });
+        statusList.Add(new SelectListItem
+        {
+            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusPlanned_Label,
+            Value = "PLA",
+            Selected = Session["SearchStatus"]?.ToString() == "PLA"
+        });
+        statusList.Add(new SelectListItem
+        {
+            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusInProgress_Label,
+            Value = "INP",
+            Selected = Session["SearchStatus"]?.ToString() == "INP"
+        });
+        statusList.Add(new SelectListItem
+        {
+            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusFinished_Label,
+            Value = "FIN",
+            Selected = Session["SearchStatus"]?.ToString() == "FIN"
+        });
+    }
+    @Html.DropDownList("SearchStatus", statusList, @Resource.ProjectList.ProjectListRe.ProjectStatusHolder_Label, new { @class = "form-control", id = "status-search-input" })
     <input id="submit-button" class="btn btn-primary" type="submit" value="@Resource.ProjectList.ProjectListRe.Search_Label" />
-    <input id="reset-button" type="reset" value="@Resource.ProjectList.ProjectListRe.ResetSearch_Label" />
+    <button type="button" id="reset-button"><a href="/Project/SearchProject">@Resource.ProjectList.ProjectListRe.ResetSearch_Label </a></button>
 </form>
-
+<div><span class="label @(ViewBag.ProjectList.Count==0? "label-danger" : "label-success")">@Resource.ProjectList.ProjectListRe.ProjectsFoundLabel @ViewBag.ProjectList.Count</span></div>
 @*Data table*@
 <div class="wrap-table100">
     <div class="table100" style="width:70vw;">
@@ -27,8 +57,8 @@
                     <th style="width:6vw;">@Resource.ProjectList.ProjectListRe.ProjectNumber_Header</th>
                     <th>@Resource.ProjectList.ProjectListRe.Name_Header</th>
                     <th style="width:8vw;">@Resource.ProjectList.ProjectListRe.Status_Header</th>
-                    <th style="width:8vw;">@Resource.ProjectList.ProjectListRe.Customer_Header</th>
-                    <th style="width:6vw;">@Resource.ProjectList.ProjectListRe.StartDate_Header</th>
+                    <th style="width:10vw;">@Resource.ProjectList.ProjectListRe.Customer_Header</th>
+                    <th style="width:8vw;">@Resource.ProjectList.ProjectListRe.StartDate_Header</th>
                     <th style="width:6vw; text-align:center;">@Resource.ProjectList.ProjectListRe.Delete_Header</th>
                 </tr>
             </thead>
@@ -41,9 +71,9 @@
                 @foreach (var x in ViewBag.ProjectList)
                 {
                     <tr>
-                        <td><input type="checkbox" onchange='handleChange(this,@x.ID)'></td>
-                        <td>@x.ProjectNumber</td>
-                        <td>@x.Name sdfsdfsdfsdfsdfsđfsdfsdfsdfsf</td>
+                        <td><input type="checkbox" @(x.Status != "NEW" ? "disabled" : "") onchange='handleChange(this,@x.ID)'></td>
+                        <td><a href="/Project/EditProject/@x.ID">@x.ProjectNumber</a></td>
+                        <td>@x.Name</td>
                         <td>
                             @switch (x.Status)
                             {
@@ -67,13 +97,12 @@
 
                         <td>@x.Customer</td>
                         <td>@Convert.ToDateTime(x.StartDate).ToString("dd/MM/yyyy")</td>
-                        <td style="text-align:center;">
+                        <td style="text-align:center;" @(x.Status == "NEW"? "data-toggle = modal data-target = #confirmDeleteModal" :"" )>
                             @if (x.Status == "NEW")
                             {
                                 //style="font-size: 20px; font-weight: bold; color: rgb(255, 89, 89);
                                 <i class="fa fa-trash-o delete-icon"></i>
                             }
-
                         </td>
                     </tr>
                 }
@@ -81,58 +110,82 @@
             </tbody>
 
         </table>
-        <div id="item-count-tr">
+        <div id="item-count-tr" data-toggle="modal" data-target="#confirmMultpleDeleteModal">
             <div id="num-item-selected-text">
                 <p><span id="item-count">0</span>  @Resource.ProjectList.ProjectListRe.ItemSelected_Label</p>
             </div>
-            <div id="delete-selected-button">
+            <div id="delete-selected-button" onclick="onSubmitDeleteMultiple()">
                 <span id="item-count-text">
                     <i class="fa fa-trash-o delete-icon"></i> @Resource.ProjectList.ProjectListRe.DeleteSelectedItems_Label
                 </span>
             </div>
+
         </div>
 
     </div>
 </div>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmMultpleDeleteModal">
     Launch demo modal
 </button>
-<ul>
-    <li>Coffee</li>
-    <li>Tea</li>
-    <li>Milk</li>
-</ul>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Warning</h4>
+                <h4 class="modal-title" id="exampleModalLabel">@Resource.ProjectList.ProjectListRe.Confirm_WordLabel</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div id="project-cant-be-deleted-warning">
-                    <p>@Resource.ProjectList.ProjectListRe.ProjectCantBeDeleted_Label</p>
-                    <ul>
-                        <li>SDSF</li>
-                        <li>SDSF</li>
-                        <li>SDSF</li>
-                    </ul>
+                <div id="confirm-warning">
+                    <p style="font-size:14px;">@Resource.ProjectList.ProjectListRe.ConfirmDelete_Warning</p>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn" data-dismiss="modal">@Resource.ProjectList.ProjectListRe.Close_WordLabel</button>
+                <button type="button" class="btn btn-danger" onclick="appendVisaBeforeSubmit()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confirmMultpleDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">@Resource.ProjectList.ProjectListRe.Confirm_WordLabel</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="confirm-warning">
+                    <p style="font-size:14px;">@Resource.ProjectList.ProjectListRe.ConfirmMultipleDelete_Warning</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">@Resource.ProjectList.ProjectListRe.Close_WordLabel</button>
+                <button type="button" class="btn btn-danger" onclick="appendVisaBeforeSubmit()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+
+    @*var visaSelect = new SlimSelect({
+        select: '#slim-select'
+    })*@
+
+    //------------------
+
     var deleteList = [];
     var itemcount = 0;
+    function ResetFilter() {
+        document.getElementById("search-input").value = "";
+        document.getElementById("status-search-input").value = "";
+    }
 
     function handleChange(checkbox, id) {
         if (checkbox.checked == true) {
@@ -140,6 +193,7 @@
             itemcount++;
             document.getElementById("item-count").innerHTML = itemcount;
             document.getElementById("delete-selected-button").style.visibility = "visible";
+
         } else {
             const index = deleteList.indexOf(id);
             if (index > -1) {
@@ -153,13 +207,13 @@
 
         }
     }
-    function submitDelete() {
+    function onSubmitDeleteMultiple() {
         if (itemcount > 0) {
             var xhttp = new XMLHttpRequest();
-            var JSONObject = [
-                ...deleteList
-            ];
-            xhttp.open("POST", "DeleteMultiple", true);
+            var JSONObject = {
+               "ProjectList" : [...deleteList]
+            };
+            xhttp.open("POST", "/Project/DeleteMultiple", true);
 
             xhttp.setRequestHeader("Content-type", "application/json");
             xhttp.setRequestHeader("Accept", "application/json");
