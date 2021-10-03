@@ -41,6 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomException\ProjectException\EndDateSoonerThanStartDateException.cs" />
+    <Compile Include="CustomException\ProjectException\InvalidStatusException.cs" />
+    <Compile Include="CustomException\ProjectException\InvalidVisaException.cs" />
+    <Compile Include="CustomException\ProjectException\CantChangeProjectNumberException.cs" />
+    <Compile Include="CustomException\ProjectException\DuplicateProjectNumberException.cs" />
+    <Compile Include="CustomException\ProjectException\GroupIDDoesntExistException.cs" />
     <Compile Include="EmployeeService.cs" />
     <Compile Include="GroupService.cs" />
     <Compile Include="Interface\IEmployeeService.cs" />

@@ -10,5 +10,7 @@ namespace PersistenceLayer.Interface
     public interface IEmployeeRepo
     {
         IList<Employee> GetAllEmployees();
+        Employee GetEmployeeByVisa(string visa);
+        IList<Employee> GetMemberListOfProject(long id);
     }
 }

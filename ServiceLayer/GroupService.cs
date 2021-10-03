@@ -16,6 +16,8 @@ namespace ServiceLayer
         {
             _groupRepo = groupRepo;
         }
+        public bool CheckGroupIDExist(long groupID) => _groupRepo.GetGroupByID(groupID) != null;
+
         public IList<long> GetGroupIDList()
         {
             List<long> result = new List<long>();

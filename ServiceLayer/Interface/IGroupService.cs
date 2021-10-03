@@ -9,5 +9,6 @@ namespace ServiceLayer.Interface
     public interface IGroupService
     {
         IList<long> GetGroupIDList();
+        bool CheckGroupIDExist(long groupID);
     }
 }

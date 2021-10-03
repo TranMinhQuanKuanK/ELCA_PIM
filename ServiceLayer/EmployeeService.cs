@@ -11,16 +11,16 @@ namespace ServiceLayer
 {
     public class EmployeeService : IEmployeeService
     {
-         private readonly EmployeeRepo _employeeService;
+         private readonly EmployeeRepo _employeeRepo;
 
-        public EmployeeService(EmployeeRepo employeeService)
+        public EmployeeService(EmployeeRepo employeeRepo)
         {
-            _employeeService = employeeService;
+            _employeeRepo = employeeRepo;
         }
         public List<MemberModel> GetAllMembers()
         {
             List<MemberModel> memberList = new List<MemberModel>();
-            _employeeService.GetAllEmployees().ToList().ForEach(x => memberList.Add(new MemberModel
+            _employeeRepo.GetAllEmployees().ToList().ForEach(x => memberList.Add(new MemberModel
             {
                 ID = x.ID,
                 FirstName = x.FirstName,
@@ -28,6 +28,11 @@ namespace ServiceLayer
                 Visa = x.Visa
             }));
             return memberList;
+        }
+
+        public bool CheckExistVisa(string visa)
+        {
+            return _employeeRepo.GetEmployeeByVisa(visa)!=null;
         }
     }
 }

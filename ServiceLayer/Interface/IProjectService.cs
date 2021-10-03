@@ -12,5 +12,7 @@ namespace ServiceLayer.Interface
     {
         IList<ProjectListModel> GetProjectList(string searchTerm, string searchStatus);
         AddEditProjectModel GetProjectByID(long id);
+        bool CheckProjectNumberExist(short projectNumber);
+        bool ValidateProjectModelAndUpdate(AddEditProjectModel project);
     }
 }

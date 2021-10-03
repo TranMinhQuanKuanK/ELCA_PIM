@@ -1,5 +1,6 @@
 ﻿using ContractLayer;
 using ServiceLayer;
+using ServiceLayer.CustomException.ProjectException;
 using ServiceLayer.Interface;
 using System;
 using System.Collections.Generic;
@@ -35,15 +36,15 @@ namespace PIM_Tool_ELCA.Controllers
         {
             ViewBag.ProjectList = _projectService.
                 GetProjectList(
-                Session["SearchTerm"] != null ? Session["SearchTerm"].ToString() :"", 
+                Session["SearchTerm"] != null ? Session["SearchTerm"].ToString() : "",
                 Session["SearchStatus"] != null ? Session["SearchStatus"].ToString() : ""
                 );
-           
+
             return View("ProjectList");
         }
         public ActionResult SearchProject([Bind(Include = "SearchTerm, SearchStatus")] SearchProjectModel searchProjectModel)
         {
-            ViewBag.ProjectList = _projectService.GetProjectList(searchProjectModel.SearchTerm,searchProjectModel.SearchStatus);
+            ViewBag.ProjectList = _projectService.GetProjectList(searchProjectModel.SearchTerm, searchProjectModel.SearchStatus);
             ViewBag.SearchTerm = searchProjectModel.SearchTerm;
             Session["SearchTerm"] = searchProjectModel.SearchTerm;
             Session["SearchStatus"] = searchProjectModel.SearchStatus;
@@ -60,17 +61,56 @@ namespace PIM_Tool_ELCA.Controllers
         }
         [HandleError]
         [HttpPost]
-        public ActionResult EditProject(int id, [Bind(Include = "ID, GroupID,ProjectNumber,Name,Customer,Status,StartDate,EndDate,Members")] AddEditProjectModel projectModel)
+        public ActionResult EditProject(int id,
+            [Bind(Include = "ID, GroupID,ProjectNumber,Name,Customer,Status,StartDate,EndDate,Members")] AddEditProjectModel projectModel)
         {
 
-            //ModelState.AddModelError("ProjectNumber", "This is custom error message");
-            //Logic
-            ViewBag.NewOREdit = "Edit";
-            ViewBag.VisaList = _employeeService.GetAllMembers();
-            ViewBag.GroupList = _groupService.GetGroupIDList();
-            //ModelState.Clear();
-            projectModel.MembersList = new List<string>(VisaHelper.SplitVisa(projectModel.Members));
-            return View("AddEditProject", projectModel);
+            //GroupID exist
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    List<string> memberList = new List<string>(VisaHelper.SplitVisa(projectModel.Members));
+                    projectModel.MembersList = memberList;
+                    _projectService.ValidateProjectModelAndUpdate(projectModel);
+                }
+
+            }
+            catch (GroupIDDoesntExistException)
+            {
+                ModelState.AddModelError("GroupID", "GroupID doesn't exist");
+            }
+            catch (CantChangeProjectNumberException)
+            {
+                ModelState.AddModelError("ProjectNumber", "Can't change project number");
+            }
+            catch (InvalidVisaException)
+            {
+                ModelState.AddModelError("Members", "Invalid member list");
+            }
+            catch (InvalidStatusException)
+            {
+                ModelState.AddModelError("Status", "Invalid status");
+            }
+            catch (EndDateSoonerThanStartDateException)
+            {
+                ModelState.AddModelError("EndDate", "End date can't be sooner than start date.");
+            }
+
+            //-----------------------------------------------------------------------------
+            if (ModelState.IsValid)
+            {
+                //update
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.NewOREdit = "Edit";
+                ViewBag.VisaList = _employeeService.GetAllMembers();
+                ViewBag.GroupList = _groupService.GetGroupIDList();
+
+                return View("AddEditProject", projectModel);
+            }
         }
         [HttpGet]
         [HandleError]

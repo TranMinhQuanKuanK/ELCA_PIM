@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                     assembly="DomainLayer"
+                   namespace="DomainLayer">
+
+	<class name = "Employee" table="EMPLOYEE">
+		<id name = "ID" column="ID">
+		</id>
+		<version name="Version" column="VERSION" unsaved-value="0" />
+		<property name = "Visa" column="VISA"/>
+		<property name = "FirstName" column="FIRST_NAME"/>
+		<property name = "LastName" column="LAST_NAME"/>
+		<property name = "Birthday" column="BIRTH_DATE"/>
+		<set name="Projects" table="PROJECT_EMPLOYEE"  lazy="true" cascade="save-update">
+			<key column="EMPLOYEE_ID"/>
+			<many-to-many class="Project" column="PROJECT_ID"/>
+		</set>
+	</class>
+</hibernate-mapping>

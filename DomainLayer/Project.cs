@@ -8,14 +8,15 @@ namespace DomainLayer
 {
     public class Project
     {
-        public long ID { get; set; }
-        public long GroupID { get; set; }
-        public short ProjectNumber { get; set; }
-        public string Name { get; set; }
-        public string Customer { get; set; }
-        public string Status { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public int Version { get; set; }
+        public virtual long ID { get; set; }
+        public virtual long GroupID { get; set; }
+        public virtual short ProjectNumber { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string Customer { get; set; }
+        public virtual string Status { get; set; }
+        public virtual DateTime StartDate { get; set; }
+        public virtual DateTime EndDate { get; set; }
+        public virtual  int Version { get; set; }
+        public virtual ISet<Employee> Members { get; set; }
     }
 }

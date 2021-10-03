@@ -11,6 +11,7 @@ namespace PIM_Tool_ELCA.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using PersistenceLayer;
+    using PersistenceLayer.Helper;
     using PersistenceLayer.Interface;
     using ServiceLayer;
     using ServiceLayer.Interface;
@@ -65,6 +66,7 @@ namespace PIM_Tool_ELCA.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<INHibernateSessionHelper>().To<NHibernateSessionHelper>();
             //-------------------Repo------------------------
             kernel.Bind<IProjectRepo>().To<ProjectRepo>();
             kernel.Bind<IEmployeeRepo>().To<EmployeeRepo>();

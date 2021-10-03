@@ -1,4 +1,5 @@
 ﻿using DomainLayer;
+using PersistenceLayer.Helper;
 using PersistenceLayer.Interface;
 using System;
 using System.Collections.Generic;
@@ -8,35 +9,78 @@ using System.Threading.Tasks;
 
 namespace PersistenceLayer
 {
-    public class EmployeeRepo: IEmployeeRepo
+    public class EmployeeRepo : IEmployeeRepo
     {
+        private readonly INHibernateSessionHelper _sessionhelper;
+
+        public EmployeeRepo(INHibernateSessionHelper sessionhelper)
+        {
+            _sessionhelper = sessionhelper;
+        }
         public IList<Employee> GetAllEmployees()
         {
-            return new List<Employee> {
-                new Employee
+            using (var session = _sessionhelper.OpenSession())
             {
-               ID = 1,FirstName = "Tran Minh",LastName = "Quan",Visa="TMQ",Birthday= DateTime.Now,Version=1
-            }, 
-                new Employee
+                return session.QueryOver<Employee>().List<Employee>();
+            }
+
+        }
+        public IList<Employee> GetMemberListOfProject(long id)
+        {
+
+            using (var session = _sessionhelper.OpenSession())
             {
-                ID = 2,FirstName = "Nguyen Thi",LastName = "Huong",Visa="NTH",Birthday= DateTime.Now,Version=1
-            }, new Employee
+                Project projectAlias = null;
+                Employee memberAlias = null;
+                List<Employee> projectList = (List<Employee>)
+                session.QueryOver<Employee>(() => memberAlias).JoinAlias(() => memberAlias.Projects, () => projectAlias)
+                .Where(() => projectAlias.ID == id).List();
+                return projectList;
+            }
+
+        }
+        public void RemoveEmployeesFromProject(IList<long> employeeIdList, long projectId)
+        {
+
+            using (var session = _sessionhelper.OpenSession())
             {
-                 ID = 3,FirstName = "Le Nguyen Ai",LastName = "Quoc",Visa="QLN",Birthday= DateTime.Now,Version=1
-            }, new Employee
+                //Project projectAlias = null;
+                //Employee memberAlias = null;
+                //List<Project> projectList = (List<Project>)
+                //session.QueryOver<Employee>(() => memberAlias).
+                //            JoinAlias(
+                //                    () => memberAlias.Projects, 
+                //                    () => projectAlias
+                //                    )
+                //.Where(() => projectAlias.ID == id).List();
+                //return session.QueryOver<Employee>().List<Employee>();
+            }
+
+        }
+        public void RemoveProjectsFromEmployee(IList<long> projectIdList, long employeeId)
+        {
+
+            using (var session = _sessionhelper.OpenSession())
             {
-               ID = 4,FirstName = "Hoang Phuoc",LastName = "Thanh",Visa="HPT",Birthday= DateTime.Now,Version=1
-            }, new Employee
+                //Project projectAlias = null;
+                //Employee memberAlias = null;
+                //List<Project> projectList = (List<Project>)
+                //session.QueryOver<Employee>(() => memberAlias).
+                //            JoinAlias(
+                //                    () => memberAlias.Projects, 
+                //                    () => projectAlias
+                //                    )
+                //.Where(() => projectAlias.ID == id).List();
+                //return session.QueryOver<Employee>().List<Employee>();
+            }
+
+        }
+        public Employee GetEmployeeByVisa(string visa)
+        {
+            using (var session = _sessionhelper.OpenSession())
             {
-                 ID = 5,FirstName = "Luu Duc",LastName = "Hung",Visa="LDH",Birthday= DateTime.Now,Version=1
-            },new Employee
-            {
-                 ID = 6,FirstName = "Nguyen Thi",LastName = "Linh",Visa="TDH",Birthday= DateTime.Now,Version=1
-            },new Employee
-            {
-                 ID = 7,FirstName = "Tran Van",LastName = "Ba",Visa="TVB",Birthday= DateTime.Now,Version=1
-            },
-            };
+                return session.QueryOver<Employee>().Where(c=>c.Visa==visa).SingleOrDefault<Employee>();
+            }
         }
     }
 }

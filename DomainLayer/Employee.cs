@@ -9,12 +9,12 @@ namespace DomainLayer
 {
     public class Employee
     {
-        public long ID { get; set; }
-        public string Visa { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime Birthday { get; set; }
-        public int Version { get; set; }
-
+        public virtual long ID { get; set; }
+        public virtual string Visa { get; set; }
+        public virtual string FirstName { get; set; }
+        public virtual string LastName { get; set; }
+        public virtual DateTime Birthday { get; set; }
+        public virtual int Version { get; set; }
+        public virtual ISet<Project> Projects { get; set; }
     }
 }
