@@ -38,6 +38,10 @@
     margin: 10px 0 0 0;
 }
 
+#item-count-text:hover {
+    cursor: pointer;
+}
+
 #num-item-selected-text {
     display: flex;
     flex-direction: row;
@@ -61,6 +65,7 @@
     padding: 0 10px 0 0px;
     visibility: hidden;
 }
+
 #delete-selected-button {
     display: flex;
     flex-direction: row-reverse;

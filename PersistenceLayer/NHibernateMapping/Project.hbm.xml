@@ -3,8 +3,8 @@
                      assembly="DomainLayer"
                    namespace="DomainLayer">
 
-	<class name = "Project" table="PROJECT">
-		<id name = "ID" column="ID">
+	<class name = "Project" table="PROJECT" optimistic-lock="version">
+		<id name = "ID" column="ID"  generator="identity">
 		</id>
 		<version name="Version" column="VERSION" unsaved-value="0" />
 		<property name = "GroupID" column="GROUP_ID"/>
@@ -14,9 +14,9 @@
 		<property name = "Status" column="STATUS"/>
 		<property name = "StartDate" column="START_DATE"/>
 		<property name = "EndDate" column="END_DATE"/>
-		<set name="Members" table="PROJECT_EMPLOYEE"  lazy="true" cascade="save-update">
+		<bag name="Members" table="PROJECT_EMPLOYEE"  lazy="true" cascade="save-update">
 			<key column="PROJECT_ID"/>
 			<many-to-many class="Employee" column="EMPLOYEE_ID"/>
-		</set>
+		</bag>
 	</class>
 </hibernate-mapping>

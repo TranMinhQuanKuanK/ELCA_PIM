@@ -129,11 +129,17 @@
   <data name="Customer_DisplayName" xml:space="preserve">
     <value>Tên khách hàng (*)</value>
   </data>
+  <data name="DuplicateProjectNumber_ModelError" xml:space="preserve">
+    <value>Mã số dự án đã được dùng bởi một dự án khác. Hãy chọn mã số khác.</value>
+  </data>
   <data name="EditProjectHeader_Label" xml:space="preserve">
     <value>Thông tin dự án</value>
   </data>
   <data name="EndDate_DisplayName" xml:space="preserve">
     <value>Ngày kết thúc</value>
+  </data>
+  <data name="EndDate_ModelError" xml:space="preserve">
+    <value>Ngày kết thúc phải sau ngày bắt đầu</value>
   </data>
   <data name="EnterAllMandatoryField_Warning" xml:space="preserve">
     <value>Hãy hoàn thành những thông tin còn thiếu hoặc chưa đúng</value>
@@ -215,5 +221,8 @@
   </data>
   <data name="SubmitButtonForEdit_Label" xml:space="preserve">
     <value>Lưu thay đổi</value>
+  </data>
+  <data name="VersionWarning" xml:space="preserve">
+    <value>Thay đổi chưa được lưu vì có một thay đổi từ người dùng khác. Vui lòng thử lại.</value>
   </data>
 </root>

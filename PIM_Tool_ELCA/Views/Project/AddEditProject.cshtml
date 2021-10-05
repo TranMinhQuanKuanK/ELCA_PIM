@@ -24,8 +24,16 @@
                 @: <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             @:</div>
         }
-
+        @if (ViewBag.VersionWarning != null)
+        {
+            @:<div class="alert alert-danger alert-dismissable" role="alert">
+                @Resource.AddEditProject.AddEditProjectRe.VersionWarning
+                @: <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            @:</div>
+        }
         @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.HiddenFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
+
         @*ProjectNumber------------------------*@
         <div class="form-group @(ViewData.ModelState["ProjectNumber"] != null && ViewData.ModelState["ProjectNumber"].Errors.Any() ? "has-error" : "")">
             @Html.LabelFor(model => model.ProjectNumber, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
@@ -40,11 +48,11 @@
                     @Html.EditorFor(model => model.ProjectNumber,
                            new { htmlAttributes = new { @class = "form-control", style = "width:200px;", @disabled = "disabled", type = "number" } })
                     @Html.HiddenFor(model => model.ProjectNumber,
-                          new { htmlAttributes = new { @class = "form-control", style = "width:200px;"} })
+                          new { htmlAttributes = new { @class = "form-control", style = "width:200px;" } })
                 }
                 @*@Html.EditorFor(model => model.ProjectNumber, ViewBag.NewOREdit == "New" ?
-        new { @class = "form-control", style = "width:200px;" } :
-        new { @class = "form-control", style = "width:200px;", @disabled = "disabled" })*@
+                    new { @class = "form-control", style = "width:200px;" } :
+                    new { @class = "form-control", style = "width:200px;", @disabled = "disabled" })*@
 
 
                 @Html.ValidationMessageFor(model => model.ProjectNumber, "", new { @class = "text-danger" })

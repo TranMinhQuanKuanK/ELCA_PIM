@@ -1,6 +1,8 @@
 ﻿using ContractLayer;
 using DomainLayer;
+using NHibernate;
 using PersistenceLayer;
+using PersistenceLayer.CustomException.Project;
 using PersistenceLayer.Interface;
 using ServiceLayer.CustomException.ProjectException;
 using ServiceLayer.Interface;
@@ -37,7 +39,8 @@ namespace ServiceLayer
                 Name = x.Name,
                 ProjectNumber = x.ProjectNumber,
                 StartDate = x.StartDate,
-                Status = x.Status
+                Status = x.Status,
+                Version = x.Version
             }));
             return projectList;
         }
@@ -55,54 +58,159 @@ namespace ServiceLayer
                 Status = project.Status,
                 EndDate = project.EndDate,
                 GroupID = project.GroupID,
-                Members = "",
-                MembersList = (List<string>) empList
+                Members = "",//khong can thiet
+                Version = project.Version,
+                MembersList = (List<string>)empList
             };
         }
 
-        public bool CheckProjectNumberExist(short projectNumber) => _projectRepo.GetProjectByProjectNumber(projectNumber)!=null;
+        public bool CheckProjectNumberExist(short projectNumber) => _projectRepo.GetProjectByProjectNumber(projectNumber) != null;
 
-        public bool ValidateProjectModelAndUpdate(AddEditProjectModel project)
+        private void CheckGroupID(AddEditProjectModel project)
         {
-            //GroupID exist
             if (_groupService.CheckGroupIDExist((long)project.GroupID) == false)
             {
                 throw new GroupIDDoesntExistException();
             }
-            //check project number duplicate
+        }
+        private void CheckProjectNumberDuplicate (AddEditProjectModel project)
+        {
             if (GetProjectByID((long)project.ID).ProjectNumber != project.ProjectNumber)
             {
                 throw new CantChangeProjectNumberException();
             }
-            //check visa exist
-            foreach (var member in project.MembersList)
+        }
+        private void CheckVisaExisted(AddEditProjectModel project, out IList<Employee> membersList)
+        {
+            try
             {
-                if (_employeeService.CheckExistVisa(member) == false)
-                {
-                    throw new InvalidVisaException();
-                }
+                membersList = _employeeRepo.GetEmployeesBasedOnVisaList(project.MembersList);
             }
-            //check tình trạng
-            if (project.Status != "NEW" && project.Status 
-                != "PLA" && project.Status != "INP" && project.Status != "FIN")
+            catch (InvalidVisaDetectedException e)
+            {
+                throw new InvalidVisaException("Invalid visa detected!", e);
+            }
+        }
+        private void CheckStatus(AddEditProjectModel project)
+        {
+            if (project.Status != "NEW" && project.Status
+                 != "PLA" && project.Status != "INP" && project.Status != "FIN")
             {
                 throw new InvalidStatusException();
             }
-            //check enddate
+        }
+        private void CheckEndDateSoonerThanStartDate(AddEditProjectModel project)
+        {
             if (project.EndDate < project.StartDate)
             {
                 throw new EndDateSoonerThanStartDateException();
             }
+        }
+        public bool ValidateProjectModelAndUpdate(AddEditProjectModel project)
+        {
+            //GroupID exist
+            CheckGroupID(project);
+            //check project number duplicate
+            CheckProjectNumberDuplicate(project);
+            //check visa exist
+            IList<Employee> membersList = null;
+            CheckVisaExisted(project, out membersList);
+            //check tình trạng
+            CheckStatus(project);
+            //check enddate
+            CheckEndDateSoonerThanStartDate(project);
+
             //---------------update------------------------
+            try
+            {
+                _projectRepo.UpdateProject(new Project()
+                {
+                    ID = (long)project.ID,
+                    Name = project.Name,
+                    Customer = project.Customer,
+                    GroupID = (long)project.GroupID,
+                    Members = membersList,
+                    ProjectNumber = (short)project.ProjectNumber,
+                    StartDate = project.StartDate,
+                    EndDate = project.EndDate,
+                    Status = project.Status,
+                    Version = project.Version
+                }); ;
+            }
+            catch (PersistenceLayer.CustomException.Project.VersionLowerThanCurrentVersionException e)
+            {
+                throw new CustomException.ProjectException.VersionLowerThanCurrentVersionException("Version lower than current version", e);
+            }
+            //-----------------------------------------------
+            return true;
+        }
+        private void CheckProjectNumberExist(AddEditProjectModel project)
+        {
+            if (_projectRepo.GetProjectByProjectNumber((short)project.ProjectNumber)!=null)
+            {
+                throw new ProjectNumberDuplicateException();
+            }
+        }
+        public bool ValidateAndCreateNewProject(AddEditProjectModel project)
+        {
+            //GroupID exist
+            CheckGroupID(project);
+            //check project number duplicate
+            CheckProjectNumberExist(project);
+            //check visa exist
+            IList<Employee> membersList = null;
+            CheckVisaExisted(project, out membersList);
+            //check tình trạng
+            CheckStatus(project);
+            //check enddate
+            CheckEndDateSoonerThanStartDate(project);
 
-
+            //---------------create new------------------------
+            try
+            {
+                _projectRepo.CreateNewProject(new Project()
+                {
+                    Name = project.Name,
+                    Customer = project.Customer,
+                    GroupID = (long)project.GroupID,
+                    Members = membersList,
+                    ProjectNumber = (short)project.ProjectNumber,
+                    StartDate = project.StartDate,
+                    EndDate = project.EndDate,
+                    Status = project.Status,
+                    Version = project.Version
+                });
+            }
+            catch (PersistenceLayer.CustomException.Project.VersionLowerThanCurrentVersionException e)
+            {
+                throw new CustomException.ProjectException.VersionLowerThanCurrentVersionException("Version lower than current version", e);
+            }
             //-----------------------------------------------
             return true;
         }
 
-
-        public bool DeleteProject(long id)
+        public bool DeleteProject(IList<DeleteProjectRequestModel> projectList) 
         {
+            IDictionary<long, int> projectListDictionary = new Dictionary<long, int>();
+            foreach (var item in projectList)
+            {
+                projectListDictionary.Add(new KeyValuePair<long, int>(item.ID, item.Version));
+            }
+            try {
+                _projectRepo.DeleteProject(projectListDictionary);
+            } 
+            catch (PersistenceLayer.CustomException.Project.ProjectNotExistedException e) 
+            {
+                throw new CustomException.ProjectException.ProjectNotExistedException("ProjectNotExistedException", e);
+            } 
+            catch (PersistenceLayer.CustomException.Project.CantDeleteProjectDueToLowerVersionException e)
+            {
+                throw new CustomException.ProjectException.CantDeleteProjectDueToLowerVersionException("CantDeleteProjectDueToLowerVersionException", e);
+            } 
+            catch (PersistenceLayer.CustomException.Project.ProjectStatusNotNewException e)
+            {
+                throw new CustomException.ProjectException.ProjectStatusNotNewException("ProjectStatusNotNewException", e);
+            }
             return false;
         }
     }

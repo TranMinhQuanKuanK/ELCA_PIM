@@ -129,11 +129,17 @@
   <data name="Customer_DisplayName" xml:space="preserve">
     <value>Customer (*)</value>
   </data>
+  <data name="DuplicateProjectNumber_ModelError" xml:space="preserve">
+    <value>This project number is used by another project. Please choose another one.</value>
+  </data>
   <data name="EditProjectHeader_Label" xml:space="preserve">
     <value>Project information</value>
   </data>
   <data name="EndDate_DisplayName" xml:space="preserve">
     <value>End date</value>
+  </data>
+  <data name="EndDate_ModelError" xml:space="preserve">
+    <value>Finishing date can't be sooner than starting date.</value>
   </data>
   <data name="EnterAllMandatoryField_Warning" xml:space="preserve">
     <value>Please enter all mandatory field!</value>
@@ -215,5 +221,8 @@
   </data>
   <data name="SubmitButtonForEdit_Label" xml:space="preserve">
     <value>Save changes</value>
+  </data>
+  <data name="VersionWarning" xml:space="preserve">
+    <value>Action was undone because of an update from another user. Here's the new information. Please try again.</value>
   </data>
 </root>

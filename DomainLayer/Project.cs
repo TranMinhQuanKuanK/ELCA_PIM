@@ -15,8 +15,8 @@ namespace DomainLayer
         public virtual string Customer { get; set; }
         public virtual string Status { get; set; }
         public virtual DateTime StartDate { get; set; }
-        public virtual DateTime EndDate { get; set; }
+        public virtual DateTime? EndDate { get; set; }
         public virtual  int Version { get; set; }
-        public virtual ISet<Employee> Members { get; set; }
+        public virtual IList<Employee> Members { get; set; }
     }
 }

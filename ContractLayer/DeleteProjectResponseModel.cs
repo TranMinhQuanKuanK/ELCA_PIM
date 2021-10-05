@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace ContractLayer
 {
-    public class DeleteMultipleProjectRequestModel
+    public class DeleteProjectResponseModel
     {
-        public List<long> ProjectList { get; set; }
+        public bool hasError { get; set; }
+        public string errMessage { get; set; }
+     
     }
 }

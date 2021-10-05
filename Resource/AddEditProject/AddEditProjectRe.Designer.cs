@@ -97,6 +97,15 @@ namespace Resource.AddEditProject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This project number is used by another project. Please choose another one..
+        /// </summary>
+        public static string DuplicateProjectNumber_ModelError {
+            get {
+                return ResourceManager.GetString("DuplicateProjectNumber_ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project information.
         /// </summary>
         public static string EditProjectHeader_Label {
@@ -111,6 +120,15 @@ namespace Resource.AddEditProject {
         public static string EndDate_DisplayName {
             get {
                 return ResourceManager.GetString("EndDate_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finishing date can&apos;t be sooner than starting date..
+        /// </summary>
+        public static string EndDate_ModelError {
+            get {
+                return ResourceManager.GetString("EndDate_ModelError", resourceCulture);
             }
         }
         
@@ -354,6 +372,15 @@ namespace Resource.AddEditProject {
         public static string SubmitButtonForEdit_Label {
             get {
                 return ResourceManager.GetString("SubmitButtonForEdit_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action was undone because of an update from another user. Here&apos;s the new information. Please try again..
+        /// </summary>
+        public static string VersionWarning {
+            get {
+                return ResourceManager.GetString("VersionWarning", resourceCulture);
             }
         }
     }

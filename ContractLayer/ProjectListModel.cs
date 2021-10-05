@@ -15,5 +15,6 @@ namespace ContractLayer
         public string Customer { get; set; }
         public string Status { get; set; }
         public DateTime StartDate { get; set; }
+        public int Version { get; set; }
     }
 }

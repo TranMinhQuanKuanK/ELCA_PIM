@@ -164,6 +164,18 @@
     <value>The following projects couldn't be deleted due to its status:</value>
     <comment>ProjectList Page</comment>
   </data>
+  <data name="ProjectDoesntExistMultiple_DeleteError" xml:space="preserve">
+    <value>Couldn't complete the action because some of the projects don't exist anymore. Please refresh to update new information.</value>
+  </data>
+  <data name="ProjectDoesntExist_DeleteError" xml:space="preserve">
+    <value>Couldn't complete the action because project doesn't exist. Please refresh to update new information.</value>
+  </data>
+  <data name="ProjectHasLowerVersionMultiple_DeleteError" xml:space="preserve">
+    <value>Projects couldn't be deleted because some of them have been modified. Please refresh to update new information.</value>
+  </data>
+  <data name="ProjectHasLowerVersion_DeleteError" xml:space="preserve">
+    <value>Project couldn't be deleted because someone has modified it. Please refresh to update new information.</value>
+  </data>
   <data name="ProjectList_Label" xml:space="preserve">
     <value>Project List</value>
     <comment>ProjectList Page</comment>

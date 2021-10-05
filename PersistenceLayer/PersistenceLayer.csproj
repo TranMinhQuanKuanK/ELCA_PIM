@@ -62,7 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomException\Project\ProjectStatusNotNewException.cs" />
+    <Compile Include="CustomException\Project\CantDeleteProjectDueToLowerVersionException.cs" />
+    <Compile Include="CustomException\Project\ProjectNotExistedException.cs" />
+    <Compile Include="CustomException\Project\InvalidVisaDetectedException.cs" />
     <Compile Include="EmployeeRepo.cs" />
+    <Compile Include="CustomException\Project\VersionLowerThanCurrentVersionException.cs" />
     <Compile Include="GroupRepo.cs" />
     <Compile Include="Helper\INHibernateSessionHelper.cs" />
     <Compile Include="Helper\NHibernateSessionHelper.cs" />

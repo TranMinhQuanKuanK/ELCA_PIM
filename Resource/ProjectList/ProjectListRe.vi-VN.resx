@@ -164,6 +164,18 @@
     <value>Thao tác không thể thực hiện do những dự án sau không thể bị xóa:</value>
     <comment>ProjectList Page</comment>
   </data>
+  <data name="ProjectDoesntExistMultiple_DeleteError" xml:space="preserve">
+    <value>Một vài dự án được chọn đã không còn tồn tại nữa. Hãy tải lại trang để cập nhật thông tin mới.</value>
+  </data>
+  <data name="ProjectDoesntExist_DeleteError" xml:space="preserve">
+    <value>Dự án không còn tồn tại nữa. Hãy tải lại trang để cập nhật thông tin mới.</value>
+  </data>
+  <data name="ProjectHasLowerVersionMultiple_DeleteError" xml:space="preserve">
+    <value>Không thể xóa các dự án được chọn vì một vài dự án đã bị cập nhật thông tin. Hãy tải lại trang để cập nhật thông tin mới.</value>
+  </data>
+  <data name="ProjectHasLowerVersion_DeleteError" xml:space="preserve">
+    <value>Không thể xóa dự án vì dự án đã bị cập nhật thông tin. Hãy tải lại trang để cập nhật thông tin mới. </value>
+  </data>
   <data name="ProjectList_Label" xml:space="preserve">
     <value>Danh sách dự án</value>
     <comment>ProjectList Page</comment>

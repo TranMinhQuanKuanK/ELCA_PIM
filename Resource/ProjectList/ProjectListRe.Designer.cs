@@ -178,6 +178,42 @@ namespace Resource.ProjectList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t complete the action because project doesn&apos;t exist. Please refresh to update new information..
+        /// </summary>
+        public static string ProjectDoesntExist_DeleteError {
+            get {
+                return ResourceManager.GetString("ProjectDoesntExist_DeleteError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t complete the action because some of the projects don&apos;t exist anymore. Please refresh to update new information..
+        /// </summary>
+        public static string ProjectDoesntExistMultiple_DeleteError {
+            get {
+                return ResourceManager.GetString("ProjectDoesntExistMultiple_DeleteError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project couldn&apos;t be deleted because someone has modified it. Please refresh to update new information..
+        /// </summary>
+        public static string ProjectHasLowerVersion_DeleteError {
+            get {
+                return ResourceManager.GetString("ProjectHasLowerVersion_DeleteError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects couldn&apos;t be deleted because some of them have been modified. Please refresh to update new information..
+        /// </summary>
+        public static string ProjectHasLowerVersionMultiple_DeleteError {
+            get {
+                return ResourceManager.GetString("ProjectHasLowerVersionMultiple_DeleteError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project List.
         /// </summary>
         public static string ProjectList_Label {

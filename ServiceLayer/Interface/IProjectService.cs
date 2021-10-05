@@ -14,5 +14,7 @@ namespace ServiceLayer.Interface
         AddEditProjectModel GetProjectByID(long id);
         bool CheckProjectNumberExist(short projectNumber);
         bool ValidateProjectModelAndUpdate(AddEditProjectModel project);
+        bool ValidateAndCreateNewProject(AddEditProjectModel project);
+        bool DeleteProject(IList<DeleteProjectRequestModel> projectList);
     }
 }

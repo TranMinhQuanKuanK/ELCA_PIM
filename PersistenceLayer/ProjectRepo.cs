@@ -1,6 +1,7 @@
 ﻿using DomainLayer;
 using NHibernate;
 using NHibernate.Criterion;
+using PersistenceLayer.CustomException.Project;
 using PersistenceLayer.Helper;
 using PersistenceLayer.Interface;
 using System;
@@ -30,7 +31,7 @@ namespace PersistenceLayer
 
 
                 var criteria = session.CreateCriteria<Project>();
-                if (searchTerm != "") 
+                if (searchTerm != "")
                     criteria.Add(Expression.Disjunction()
                                           .Add(Expression.Like("Name", $"%{searchTerm}%"))
                                           .Add(Expression.Like(Projections.Cast(NHibernateUtil.String, Projections.Property("ProjectNumber")), $"%{searchTerm}%"))
@@ -43,7 +44,17 @@ namespace PersistenceLayer
                 return result;
             }
         }
+        public List<Project> GetProjectByIDList(List<long> idList)
+        {
+            using (var session = _sessionhelper.OpenSession())
+            {
+                List<Project> result = null;
 
+                result = (List<Project>)session.QueryOver<Project>().Where(item => idList.Contains(item.ID)).List<Project>();
+
+                return result;
+            }
+        }//saiiiii
         public Project GetProjectByID(long id)
         {
 
@@ -81,5 +92,87 @@ namespace PersistenceLayer
             }
         }
 
+        public void UpdateProject(Project project)
+        {
+            using (var session = _sessionhelper.OpenSession())
+            {
+                using (var tx = session.BeginTransaction())
+                {
+                    //Project targetProject = new Project();
+
+                    //session.Load(targetProject, project.ID);
+                    //if (targetProject.Version == project.Version)
+                    //{
+                    //    targetProject.ID = (long)project.ID;
+                    //    targetProject.Name = project.Name;
+                    //    targetProject.Customer = project.Customer;
+                    //    targetProject.GroupID = (long)project.GroupID;
+                    //    targetProject.Members = project.Members;//------------------------------------------
+                    //    targetProject.ProjectNumber = (short)project.ProjectNumber;
+                    //    targetProject.StartDate = project.StartDate;
+                    //    targetProject.EndDate = project.EndDate;
+                    //    targetProject.Status = project.Status;
+                    //}
+                    //else
+                    //{
+                    //    throw new VersionLowerThanCurrentVersionException();
+                    //}
+
+                    //session.Save(targetProject, project.ID);
+                    try
+                    {
+                        session.Update(project);
+                        tx.Commit();
+                    }
+                    catch (NHibernate.StaleObjectStateException e)
+                    {
+                        throw new VersionLowerThanCurrentVersionException("Version lower than current version ", e);
+                    }
+                }
+            }
+        }
+        public void CreateNewProject(Project project)
+        {
+            using (var session = _sessionhelper.OpenSession())
+            {
+                using (var tx = session.BeginTransaction())
+                {
+                    session.Save(project);
+                    tx.Commit();
+                }
+            }
+        }
+        public void DeleteProject(IDictionary<long, int> projectIDDictionary)
+        {
+            using (var session = _sessionhelper.OpenSession())
+            {
+                using (var tx = session.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (var item in projectIDDictionary)
+                        {
+                            Project _proj = new Project();
+                            session.Load(_proj, item.Key);
+                            if (item.Value != _proj.Version)
+                            {
+                                throw new CantDeleteProjectDueToLowerVersionException();
+                            }
+                            if (_proj.Status != "NEW")
+                            {
+                                throw new ProjectStatusNotNewException();
+                            }
+                            session.Delete(_proj);
+                        }
+
+                    }
+                    catch (ObjectNotFoundException e)
+                    {
+                        throw new ProjectNotExistedException("Some of the projects don't exist!", e);
+                    }
+                    tx.Commit();
+                }
+            }
+        }
     }
 }

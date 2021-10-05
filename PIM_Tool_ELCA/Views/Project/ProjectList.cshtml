@@ -71,7 +71,7 @@
                 @foreach (var x in ViewBag.ProjectList)
                 {
                     <tr>
-                        <td><input type="checkbox" @(x.Status != "NEW" ? "disabled" : "") onchange='handleChange(this,@x.ID)'></td>
+                        <td><input type="checkbox" @(x.Status != "NEW" ? "disabled" : "") onchange='handleChange(this,@x.ID,@x.Version)'></td>
                         <td><a href="/Project/EditProject/@x.ID">@x.ProjectNumber</a></td>
                         <td>@x.Name</td>
                         <td>
@@ -97,13 +97,14 @@
 
                         <td>@x.Customer</td>
                         <td>@Convert.ToDateTime(x.StartDate).ToString("dd/MM/yyyy")</td>
-                        <td style="text-align:center;" @(x.Status == "NEW"? "data-toggle = modal data-target = #confirmDeleteModal" :"" )>
+                        <td style="text-align:center;" @(x.Status == "NEW" ? $"onclick=onDeleteProject({x.ID},{x.Version}) " : "" )>
                             @if (x.Status == "NEW")
                             {
                                 //style="font-size: 20px; font-weight: bold; color: rgb(255, 89, 89);
                                 <i class="fa fa-trash-o delete-icon"></i>
                             }
                         </td>
+                        
                     </tr>
                 }
 
@@ -114,7 +115,7 @@
             <div id="num-item-selected-text">
                 <p><span id="item-count">0</span>  @Resource.ProjectList.ProjectListRe.ItemSelected_Label</p>
             </div>
-            <div id="delete-selected-button" onclick="onSubmitDeleteMultiple()">
+            <div id="delete-selected-button">
                 <span id="item-count-text">
                     <i class="fa fa-trash-o delete-icon"></i> @Resource.ProjectList.ProjectListRe.DeleteSelectedItems_Label
                 </span>
@@ -125,10 +126,6 @@
     </div>
 </div>
 
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmMultpleDeleteModal">
-    Launch demo modal
-</button>
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -145,11 +142,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">@Resource.ProjectList.ProjectListRe.Close_WordLabel</button>
-                <button type="button" class="btn btn-danger" onclick="appendVisaBeforeSubmit()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
+                <button type="button" class="btn btn-danger" onclick="obSubmitDeleteProject()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
             </div>
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="confirmMultpleDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -166,12 +164,33 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">@Resource.ProjectList.ProjectListRe.Close_WordLabel</button>
-                <button type="button" class="btn btn-danger" onclick="appendVisaBeforeSubmit()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
+                <button type="button" class="btn btn-primary" onclick="onSubmitDeleteMultiple()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
             </div>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="delete-error-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Error</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="delete-error-warning">
+                    <p style="font-size:14px;" id="delete-error-warning-text"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">@Resource.ProjectList.ProjectListRe.Close_WordLabel</button>
+                <button type="button" class="btn btn-danger" onclick="onCloseErrorWarningModal()">Refresh</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
 
     @*var visaSelect = new SlimSelect({
@@ -179,23 +198,58 @@
     })*@
 
     //------------------
-
+    var currentProjectSelectedForDeleteID;
     var deleteList = [];
     var itemcount = 0;
-    function ResetFilter() {
-        document.getElementById("search-input").value = "";
-        document.getElementById("status-search-input").value = "";
+    function onCloseErrorWarningModal() {
+        window.location.href = '/Project/ProjectList';
+        $('#delete-error-modal').modal('hide');
+    }
+    function handleResponseDelete() {
+
+        if (this.readyState == 4 && this.status == 200) {
+            let responseObject = JSON.parse(this.responseText);
+            if (responseObject.hasError == true) {
+                //modal hiện error message!
+                console.log(responseObject.errMessage);
+                document.getElementById("delete-error-warning-text").innerHTML = responseObject.errMessage;
+                $('#delete-error-modal').modal('show');
+            } else if (responseObject.hasError == false) {
+                $('#confirmMultipleDeleteModal').modal('hide');
+                window.location.href = '/Project/ProjectList';
+            }
+        } else if (this.readyState == 4 && this.status == 500) {
+            window.location.href = '/Home/NotFound';
+        }
+    }
+    function obSubmitDeleteProject() {
+
+        let xhttp = new XMLHttpRequest();
+        let JSONObject = [currentProjectSelectedForDeleteID];
+        xhttp.open("POST", "/Project/DeleteProject", true);
+        xhttp.onreadystatechange = handleResponseDelete;
+
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.setRequestHeader("Accept", "application/json");
+        xhttp.send(JSON.stringify(JSONObject));
+        $('#confirmDeleteModal').modal('hide');
+
+    }
+    function onDeleteProject(_id,_version) {
+        $('#confirmDeleteModal').modal('show');
+        currentProjectSelectedForDeleteID = { ID : _id, Version : _version } ;
     }
 
-    function handleChange(checkbox, id) {
+    function handleChange(checkbox, id, version) {
+        const projectObj = { ID: id, Version: version };
         if (checkbox.checked == true) {
-            deleteList.push(id);
+            deleteList.push(projectObj);
             itemcount++;
             document.getElementById("item-count").innerHTML = itemcount;
             document.getElementById("delete-selected-button").style.visibility = "visible";
 
         } else {
-            const index = deleteList.indexOf(id);
+            let index = deleteList.findIndex(proj => proj.ID === id);
             if (index > -1) {
                 deleteList.splice(index, 1);
             }
@@ -207,17 +261,17 @@
 
         }
     }
+
     function onSubmitDeleteMultiple() {
         if (itemcount > 0) {
-            var xhttp = new XMLHttpRequest();
-            var JSONObject = {
-               "ProjectList" : [...deleteList]
-            };
-            xhttp.open("POST", "/Project/DeleteMultiple", true);
-
+            let xhttp = new XMLHttpRequest();
+            let JSONObject = [...deleteList];
+            xhttp.open("POST", "/Project/DeleteProject", true);
+            xhttp.onreadystatechange = handleResponseDelete;
             xhttp.setRequestHeader("Content-type", "application/json");
             xhttp.setRequestHeader("Accept", "application/json");
             xhttp.send(JSON.stringify(JSONObject));
         }
+        $('#confirmDeleteModal').modal('hide');
     }
 </script>

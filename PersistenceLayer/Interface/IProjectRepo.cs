@@ -12,5 +12,8 @@ namespace PersistenceLayer.Interface
         IList<Project> GetProjectList(string searchTerm, string searchStatus);
         Project GetProjectByID(long id);
         Project GetProjectByProjectNumber(short projNumber);
+        void UpdateProject(Project project);
+        void CreateNewProject(Project project);
+        void DeleteProject(IDictionary<long, int> projectIDDictionary);
     }
 }

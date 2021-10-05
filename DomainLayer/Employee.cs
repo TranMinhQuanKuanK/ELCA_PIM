@@ -15,6 +15,17 @@ namespace DomainLayer
         public virtual string LastName { get; set; }
         public virtual DateTime Birthday { get; set; }
         public virtual int Version { get; set; }
-        public virtual ISet<Project> Projects { get; set; }
+        public virtual IList<Project> Projects { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Employee employee &&
+                   ID == employee.ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1213502048 + ID.GetHashCode();
+        }
     }
 }

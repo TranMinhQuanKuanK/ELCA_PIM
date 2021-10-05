@@ -16,11 +16,12 @@ namespace ContractLayer
             ProjectNumber = null;
             Name = "";
             Customer = "";
-            Status = "";
+            Status = "NEW";
             StartDate = DateTime.Now;
             EndDate = null;
             Members = "";
             MembersList = new List<string>();
+            Version = 1;
         }
 
         [Display(ResourceType = typeof(AddEditProjectRe), Name = "ID_DisplayName")]
@@ -56,6 +57,9 @@ namespace ContractLayer
         public DateTime StartDate { get; set; }
         [Display(ResourceType = typeof(AddEditProjectRe), Name = "EndDate_DisplayName")]
         public DateTime? EndDate { get; set; }
+        [Required(ErrorMessage ="Version required!")]
+        [Range(0,999999999999,ErrorMessage ="Invalid range of version detected")]
+        public int Version { get; set; }
         [Display(ResourceType = typeof(AddEditProjectRe), Name = "Members_DisplayName")]
         public string Members { get; set; }
         public List<string> MembersList { get; set; }

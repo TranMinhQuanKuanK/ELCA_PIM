@@ -11,9 +11,9 @@
 		<property name = "FirstName" column="FIRST_NAME"/>
 		<property name = "LastName" column="LAST_NAME"/>
 		<property name = "Birthday" column="BIRTH_DATE"/>
-		<set name="Projects" table="PROJECT_EMPLOYEE"  lazy="true" cascade="save-update">
+		<bag name="Projects" table="PROJECT_EMPLOYEE"  lazy="true" cascade="save-update"  inverse="true">
 			<key column="EMPLOYEE_ID"/>
 			<many-to-many class="Project" column="PROJECT_ID"/>
-		</set>
+		</bag>
 	</class>
 </hibernate-mapping>

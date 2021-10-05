@@ -6,13 +6,17 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using NHibernate;
+using PersistenceLayer.Helper;
 using Resource.DefaultMessage;
 namespace PIM_Tool_ELCA
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+      
         protected void Application_Start()
         {
+
             ClientDataTypeModelValidatorProvider.ResourceClassKey = "DefaultMessageRe";
             DefaultModelBinder.ResourceClassKey = "DefaultMessageRe";
             AreaRegistration.RegisterAllAreas();

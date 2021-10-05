@@ -12,5 +12,6 @@ namespace PersistenceLayer.Interface
         IList<Employee> GetAllEmployees();
         Employee GetEmployeeByVisa(string visa);
         IList<Employee> GetMemberListOfProject(long id);
+        IList<Employee> GetEmployeesBasedOnVisaList(IList<string> visalist);
     }
 }
