@@ -9,7 +9,7 @@ namespace PersistenceLayer.Interface
 {
     public interface IProjectRepo
     {
-        IList<Project> GetProjectList(string searchTerm, string searchStatus);
+        ProjectListPageDomainResult GetProjectList(string searchTerm, string searchStatus, int pageIndex, int pageSize);
         Project GetProjectByID(long id);
         Project GetProjectByProjectNumber(short projNumber);
         void UpdateProject(Project project);

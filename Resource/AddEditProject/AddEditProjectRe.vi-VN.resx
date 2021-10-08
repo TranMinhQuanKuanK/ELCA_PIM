@@ -222,6 +222,9 @@
   <data name="SubmitButtonForEdit_Label" xml:space="preserve">
     <value>Lưu thay đổi</value>
   </data>
+  <data name="SubmittingForm_SpinningMessage" xml:space="preserve">
+    <value>Đang gửi dữ liệu</value>
+  </data>
   <data name="VersionWarning" xml:space="preserve">
     <value>Thay đổi chưa được lưu vì có một thay đổi từ người dùng khác. Vui lòng thử lại.</value>
   </data>

@@ -10,5 +10,7 @@ namespace ContractLayer
     {
         public string SearchTerm { get; set; }
         public string SearchStatus { get; set; }
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
     }
 }

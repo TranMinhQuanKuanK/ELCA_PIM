@@ -20,11 +20,12 @@ namespace PersistenceLayer.Helper
         {
             get
             {
-                var cfg = new Configuration();
+                if (_sessionFactory != null) return _sessionFactory;
 
+                var cfg = new Configuration();
                 cfg.DataBaseIntegration(x =>
                 {
-                    x.ConnectionString = "Data Source=DESKTOP-V4RQDKU;Initial Catalog=ELCA_PIM;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                    x.ConnectionStringName = "default";
                     x.Driver<SqlClientDriver>();
                     x.LogSqlInConsole = true;
                     x.Dialect<MsSql2012Dialect>();

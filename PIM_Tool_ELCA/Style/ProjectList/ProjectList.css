@@ -1,6 +1,42 @@
 ﻿body {
 }
 
+table {
+    color: rgb(105, 105, 105);
+    margin: 5px;
+    border: 1px solid rgb(168, 168, 168);
+    padding: 5px;
+    background-color: white;
+}
+
+#page-navigation {
+    text-align: right;
+    width: 70vw;
+}
+
+.pagination {
+    margin: 0;
+}
+
+th {
+    padding: 5px 10px 5px 10px;
+    border: 1px solid rgb(168, 168, 168);
+}
+
+td {
+    border-left: 1px solid rgb(168, 168, 168);
+    border-right: 1px solid rgb(168, 168, 168);
+    padding: 10px;
+}
+
+.project-number-column {
+    text-align: right;
+}
+
+.project-delete-column {
+    text-align: center;
+}
+
 #project-list-label {
     border-bottom: 2px solid rgb(168, 168, 168);
     border-radius: 2px;
@@ -30,32 +66,48 @@
 
 #reset-button {
     margin: 5px;
+    border:none;
 }
 
-#item-count-tr {
+#item-count-td {
     padding: 0 10px 0 10px;
-    display: flex;
     margin: 10px 0 0 0;
+    border-top: 1px solid rgb(168, 168, 168);
+    border-left: 1px solid rgb(168, 168, 168);
+    border-bottom: 1px solid rgb(168, 168, 168);
+    border-right: 0;
+    color: rgb(64, 93, 255);
 }
 
-#item-count-text:hover {
+#delete-selected-button:hover {
     cursor: pointer;
 }
+.wrap-table100 {
+    margin-top:5px;
+}
+#delete-multiple-tr {
+    background-color: rgb(242, 244, 255);
+}
+
+
 
 #num-item-selected-text {
     display: flex;
     flex-direction: row;
     text-align: right;
-    padding: 0 0px 0 10px;
     width: 50%;
     font-weight: bold;
-    color: rgb(255, 89, 89);
+    color: rgb(64, 93, 255);
+}
+
+p {
+    margin: 0;
 }
 
 #item-count {
-    color: rgb(255, 89, 89);
+  
     font-weight: bold;
-    font-size: 1.2em;
+    margin-right: 5px;
 }
 
 #delete-selected-form {
@@ -66,18 +118,25 @@
     visibility: hidden;
 }
 
+#delete-multiple-td {
+    text-align: right;
+    border-top: 1px solid rgb(168, 168, 168);
+    border-right: 1px solid rgb(168, 168, 168);
+    border-bottom: 1px solid rgb(168, 168, 168);
+    border-left: 0;
+}
+
 #delete-selected-button {
-    display: flex;
+    font-weight: bold;
+    color: rgb(255, 89, 89);
     flex-direction: row-reverse;
     width: 50%;
     padding: 0 10px 0 0px;
     visibility: hidden;
+    text-align: right;
 }
 
-#item-count-text {
-    font-weight: bold;
-    color: rgb(255, 89, 89);
-}
+
 
 .delete-icon {
     font-size: 20px;

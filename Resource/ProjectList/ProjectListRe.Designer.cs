@@ -142,6 +142,15 @@ namespace Resource.ProjectList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting project.
+        /// </summary>
+        public static string DeletingProject_SpinningMessage {
+            get {
+                return ResourceManager.GetString("DeletingProject_SpinningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ID.
         /// </summary>
         public static string ID_Header {

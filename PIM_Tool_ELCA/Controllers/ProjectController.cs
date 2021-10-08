@@ -24,34 +24,53 @@ namespace PIM_Tool_ELCA.Controllers
             _groupService = groupService;
         }
 
-
-
         [HandleError]
         public ActionResult Index()
         {
             return RedirectToAction("ProjectList");
         }
+
         [HandleError]
         public ActionResult ProjectList()
         {
-            ViewBag.ProjectList = _projectService.
-                GetProjectList(
-                Session["SearchTerm"] != null ? Session["SearchTerm"].ToString() : "",
-                Session["SearchStatus"] != null ? Session["SearchStatus"].ToString() : ""
-                ).OrderBy(proj => proj.ProjectNumber).ToList<ProjectListModel>();
-
+            var result = _projectService.
+            GetProjectList(
+            Session["SearchTerm"] != null ? Session["SearchTerm"].ToString() : "",
+            Session["SearchStatus"] != null ? Session["SearchStatus"].ToString() : ""
+            , 1
+            , 5
+            );
+            ViewBag.ProjectList = result.projectList.OrderBy(proj => proj.ProjectNumber).ToList<ProjectListModel>();
+            ViewBag.ResultCount = result.resultCount;
+            ViewBag.CurrentPage = 1;
+            ViewBag.CurrentPageSize = 5;
             return View("ProjectList");
         }
-        public ActionResult SearchProject([Bind(Include = "SearchTerm, SearchStatus")] SearchProjectModel searchProjectModel)
+
+        [HttpGet]
+        public ActionResult SearchProject([Bind(Include = "SearchTerm, SearchStatus, PageIndex, PageSize")] SearchProjectModel searchProjectModel)
         {
-            ViewBag.ProjectList = _projectService.GetProjectList(searchProjectModel.SearchTerm, searchProjectModel.SearchStatus)
-                .OrderBy(proj => proj.ProjectNumber).ToList<ProjectListModel>();
-            ViewBag.SearchTerm = searchProjectModel.SearchTerm;
+            if (searchProjectModel.PageIndex == 0 || searchProjectModel.PageSize == 0) return Redirect("/Home/NotFound");
+
             Session["SearchTerm"] = searchProjectModel.SearchTerm;
             Session["SearchStatus"] = searchProjectModel.SearchStatus;
-            ViewBag.SearchStatus = searchProjectModel.SearchStatus;
+
+            var result = _projectService.GetProjectList(
+                searchProjectModel.SearchTerm
+                , searchProjectModel.SearchStatus
+                , searchProjectModel.PageIndex
+                , searchProjectModel.PageSize);
+
+            ViewBag.ProjectList = result.projectList
+                .OrderBy(proj => proj.ProjectNumber).ToList<ProjectListModel>();
+            ViewBag.ResultCount = result.resultCount;
+            //ViewBag.SearchTerm = searchProjectModel.SearchTerm;
+            // ViewBag.SearchStatus = searchProjectModel.SearchStatus;
+            ViewBag.CurrentPage = searchProjectModel.PageIndex;
+            ViewBag.CurrentPageSize = searchProjectModel.PageSize;
             return View("ProjectList");
         }
+
         [HandleError]
         public ActionResult EditProject(int id)
         {
@@ -60,6 +79,7 @@ namespace PIM_Tool_ELCA.Controllers
             ViewBag.GroupList = _groupService.GetGroupIDList();
             return View("AddEditProject", _projectService.GetProjectByID(id));
         }
+
         [HandleError]
         [HttpPost]
         public ActionResult EditProject(int id,
@@ -123,6 +143,7 @@ namespace PIM_Tool_ELCA.Controllers
                 return View("AddEditProject", projectModel);
             }
         }
+
         [HttpGet]
         [HandleError]
         public ActionResult NewProject()
@@ -132,6 +153,7 @@ namespace PIM_Tool_ELCA.Controllers
             ViewBag.GroupList = _groupService.GetGroupIDList();
             return View("AddEditProject", new AddEditProjectModel());
         }
+
         [HttpPost]
         [HandleError]
         public ActionResult NewProject([Bind(Include = "GroupID,ProjectNumber,Name,Customer,Status,StartDate,EndDate,Members,Version")] AddEditProjectModel projectModel)
@@ -185,22 +207,22 @@ namespace PIM_Tool_ELCA.Controllers
             }
         }
 
-     
         [HttpPost]
-        public ActionResult DeleteProject(List<DeleteProjectRequestModel> projectList )
+        public ActionResult DeleteProject(List<DeleteProjectRequestModel> projectList)
         {
             try
             {
                 _projectService.DeleteProject(projectList);
-            } catch(ProjectNotExistedException e)
+            }
+            catch (ProjectNotExistedException e)
             {
                 return Json(new DeleteProjectResponseModel()
                 {
                     hasError = true,
-                    errMessage = projectList.Count == 1 
-                    ? Resource.ProjectList.ProjectListRe.ProjectDoesntExist_DeleteError 
+                    errMessage = projectList.Count == 1
+                    ? Resource.ProjectList.ProjectListRe.ProjectDoesntExist_DeleteError
                     : Resource.ProjectList.ProjectListRe.ProjectDoesntExistMultiple_DeleteError
-                }) ;
+                });
             }
             catch (CantDeleteProjectDueToLowerVersionException e)
             {
@@ -219,14 +241,15 @@ namespace PIM_Tool_ELCA.Controllers
                     hasError = true,
                     errMessage = "Project status invalid"
                 });
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
             return Json(new DeleteProjectResponseModel()
             {
                 hasError = false,
-                errMessage = ""
+                errMessage = "No error "
             });
         }
     }

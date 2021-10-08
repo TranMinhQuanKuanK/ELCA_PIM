@@ -4,7 +4,7 @@
                    namespace="DomainLayer">
 
 	<class name = "Employee" table="EMPLOYEE">
-		<id name = "ID" column="ID">
+		<id name = "ID" column="ID" generator="identity">
 		</id>
 		<version name="Version" column="VERSION" unsaved-value="0" />
 		<property name = "Visa" column="VISA"/>

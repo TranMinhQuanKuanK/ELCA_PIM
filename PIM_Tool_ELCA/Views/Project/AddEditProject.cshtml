@@ -9,7 +9,7 @@
         ? Resource.AddEditProject.AddEditProjectRe.AddNewProjectHeader_Label
         : Resource.AddEditProject.AddEditProjectRe.EditProjectHeader_Label )
 </h3>
-<div id="spinning-submit-form" class="loader loader-default" data-text="Submiting form"></div>
+<div id="spinning-submit-form" class="loader loader-default" data-text="@Resource.AddEditProject.AddEditProjectRe.SubmittingForm_SpinningMessage"></div>
 
 @using (Html.BeginForm(ViewBag.NewOREdit == "Edit" ? $"EditProject/{Model.ID}" : "NewProject", "Project", FormMethod.Post,
     new { id = "main-form", onSubmit = "displaySpinning()" }))
@@ -237,18 +237,8 @@
         document.getElementById("Members").value = memberString;
 
         $("#main-form").submit();
-        @*$("#main-form").bind('ajax:complete', function () {
-
-        });*@
-        @*$("#main-form").submit(function () {
-            document.getElementById("spinning-submit-form").classList.add("is-active");
-        });*@
     }
-    @*$(document).ready(function () {
-        $("main-form").submit(function () {
-            document.getElementById("spinning-submit-form").classList.add("is-active");
-        });
-    });*@
+
     document.getElementById("main-form").addEventListener('submit', displaySpinning);
 
     function displaySpinning(event) {

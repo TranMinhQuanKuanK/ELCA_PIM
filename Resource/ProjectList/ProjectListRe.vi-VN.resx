@@ -148,6 +148,9 @@
   <data name="Delete_WordLabel" xml:space="preserve">
     <value>Xóa</value>
   </data>
+  <data name="DeletingProject_SpinningMessage" xml:space="preserve">
+    <value>Đang xóa dự án</value>
+  </data>
   <data name="ID_Header" xml:space="preserve">
     <value>ID</value>
     <comment>ProjectList Page</comment>

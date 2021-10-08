@@ -29,10 +29,14 @@ namespace ServiceLayer
             _employeeService = employeeService;
         }
 
-        public IList<ProjectListModel> GetProjectList(string searchTerm, string searchStatus)
+        public ProjectListPageContractResult GetProjectList
+            (string searchTerm, string searchStatus, int pageIndex, int pageSize)
         {
             List<ProjectListModel> projectList = new List<ProjectListModel>();
-            _projectRepo.GetProjectList(searchTerm, searchStatus).ToList().ForEach(x => projectList.Add(new ProjectListModel
+            ProjectListPageDomainResult result = _projectRepo.GetProjectList
+                (searchTerm, searchStatus, pageIndex, pageSize);
+
+            result.projectList.ToList().ForEach(x => projectList.Add(new ProjectListModel
             {
                 ID = x.ID,
                 Customer = x.Customer,
@@ -42,7 +46,11 @@ namespace ServiceLayer
                 Status = x.Status,
                 Version = x.Version
             }));
-            return projectList;
+            return new ProjectListPageContractResult()
+            {
+                projectList = projectList,
+                resultCount = result.resultCount
+            };
         }
         public AddEditProjectModel GetProjectByID(long id)
         {
@@ -63,9 +71,7 @@ namespace ServiceLayer
                 MembersList = (List<string>)empList
             };
         }
-
         public bool CheckProjectNumberExist(short projectNumber) => _projectRepo.GetProjectByProjectNumber(projectNumber) != null;
-
         private void CheckGroupID(AddEditProjectModel project)
         {
             if (_groupService.CheckGroupIDExist((long)project.GroupID) == false)
@@ -73,7 +79,8 @@ namespace ServiceLayer
                 throw new GroupIDDoesntExistException();
             }
         }
-        private void CheckProjectNumberDuplicate (AddEditProjectModel project)
+
+        private void CheckProjectNumberDuplicate(AddEditProjectModel project)
         {
             if (GetProjectByID((long)project.ID).ProjectNumber != project.ProjectNumber)
             {
@@ -106,6 +113,7 @@ namespace ServiceLayer
                 throw new EndDateSoonerThanStartDateException();
             }
         }
+
         public bool ValidateProjectModelAndUpdate(AddEditProjectModel project)
         {
             //GroupID exist
@@ -146,7 +154,7 @@ namespace ServiceLayer
         }
         private void CheckProjectNumberExist(AddEditProjectModel project)
         {
-            if (_projectRepo.GetProjectByProjectNumber((short)project.ProjectNumber)!=null)
+            if (_projectRepo.GetProjectByProjectNumber((short)project.ProjectNumber) != null)
             {
                 throw new ProjectNumberDuplicateException();
             }
@@ -188,25 +196,25 @@ namespace ServiceLayer
             //-----------------------------------------------
             return true;
         }
-
-        public bool DeleteProject(IList<DeleteProjectRequestModel> projectList) 
+        public bool DeleteProject(IList<DeleteProjectRequestModel> projectList)
         {
             IDictionary<long, int> projectListDictionary = new Dictionary<long, int>();
             foreach (var item in projectList)
             {
                 projectListDictionary.Add(new KeyValuePair<long, int>(item.ID, item.Version));
             }
-            try {
+            try
+            {
                 _projectRepo.DeleteProject(projectListDictionary);
-            } 
-            catch (PersistenceLayer.CustomException.Project.ProjectNotExistedException e) 
+            }
+            catch (PersistenceLayer.CustomException.Project.ProjectNotExistedException e)
             {
                 throw new CustomException.ProjectException.ProjectNotExistedException("ProjectNotExistedException", e);
-            } 
+            }
             catch (PersistenceLayer.CustomException.Project.CantDeleteProjectDueToLowerVersionException e)
             {
                 throw new CustomException.ProjectException.CantDeleteProjectDueToLowerVersionException("CantDeleteProjectDueToLowerVersionException", e);
-            } 
+            }
             catch (PersistenceLayer.CustomException.Project.ProjectStatusNotNewException e)
             {
                 throw new CustomException.ProjectException.ProjectStatusNotNewException("ProjectStatusNotNewException", e);

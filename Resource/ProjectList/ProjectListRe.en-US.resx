@@ -148,6 +148,9 @@
   <data name="Delete_WordLabel" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DeletingProject_SpinningMessage" xml:space="preserve">
+    <value>Deleting project</value>
+  </data>
   <data name="ID_Header" xml:space="preserve">
     <value>ID</value>
     <comment>ProjectList Page</comment>

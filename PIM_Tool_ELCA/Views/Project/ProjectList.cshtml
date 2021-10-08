@@ -4,7 +4,8 @@
 }
 
 <h2 id="project-list-label">@Resource.ProjectList.ProjectListRe.ProjectList_Label</h2>
-<form id="search-form" action="/Project/SearchProject">
+<div id="spinning-submit-form" class="loader loader-default" data-text="@Resource.ProjectList.ProjectListRe.DeletingProject_SpinningMessage"></div>
+<form id="search-form" action="/Project/SearchProject" method="get">
     <input id="search-input" type="text" class="form-control"
            name="SearchTerm" placeholder="@Resource.ProjectList.ProjectListRe.CategoryFilterHolder_Label"
            value="@Session["SearchTerm"]">
@@ -44,22 +45,23 @@
     }
     @Html.DropDownList("SearchStatus", statusList, @Resource.ProjectList.ProjectListRe.ProjectStatusHolder_Label, new { @class = "form-control", id = "status-search-input" })
     <input id="submit-button" class="btn btn-primary" type="submit" value="@Resource.ProjectList.ProjectListRe.Search_Label" />
-    <button type="button" id="reset-button"><a href="/Project/SearchProject">@Resource.ProjectList.ProjectListRe.ResetSearch_Label </a></button>
+    <input id="page-index-input" type="hidden" name="PageIndex" value="1">
+    <input id="page-size-input" type="hidden" name="PageSize" value="5">
+    <button type="button" id="reset-button"><a href="/Project/SearchProject?PageIndex=1&PageSize=5">@Resource.ProjectList.ProjectListRe.ResetSearch_Label </a></button>
 </form>
-<div><span class="label @(ViewBag.ProjectList.Count==0? "label-danger" : "label-success")">@Resource.ProjectList.ProjectListRe.ProjectsFoundLabel @ViewBag.ProjectList.Count</span></div>
 @*Data table*@
 <div class="wrap-table100">
-    <div class="table100" style="width:70vw;">
+    <div class="" style="width:70vw;">
         <table style="width:70vw;">
             <thead>
-                <tr class="table100-head">
-                    <th style="width:3vw;">...</th>
-                    <th style="width:6vw;">@Resource.ProjectList.ProjectListRe.ProjectNumber_Header</th>
+                <tr class="">
+                    <th style="width:3vw;">   </th>
+                    <th style="width:5vw;">@Resource.ProjectList.ProjectListRe.ProjectNumber_Header</th>
                     <th>@Resource.ProjectList.ProjectListRe.Name_Header</th>
                     <th style="width:8vw;">@Resource.ProjectList.ProjectListRe.Status_Header</th>
                     <th style="width:10vw;">@Resource.ProjectList.ProjectListRe.Customer_Header</th>
                     <th style="width:8vw;">@Resource.ProjectList.ProjectListRe.StartDate_Header</th>
-                    <th style="width:6vw; text-align:center;">@Resource.ProjectList.ProjectListRe.Delete_Header</th>
+                    <th style="width:4vw;">@Resource.ProjectList.ProjectListRe.Delete_Header</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,7 +74,7 @@
                 {
                     <tr>
                         <td><input type="checkbox" @(x.Status != "NEW" ? "disabled" : "") onchange='handleChange(this,@x.ID,@x.Version)'></td>
-                        <td><a href="/Project/EditProject/@x.ID">@x.ProjectNumber</a></td>
+                        <td class="project-number-column"><a href="/Project/EditProject/@x.ID">@x.ProjectNumber</a></td>
                         <td>@x.Name</td>
                         <td>
                             @switch (x.Status)
@@ -96,36 +98,54 @@
 
 
                         <td>@x.Customer</td>
-                        <td>@Convert.ToDateTime(x.StartDate).ToString("dd/MM/yyyy")</td>
-                        <td style="text-align:center;" @(x.Status == "NEW" ? $"onclick=onDeleteProject({x.ID},{x.Version}) " : "" )>
+                        <td>@Convert.ToDateTime(x.StartDate).ToString("dd.MM.yyyy")</td>
+                        <td style="text-align:center;" @(x.Status == "NEW" ? $"onclick=onDeleteProject({x.ID},{x.Version}) " : "" ) class="project-delete-column">
                             @if (x.Status == "NEW")
                             {
                                 //style="font-size: 20px; font-weight: bold; color: rgb(255, 89, 89);
                                 <i class="fa fa-trash-o delete-icon"></i>
                             }
                         </td>
-                        
+
                     </tr>
+
                 }
-
+                <tr id="delete-multiple-tr">
+                    <td id="item-count-td" colspan="3">
+                        <p id="num-item-selected-text"><span id="item-count">0 </span>@Resource.ProjectList.ProjectListRe.ItemSelected_Label</p>
+                    </td>
+                    <td colspan="4" id="delete-multiple-td">
+                        <span id="delete-selected-button" data-toggle="modal" data-target="#confirmMultpleDeleteModal">
+                            <i class="fa fa-trash-o delete-icon"></i> @Resource.ProjectList.ProjectListRe.DeleteSelectedItems_Label
+                        </span>
+                    </td>
+                </tr>
             </tbody>
-
         </table>
-        <div id="item-count-tr" data-toggle="modal" data-target="#confirmMultpleDeleteModal">
-            <div id="num-item-selected-text">
-                <p><span id="item-count">0</span>  @Resource.ProjectList.ProjectListRe.ItemSelected_Label</p>
-            </div>
-            <div id="delete-selected-button">
-                <span id="item-count-text">
-                    <i class="fa fa-trash-o delete-icon"></i> @Resource.ProjectList.ProjectListRe.DeleteSelectedItems_Label
-                </span>
-            </div>
 
-        </div>
 
     </div>
 </div>
-
+@*------------------------------pagination--------------------------------*@
+<nav aria-label="Page navigation" id="page-navigation">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        @for (int i = 0; i < (int)Math.Ceiling((decimal)ViewBag.ResultCount / ViewBag.CurrentPageSize); i++)
+        {
+            <li class="page-item @(ViewBag.CurrentPage==i+1 ? "active" : "")" onclick="pageSelect(@(i+1))"><a class="page-link">@(i+1)</a></li>
+        }
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+@*------------------------------modal--------------------------------*@
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -164,7 +184,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">@Resource.ProjectList.ProjectListRe.Close_WordLabel</button>
-                <button type="button" class="btn btn-primary" onclick="onSubmitDeleteMultiple()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
+                <button type="button" class="btn btn-danger" onclick="onSubmitDeleteMultiple()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
             </div>
         </div>
     </div>
@@ -186,11 +206,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">@Resource.ProjectList.ProjectListRe.Close_WordLabel</button>
-                <button type="button" class="btn btn-danger" onclick="onCloseErrorWarningModal()">Refresh</button>
+                <button type="button" class="btn btn-warning" onclick="onCloseErrorWarningModal()">Refresh</button>
             </div>
         </div>
     </div>
 </div>
+@*------------------------------modal--------------------------------*@
 <script>
 
     @*var visaSelect = new SlimSelect({
@@ -201,12 +222,19 @@
     var currentProjectSelectedForDeleteID;
     var deleteList = [];
     var itemcount = 0;
+
     function onCloseErrorWarningModal() {
         window.location.href = '/Project/ProjectList';
         $('#delete-error-modal').modal('hide');
     }
-    function handleResponseDelete() {
 
+    function pageSelect(pageIndex) {
+        document.getElementById("page-index-input").value = pageIndex;
+        $("#search-form").submit();
+    }
+
+    function handleResponseDelete() {
+        document.getElementById("spinning-submit-form").classList.remove("is-active");
         if (this.readyState == 4 && this.status == 200) {
             let responseObject = JSON.parse(this.responseText);
             if (responseObject.hasError == true) {
@@ -222,6 +250,7 @@
             window.location.href = '/Home/NotFound';
         }
     }
+
     function obSubmitDeleteProject() {
 
         let xhttp = new XMLHttpRequest();
@@ -233,8 +262,9 @@
         xhttp.setRequestHeader("Accept", "application/json");
         xhttp.send(JSON.stringify(JSONObject));
         $('#confirmDeleteModal').modal('hide');
-
+        document.getElementById("spinning-submit-form").classList.add("is-active");
     }
+
     function onDeleteProject(_id,_version) {
         $('#confirmDeleteModal').modal('show');
         currentProjectSelectedForDeleteID = { ID : _id, Version : _version } ;
@@ -271,7 +301,8 @@
             xhttp.setRequestHeader("Content-type", "application/json");
             xhttp.setRequestHeader("Accept", "application/json");
             xhttp.send(JSON.stringify(JSONObject));
+            $('#confirmMultipleDeleteModal').modal('hide');
+            document.getElementById("spinning-submit-form").classList.add("is-active");
         }
-        $('#confirmDeleteModal').modal('hide');
     }
 </script>

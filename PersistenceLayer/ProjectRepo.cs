@@ -20,8 +20,19 @@ namespace PersistenceLayer
         {
             _sessionhelper = sessionhelper;
         }
+        private void BuildRestrictionForCritera(ICriteria criteria, string searchTerm, string searchStatus)
+        {
+            if (searchTerm != "")
+                criteria.Add(Expression.Disjunction()
+                                      .Add(Expression.Like("Name", $"%{searchTerm}%"))
+                                      .Add(Expression.Like(Projections.Cast(NHibernateUtil.String, Projections.Property("ProjectNumber")), $"%{searchTerm}%"))
+                                      .Add(Expression.Like("Customer", $"%{searchTerm}%"))
+                                    );
+            if (searchStatus != "")
+                criteria.Add(Expression.Like("Status", $"%{searchStatus}%"));
 
-        public IList<Project> GetProjectList(string searchTerm, string searchStatus)
+        }
+        public ProjectListPageDomainResult GetProjectList(string searchTerm, string searchStatus, int pageIndex, int pageSize)
         {
             using (var session = _sessionhelper.OpenSession())
             {
@@ -29,19 +40,21 @@ namespace PersistenceLayer
                 searchTerm = searchTerm == null ? "" : searchTerm.Trim().ToUpper();
                 searchStatus = searchStatus == null ? "" : searchStatus.Trim().ToUpper();
 
-
                 var criteria = session.CreateCriteria<Project>();
-                if (searchTerm != "")
-                    criteria.Add(Expression.Disjunction()
-                                          .Add(Expression.Like("Name", $"%{searchTerm}%"))
-                                          .Add(Expression.Like(Projections.Cast(NHibernateUtil.String, Projections.Property("ProjectNumber")), $"%{searchTerm}%"))
-                                          .Add(Expression.Like("Customer", $"%{searchTerm}%"))
-                                        );
-                if (searchStatus != "")
-                    criteria.Add(Expression.Like("Status", $"%{searchStatus}%"));
-
+                BuildRestrictionForCritera(criteria, searchTerm, searchStatus);
+                criteria.AddOrder(Order.Asc("ProjectNumber"));
+                criteria.SetFirstResult((pageIndex - 1) * pageSize).SetMaxResults(pageSize);
                 result = criteria.List<Project>();
-                return result;
+                var countCriteria = session.CreateCriteria<Project>();
+
+
+                BuildRestrictionForCritera(countCriteria, searchTerm, searchStatus);
+                var count = countCriteria.SetProjection(Projections.Count(Projections.Id())).UniqueResult<int>();
+                return new ProjectListPageDomainResult
+                {
+                    projectList = result,
+                    resultCount = count
+                };
             }
         }
         public List<Project> GetProjectByIDList(List<long> idList)
@@ -98,27 +111,6 @@ namespace PersistenceLayer
             {
                 using (var tx = session.BeginTransaction())
                 {
-                    //Project targetProject = new Project();
-
-                    //session.Load(targetProject, project.ID);
-                    //if (targetProject.Version == project.Version)
-                    //{
-                    //    targetProject.ID = (long)project.ID;
-                    //    targetProject.Name = project.Name;
-                    //    targetProject.Customer = project.Customer;
-                    //    targetProject.GroupID = (long)project.GroupID;
-                    //    targetProject.Members = project.Members;//------------------------------------------
-                    //    targetProject.ProjectNumber = (short)project.ProjectNumber;
-                    //    targetProject.StartDate = project.StartDate;
-                    //    targetProject.EndDate = project.EndDate;
-                    //    targetProject.Status = project.Status;
-                    //}
-                    //else
-                    //{
-                    //    throw new VersionLowerThanCurrentVersionException();
-                    //}
-
-                    //session.Save(targetProject, project.ID);
                     try
                     {
                         session.Update(project);

@@ -376,6 +376,15 @@ namespace Resource.AddEditProject {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Submitting form.
+        /// </summary>
+        public static string SubmittingForm_SpinningMessage {
+            get {
+                return ResourceManager.GetString("SubmittingForm_SpinningMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action was undone because of an update from another user. Here&apos;s the new information. Please try again..
         /// </summary>
         public static string VersionWarning {

@@ -66,7 +66,7 @@ namespace PIM_Tool_ELCA.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<INHibernateSessionHelper>().To<NHibernateSessionHelper>();
+            kernel.Bind<INHibernateSessionHelper>().To<NHibernateSessionHelper>().InSingletonScope();
             //-------------------Repo------------------------
             kernel.Bind<IProjectRepo>().To<ProjectRepo>();
             kernel.Bind<IEmployeeRepo>().To<EmployeeRepo>();

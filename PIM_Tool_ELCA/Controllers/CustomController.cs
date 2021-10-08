@@ -11,7 +11,17 @@ namespace PIM_Tool_ELCA.Controllers
     public class CustomController : Controller
     {
         // GET: Custom
-         protected override void OnResultExecuting(ResultExecutingContext filterContext)
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            filterContext.ExceptionHandled = true;
+
+            //Log the error!!
+            //_Logger.Error(filterContext.Exception);
+
+            //Redirect or return a view, but not both.
+            filterContext.Result = RedirectToAction("Home", "NotFound");
+        }
+        protected override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             ViewBag.CurrentLanguage = Thread.CurrentThread.CurrentCulture;
             base.OnResultExecuting(filterContext);
