@@ -12,8 +12,14 @@ using Utilities;
 
 namespace PIM_Tool_ELCA.Controllers
 {
+    public enum EditMode
+    {
+        Edit,
+        New
+    }
     public class ProjectController : CustomController
     {
+
         private readonly IProjectService _projectService;
         private readonly IEmployeeService _employeeService;
         private readonly IGroupService _groupService;
@@ -33,14 +39,18 @@ namespace PIM_Tool_ELCA.Controllers
         [HandleError]
         public ActionResult ProjectList()
         {
-            var result = _projectService.
-            GetProjectList(
-            Session["SearchTerm"] != null ? Session["SearchTerm"].ToString() : "",
-            Session["SearchStatus"] != null ? Session["SearchStatus"].ToString() : ""
-            , 1
-            , 5
-            );
-            ViewBag.ProjectList = result.projectList.OrderBy(proj => proj.ProjectNumber).ToList<ProjectListModel>();
+            const int defaultPageIndex = 1;
+            const int defaultPageSize = 5;
+            SearchProjectRequestModel request = new SearchProjectRequestModel()
+            {
+                PageIndex = defaultPageIndex,
+                PageSize = defaultPageSize,
+                SearchTerm = Session["SearchTerm"] != null ? Session["SearchTerm"].ToString() : string.Empty,
+                SearchStatus = Session["SearchStatus"] != null ? Session["SearchStatus"].ToString() : string.Empty,
+            };
+            var result = _projectService.GetProjectList(request);
+            ViewBag.ProjectList = result.projectList.ToList<ProjectListModel>();
+
             ViewBag.ResultCount = result.resultCount;
             ViewBag.CurrentPage = 1;
             ViewBag.CurrentPageSize = 5;
@@ -55,17 +65,19 @@ namespace PIM_Tool_ELCA.Controllers
             Session["SearchTerm"] = searchProjectModel.SearchTerm;
             Session["SearchStatus"] = searchProjectModel.SearchStatus;
 
-            var result = _projectService.GetProjectList(
-                searchProjectModel.SearchTerm
-                , searchProjectModel.SearchStatus
-                , searchProjectModel.PageIndex
-                , searchProjectModel.PageSize);
+            SearchProjectRequestModel request = new SearchProjectRequestModel()
+            {
+                PageIndex = searchProjectModel.PageIndex,
+                PageSize = searchProjectModel.PageSize,
+                SearchStatus = searchProjectModel.SearchStatus,
+                SearchTerm = searchProjectModel.SearchTerm,
+            };
+
+            var result = _projectService.GetProjectList(request);
 
             ViewBag.ProjectList = result.projectList
                 .OrderBy(proj => proj.ProjectNumber).ToList<ProjectListModel>();
             ViewBag.ResultCount = result.resultCount;
-            //ViewBag.SearchTerm = searchProjectModel.SearchTerm;
-            // ViewBag.SearchStatus = searchProjectModel.SearchStatus;
             ViewBag.CurrentPage = searchProjectModel.PageIndex;
             ViewBag.CurrentPageSize = searchProjectModel.PageSize;
             return View("ProjectList");
@@ -74,7 +86,7 @@ namespace PIM_Tool_ELCA.Controllers
         [HandleError]
         public ActionResult EditProject(int id)
         {
-            ViewBag.NewOREdit = "Edit";
+            ViewBag.EditMode = EditMode.Edit;
             ViewBag.VisaList = _employeeService.GetAllMembers();
             ViewBag.GroupList = _groupService.GetGroupIDList();
             return View("AddEditProject", _projectService.GetProjectByID(id));
@@ -82,30 +94,31 @@ namespace PIM_Tool_ELCA.Controllers
 
         [HandleError]
         [HttpPost]
-        public ActionResult EditProject(int id,
-            [Bind(Include = "ID, GroupID,ProjectNumber,Name,Customer,Status,StartDate,EndDate,Members,Version")] AddEditProjectModel projectModel)
+        public ActionResult EditProject(
+            [Bind(Include = "ID, GroupID,ProjectNumber,Name,Customer,Status,StartDate,EndDate,MemberString,Version")] AddEditProjectModel projectModel)
         {
 
-            //GroupID exist
             try
             {
                 if (ModelState.IsValid)
                 {
-                    List<string> memberList = new List<string>(VisaHelper.SplitVisa(projectModel.Members));
+                    List<string> memberList = new List<string>(VisaHelper.SplitVisa(projectModel.MemberString));
                     projectModel.MembersList = memberList;
                     _projectService.ValidateProjectModelAndUpdate(projectModel);
                 }
 
+
             }
             catch (VersionLowerThanCurrentVersionException)
             {
-                ViewBag.VersionWarning = "Trueeeeee";
+                ViewBag.HasVersionWarning = true;
                 ModelState.Clear();
 
-                ViewBag.NewOREdit = "Edit";
+                ViewBag.EditMode = EditMode.Edit;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
                 ViewBag.GroupList = _groupService.GetGroupIDList();
-                return View("AddEditProject", _projectService.GetProjectByID((long)projectModel.ID));
+                var targetProject = _projectService.GetProjectByID((long)projectModel.ID);
+                return View("AddEditProject", targetProject);
             }
             catch (GroupIDDoesntExistException)
             {
@@ -128,15 +141,13 @@ namespace PIM_Tool_ELCA.Controllers
                 ModelState.AddModelError("EndDate", "End date can't be sooner than start date.");
             }
 
-
-            //-----------------------------------------------------------------------------
             if (ModelState.IsValid)
             {
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.NewOREdit = "Edit";
+                ViewBag.EditMode = EditMode.Edit;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
                 ViewBag.GroupList = _groupService.GetGroupIDList();
 
@@ -148,7 +159,7 @@ namespace PIM_Tool_ELCA.Controllers
         [HandleError]
         public ActionResult NewProject()
         {
-            ViewBag.NewOREdit = "New";
+            ViewBag.EditMode = EditMode.New;
             ViewBag.VisaList = _employeeService.GetAllMembers();
             ViewBag.GroupList = _groupService.GetGroupIDList();
             return View("AddEditProject", new AddEditProjectModel());
@@ -156,7 +167,7 @@ namespace PIM_Tool_ELCA.Controllers
 
         [HttpPost]
         [HandleError]
-        public ActionResult NewProject([Bind(Include = "GroupID,ProjectNumber,Name,Customer,Status,StartDate,EndDate,Members,Version")] AddEditProjectModel projectModel)
+        public ActionResult NewProject([Bind(Include = "GroupID,ProjectNumber,Name,Customer,Status,StartDate,EndDate,MemberString,Version")] AddEditProjectModel projectModel)
         {
             try
             {
@@ -164,7 +175,7 @@ namespace PIM_Tool_ELCA.Controllers
                     ModelState["ID"].Errors.Clear();
                 if (ModelState.IsValid)
                 {
-                    List<string> memberList = new List<string>(VisaHelper.SplitVisa(projectModel.Members));
+                    List<string> memberList = new List<string>(VisaHelper.SplitVisa(projectModel.MemberString));
                     projectModel.MembersList = memberList;
                     _projectService.ValidateAndCreateNewProject(projectModel);
                 }
@@ -191,15 +202,13 @@ namespace PIM_Tool_ELCA.Controllers
                 ModelState.AddModelError("EndDate", Resource.AddEditProject.AddEditProjectRe.EndDate_ModelError);
             }
 
-
-            //-----------------------------------------------------------------------------
             if (ModelState.IsValid)
             {
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.NewOREdit = "New";
+                ViewBag.EditMode = EditMode.New;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
                 ViewBag.GroupList = _groupService.GetGroupIDList();
 

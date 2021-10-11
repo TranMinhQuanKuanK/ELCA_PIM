@@ -12,17 +12,18 @@ namespace TestProject1
     public class EmployeeRepoTests
     {
         NHibernateSessionHelper helper;
-        ProjectRepo _proRepo;
+        EmployeeRepo _empRepo;
         static Employee emp1;
         static Employee emp2;
         static Employee emp3;
         static Group grp1;
         static Group grp2;
+        static Project proj1;
         [OneTimeSetUp]
         public void Setup()
         {
             helper = new NHibernateSessionHelper();
-            _proRepo = new ProjectRepo(helper);
+            _empRepo = new EmployeeRepo(helper);
             using (ISession session = helper.OpenSession())
             {
                 using (var tx = session.BeginTransaction())
@@ -32,7 +33,7 @@ namespace TestProject1
                         Visa = "TMT",
                         FirstName = "Tran Minh",
                         LastName = "Tuan",
-                        Birthday = System.DateTime.Now,
+                        Birthday = new System.DateTime(2001, 1, 1),
                         Version = 1
                     };
                     emp2 = new Employee
@@ -40,21 +41,21 @@ namespace TestProject1
                         Visa = "NTH",
                         FirstName = "Nguyen Thi",
                         LastName = "Ha",
-                        Birthday = System.DateTime.Now,
+                        Birthday = new System.DateTime(2001, 1, 1),
                         Version = 1
                     };
                     emp3 = new Employee
                     {
                         Visa = "HND",
                         FirstName = "Hong Nhat",
-                        LastName = "Dương",
-                        Birthday = System.DateTime.Now,
+                        LastName = "Duong",
+                        Birthday = new System.DateTime(2001, 1, 1),
                         Version = 1
                     };
                     session.Save(emp1);
                     session.Save(emp2);
                     session.Save(emp3);
-                    //insert Group----------------------------------------------------------------
+
                     grp1 = new Group
                     {
                         GroupLeaderID = emp1.ID,
@@ -67,9 +68,24 @@ namespace TestProject1
                     };
                     session.Save(grp1);
                     session.Save(grp2);
+                  
+                    proj1 = new Project()
+                    {
+                        GroupID = grp1.ID,
+                        Customer = "Customer Test",
+                        Name = "Project Test",
+                        ProjectNumber = 1234,
+                        StartDate = new System.DateTime(2012, 1, 1),
+                        Status = "NEW",
+                        Version = 1,
+                        Members = new List<Employee>() {
+                           emp1,emp2
+                        }
+                    };
+                    session.Save(proj1);
                     tx.Commit();
                 }
-                //insert Employee----------------------------------------------------------------
+
             }
         }
         [OneTimeTearDown]
@@ -93,580 +109,64 @@ namespace TestProject1
             }
         }
         [Test]
-        public void GetProjectByID_ValidID_ExpectedTrueProject()
+        public void GetAllEmployees_ExpectedTrueEmployeeList()
         {
-            Project expectedProj1;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    expectedProj1 = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 1234,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                        Version = 1,
-                    };
-                    session.Save(expectedProj1);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var actualProj1 = _proRepo.GetProjectByID(expectedProj1.ID);
-            Assert.AreEqual(expectedProj1.ProjectNumber, actualProj1.ProjectNumber);
-            Assert.AreEqual(expectedProj1.Name, actualProj1.Name);
-            Assert.AreEqual(expectedProj1.StartDate, actualProj1.StartDate);
-            Assert.AreEqual(expectedProj1.EndDate, actualProj1.EndDate);
-            Assert.AreEqual(expectedProj1.Status, actualProj1.Status);
-            //--------------------Cleaning-----------------------------  
+            var actualtEmpList = _empRepo.GetAllEmployees();
+            Assert.IsTrue(actualtEmpList.Contains(emp1));
+            Assert.IsTrue(actualtEmpList.Contains(emp2));
+            Assert.IsTrue(actualtEmpList.Contains(emp3));
         }
         [Test]
-        public void GetProjectByID_WrongID_ExpectedNull()
+        public void GetEmployeesBasedOnVisaList_TrueVisaList_ExpectedTrueEmployeeList()
         {
-            Project proj;
-            using (ISession session = helper.OpenSession())
+            var actualtEmpList = _empRepo.GetEmployeesBasedOnVisaList(new List<string>()
             {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 1235,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                        Version = 1,
-                    };
-                    session.Save(proj);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var actualProj1 = _proRepo.GetProjectByID(-1);
-            var actualProj2 = _proRepo.GetProjectByID(proj.ID + 100);
-            Assert.IsNull(actualProj1);
-            Assert.IsNull(actualProj2);
+                "TMT","NTH"
+            });
+            Assert.IsTrue(actualtEmpList.Count == 2);
+            Assert.IsTrue(actualtEmpList.Contains(emp1));
+            Assert.IsTrue(actualtEmpList.Contains(emp2));
+            var actualtEmpList2 = _empRepo.GetEmployeesBasedOnVisaList(new List<string>()
+            {
+                "TMT"
+            });
+            Assert.IsTrue(actualtEmpList2.Count == 1);
+            Assert.IsTrue(actualtEmpList2.Contains(emp1));
+            var actualtEmpList3 = _empRepo.GetEmployeesBasedOnVisaList(new List<string>());
+            Assert.IsTrue(actualtEmpList3.Count == 0);
         }
         [Test]
-        public void GetProjectByProjectNumber_ValidGroupID_ExpectedTrueProject()
+        public void GetEmployeesBasedOnVisaList_WrongVisaList_ExpectedException()
         {
-            Project expectedProj1;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    expectedProj1 = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 6979,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                        Version = 1,
-                    };
-                    session.Save(expectedProj1);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var actualProj1 = _proRepo.GetProjectByProjectNumber(6979);
-            Assert.AreEqual(expectedProj1.ProjectNumber, actualProj1.ProjectNumber);
-            Assert.AreEqual(expectedProj1.Name, actualProj1.Name);
-            Assert.AreEqual(expectedProj1.StartDate, actualProj1.StartDate);
-            Assert.AreEqual(expectedProj1.EndDate, actualProj1.EndDate);
-            Assert.AreEqual(expectedProj1.Status, actualProj1.Status);
-            //--------------------Cleaning-----------------------------  
-        }
-        [Test]
-        public void GetProjectByProjectNumber_WrongGroupID_ExpectedNullt()
-        {
-            Project expectedProj1;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    expectedProj1 = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 7823,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                        Version = 1,
-                    };
-                    session.Save(expectedProj1);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var actualProj1 = _proRepo.GetProjectByProjectNumber(1111);
-            var actualProj2 = _proRepo.GetProjectByProjectNumber(-1);
-            Assert.IsNull(actualProj1);
-            Assert.IsNull(actualProj2);
-            //--------------------Cleaning-----------------------------  
-        }
-        //[Test]
-        //public void GetProjectByID_ValidID_ExpectedTrueProject()
-        //{
-        //    Project expectedProj1;
-        //    using (ISession session = helper.OpenSession())
-        //    {
-        //        using (var tx = session.BeginTransaction())
-        //        {
-        //            //-----------------------Setup--------------------------
-        //            expectedProj1 = new Project()
-        //            {
-        //                GroupID = grp1.ID,
-        //                Customer = "Customer Test 1",
-        //                Name = "Project Test 1",
-        //                ProjectNumber = 1234,
-        //                StartDate = new System.DateTime(2012, 1, 1),
-        //                Status = "NEW",
-        //                Version = 1,
-        //            };
-        //            session.Save(expectedProj1);
-        //            tx.Commit();
-        //        }
-        //    }
-        //    //-----------------------Test--------------------------
-        //    var actualProj1 = _proRepo.GetProjectByID(expectedProj1.ID);
-        //    Assert.AreEqual(expectedProj1.ProjectNumber, actualProj1.ProjectNumber);
-        //    Assert.AreEqual(expectedProj1.Name, actualProj1.Name);
-        //    Assert.AreEqual(expectedProj1.StartDate, actualProj1.StartDate);
-        //    Assert.AreEqual(expectedProj1.EndDate, actualProj1.EndDate);
-        //    Assert.AreEqual(expectedProj1.Status, actualProj1.Status);
-        //    //--------------------Cleaning-----------------------------  
-        //}
-        [Test]
-        public void UpdateProject_ValidProject_ExpectedDataIsUpdated()
-        {
-            Project proj;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 1112,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    session.Save(proj);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            Project toUpdateProj = new Project()
-            {
-                ID = proj.ID,
-                GroupID = grp1.ID,
-                Customer = "Customer Test Updated",
-                Name = "Project Test 1",
-                ProjectNumber = 1112,
-                StartDate = new System.DateTime(2012, 1, 1),
-                Status = "NEW",
-                Version = proj.Version,
-            };
-            _proRepo.UpdateProject(toUpdateProj);
-            var actualUpdatedProject = _proRepo.GetProjectByID(proj.ID);
-            Assert.AreEqual(toUpdateProj.ProjectNumber, actualUpdatedProject.ProjectNumber);
-            Assert.AreEqual(toUpdateProj.Name, actualUpdatedProject.Name);
-            Assert.AreEqual(toUpdateProj.StartDate, actualUpdatedProject.StartDate);
-            Assert.AreEqual(toUpdateProj.EndDate, actualUpdatedProject.EndDate);
-            Assert.AreEqual(toUpdateProj.Status, actualUpdatedProject.Status);
-        }
-        [Test]
-        public void UpdateProject_VersionLowerProject_ExpectedException()
-        {
-            Project proj;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 1113,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    session.Save(proj);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            Project toUpdateProj = new Project()
-            {
-                ID = proj.ID,
-                GroupID = grp1.ID,
-                Customer = "Customer Test Updated",
-                Name = "Project Test 1",
-                ProjectNumber = 1113,
-                StartDate = new System.DateTime(2012, 1, 1),
-                Status = "NEW",
-                Version = proj.Version - 1,
-            };
+            Assert.Throws<InvalidVisaDetectedException>
+                (() => _empRepo.GetEmployeesBasedOnVisaList(new List<string>() { "TMT", "HHH" }));
 
-            Assert.Throws<VersionLowerThanCurrentVersionException>
-                (() => _proRepo.UpdateProject(toUpdateProj));
-
+            Assert.Throws<InvalidVisaDetectedException>
+               (() => _empRepo.GetEmployeesBasedOnVisaList(new List<string>() { "ABC", "NTH" }));
         }
         [Test]
-        public void CreateNewProject_ValidProject_ExpectedDataIsUpdated()
+        public void GetMemberListOfProject_TrueID_ExpectedTrueEmployeeList()
         {
-
-            //-----------------------Test--------------------------
-            Project newProj = new Project()
-            {
-                GroupID = grp2.ID,
-                Customer = "Customer Test 2",
-                Name = "Project Test 2",
-                ProjectNumber = 1213,
-                StartDate = new System.DateTime(2012, 1, 1),
-                Status = "NEW",
-            };
-            _proRepo.CreateNewProject(newProj);
-            var actualCreatedProject = _proRepo.GetProjectByProjectNumber(1213);
-            Assert.AreEqual(newProj.ProjectNumber, actualCreatedProject.ProjectNumber);
-            Assert.AreEqual(newProj.Name, actualCreatedProject.Name);
-            Assert.AreEqual(newProj.StartDate, actualCreatedProject.StartDate);
-            Assert.AreEqual(newProj.EndDate, actualCreatedProject.EndDate);
-            Assert.AreEqual(newProj.Status, actualCreatedProject.Status);
+            var actualtEmpList = _empRepo.GetMemberListOfProject(proj1.ID);
+            Assert.IsTrue(actualtEmpList.Count==2);
+            Assert.IsTrue(actualtEmpList.Contains(emp1));
+            Assert.IsTrue(actualtEmpList.Contains(emp2));
         }
         [Test]
-        public void DeleteProject_ValidSingleProject_ExpectedProjectIsDeleted()
+        public void GetEmployeeByVisa_TrueVisa_ExpectedTrueEmployee()
         {
-            Project proj;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 4544,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    session.Save(proj);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
-            _proRepo.DeleteProject(deleteProjectList);
-            var deletedProject = _proRepo.GetProjectByID(proj.ID);
-            Assert.IsNull(deletedProject);
+            var actualtEmp  = _empRepo.GetEmployeeByVisa("HND");
+            Assert.AreEqual(emp3.ID, actualtEmp.ID);
+            Assert.AreEqual(emp3.Visa, actualtEmp.Visa);
+            Assert.AreEqual(emp3.FirstName, actualtEmp.FirstName);
+            Assert.AreEqual(emp3.LastName, actualtEmp.LastName);
+            Assert.AreEqual(emp3.Birthday, actualtEmp.Birthday);
+            Assert.AreEqual(emp3.Version, actualtEmp.Version);
         }
         [Test]
-        public void DeleteProject_LowerVersionSingleProject_ExpectedException()
+        public void GetEmployeeByVisa_WrongVisa_ExpectedNull()
         {
-            Project proj;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 4549,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    session.Save(proj);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version - 1);
-            Assert.Throws<CantDeleteProjectDueToLowerVersionException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
-        }
-        [Test]
-        public void DeleteProject_WrongStatusSingleProject_ExpectedException()
-        {
-            Project proj;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 7291,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "PLA",
-                    };
-                    session.Save(proj);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
-            Assert.Throws<ProjectStatusNotNewException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
-        }
-        [Test]
-        public void DeleteProject_DoesntExistSingleProject_ExpectedException()
-        {
-            Project proj;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 4241,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "PLA",
-                    };
-                    session.Save(proj);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID+999, proj.Version);
-            Assert.Throws<ProjectNotExistedException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
-        }
-        [Test]
-        public void DeleteProject_ValidMultipleProject_ExpectedProjectsAreDeleted()
-        {
-            Project proj, proj2,proj3;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 1291,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    proj2 = new Project()
-                    {
-                        GroupID = grp2.ID,
-                        Customer = "Customer Test 2",
-                        Name = "Project Test 1",
-                        ProjectNumber = 1209,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                     proj3 = new Project()
-                     {
-                         GroupID = grp1.ID,
-                         Customer = "Customer Test 2",
-                         Name = "Project Test 1",
-                         ProjectNumber = 1978,
-                         StartDate = new System.DateTime(2012, 1, 1),
-                         Status = "NEW",
-                     };
-                    session.Save(proj);
-                    session.Save(proj2);
-                    session.Save(proj3);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
-            deleteProjectList.Add(proj2.ID, proj2.Version);
-            deleteProjectList.Add(proj3.ID, proj3.Version);
-            _proRepo.DeleteProject(deleteProjectList);
-            var deletedProject1 = _proRepo.GetProjectByID(proj.ID);
-            var deletedProject2 = _proRepo.GetProjectByID(proj2.ID);
-            var deletedProject3 = _proRepo.GetProjectByID(proj3.ID);
-            Assert.IsNull(deletedProject1);
-            Assert.IsNull(deletedProject2);
-            Assert.IsNull(deletedProject3);
-        }
-        [Test]
-        public void DeleteProject_LowerVersionMultipleProject_ExpectedException()
-        {
-            Project proj, proj2, proj3;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 1411,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    proj2 = new Project()
-                    {
-                        GroupID = grp2.ID,
-                        Customer = "Customer Test 2",
-                        Name = "Project Test 1",
-                        ProjectNumber = 1412,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    proj3 = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 2",
-                        Name = "Project Test 1",
-                        ProjectNumber = 1413,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    session.Save(proj);
-                    session.Save(proj2);
-                    session.Save(proj3);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version - 1);
-            deleteProjectList.Add(proj2.ID, proj2.Version);
-            deleteProjectList.Add(proj3.ID, proj3.Version );
-            Assert.Throws<CantDeleteProjectDueToLowerVersionException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
-        }
-        [Test]
-        public void DeleteProject_WrongStatusMultipleProject_ExpectedException()
-        {
-            Project proj, proj2, proj3;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 5411,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    proj2 = new Project()
-                    {
-                        GroupID = grp2.ID,
-                        Customer = "Customer Test 2",
-                        Name = "Project Test 1",
-                        ProjectNumber = 5412,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    proj3 = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 2",
-                        Name = "Project Test 1",
-                        ProjectNumber = 5413,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "PLA",
-                    };
-                    session.Save(proj);
-                    session.Save(proj2);
-                    session.Save(proj3);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
-            deleteProjectList.Add(proj2.ID, proj2.Version);
-            deleteProjectList.Add(proj3.ID, proj3.Version);
-            Assert.Throws<ProjectStatusNotNewException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
-        }
-        [Test]
-        public void DeleteProject_DoesntExistMultipleProject_ExpectedException()
-        {
-            Project proj, proj2, proj3;
-            using (ISession session = helper.OpenSession())
-            {
-                using (var tx = session.BeginTransaction())
-                {
-                    //-----------------------Setup--------------------------
-                    proj = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 1",
-                        Name = "Project Test 1",
-                        ProjectNumber = 5492,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    proj2 = new Project()
-                    {
-                        GroupID = grp2.ID,
-                        Customer = "Customer Test 2",
-                        Name = "Project Test 1",
-                        ProjectNumber = 5912,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "NEW",
-                    };
-                    proj3 = new Project()
-                    {
-                        GroupID = grp1.ID,
-                        Customer = "Customer Test 2",
-                        Name = "Project Test 1",
-                        ProjectNumber = 9413,
-                        StartDate = new System.DateTime(2012, 1, 1),
-                        Status = "PLA",
-                    };
-                    session.Save(proj);
-                    session.Save(proj2);
-                    session.Save(proj3);
-                    tx.Commit();
-                }
-            }
-            //-----------------------Test--------------------------
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
-            deleteProjectList.Add(proj2.ID + 999, proj2.Version);
-            deleteProjectList.Add(proj3.ID, proj3.Version);
-            Assert.Throws<ProjectNotExistedException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
+            Assert.IsNull(_empRepo.GetEmployeeByVisa("ABC"));
         }
     }
 }

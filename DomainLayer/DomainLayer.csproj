@@ -45,6 +45,7 @@
     <Compile Include="Employee.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="Project.cs" />
+    <Compile Include="SearchProjectRequest.cs" />
     <Compile Include="ProjectListPageDomainResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

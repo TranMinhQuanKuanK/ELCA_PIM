@@ -30,11 +30,17 @@ namespace ServiceLayer
         }
 
         public ProjectListPageContractResult GetProjectList
-            (string searchTerm, string searchStatus, int pageIndex, int pageSize)
+            (SearchProjectRequestModel request)
         {
             List<ProjectListModel> projectList = new List<ProjectListModel>();
-            ProjectListPageDomainResult result = _projectRepo.GetProjectList
-                (searchTerm, searchStatus, pageIndex, pageSize);
+            SearchProjectRequest requestDomain = new SearchProjectRequest()
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                SearchStatus = request.SearchStatus,
+                SearchTerm = request.SearchTerm,
+            };
+            ProjectListPageDomainResult result = _projectRepo.GetProjectList(requestDomain);
 
             result.projectList.ToList().ForEach(x => projectList.Add(new ProjectListModel
             {
@@ -66,7 +72,7 @@ namespace ServiceLayer
                 Status = project.Status,
                 EndDate = project.EndDate,
                 GroupID = project.GroupID,
-                Members = "",//khong can thiet
+                MemberString  = "",//khong can thiet
                 Version = project.Version,
                 MembersList = (List<string>)empList
             };
@@ -128,7 +134,6 @@ namespace ServiceLayer
             //check enddate
             CheckEndDateSoonerThanStartDate(project);
 
-            //---------------update------------------------
             try
             {
                 _projectRepo.UpdateProject(new Project()
@@ -149,7 +154,6 @@ namespace ServiceLayer
             {
                 throw new CustomException.ProjectException.VersionLowerThanCurrentVersionException("Version lower than current version", e);
             }
-            //-----------------------------------------------
             return true;
         }
         private void CheckProjectNumberExist(AddEditProjectModel project)
@@ -172,8 +176,6 @@ namespace ServiceLayer
             CheckStatus(project);
             //check enddate
             CheckEndDateSoonerThanStartDate(project);
-
-            //---------------create new------------------------
             try
             {
                 _projectRepo.CreateNewProject(new Project()
@@ -193,7 +195,6 @@ namespace ServiceLayer
             {
                 throw new CustomException.ProjectException.VersionLowerThanCurrentVersionException("Version lower than current version", e);
             }
-            //-----------------------------------------------
             return true;
         }
         public bool DeleteProject(IList<DeleteProjectRequestModel> projectList)
@@ -201,7 +202,7 @@ namespace ServiceLayer
             IDictionary<long, int> projectListDictionary = new Dictionary<long, int>();
             foreach (var item in projectList)
             {
-                projectListDictionary.Add(new KeyValuePair<long, int>(item.ID, item.Version));
+                projectListDictionary.Add(new KeyValuePair<long, int>(item.Id, item.Version));
             }
             try
             {

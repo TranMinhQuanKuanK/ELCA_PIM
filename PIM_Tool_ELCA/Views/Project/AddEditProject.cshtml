@@ -3,15 +3,15 @@
     ViewBag.Title = "Add/Edit Project";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@using PIM_Tool_ELCA.Controllers;
 <h3 style="padding: 0 0 15px 0; width:800px; border-bottom:2px rgb(168, 168, 168) solid">
-    @(ViewBag.NewOREdit == "New"
+    @(ViewBag.EditMode == EditMode.New
         ? Resource.AddEditProject.AddEditProjectRe.AddNewProjectHeader_Label
         : Resource.AddEditProject.AddEditProjectRe.EditProjectHeader_Label )
 </h3>
 <div id="spinning-submit-form" class="loader loader-default" data-text="@Resource.AddEditProject.AddEditProjectRe.SubmittingForm_SpinningMessage"></div>
 
-@using (Html.BeginForm(ViewBag.NewOREdit == "Edit" ? $"EditProject/{Model.ID}" : "NewProject", "Project", FormMethod.Post,
+@using (Html.BeginForm(ViewBag.EditMode == EditMode.Edit ? $"EditProject/" : "NewProject", "Project", FormMethod.Post,
     new { id = "main-form", onSubmit = "displaySpinning()" }))
 {
     @Html.AntiForgeryToken()
@@ -24,7 +24,7 @@
                 @: <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             @:</div>
         }
-        @if (ViewBag.VersionWarning != null)
+        @if (ViewBag.HasVersionWarning == true)
         {
             @:<div class="alert alert-danger alert-dismissable" role="alert">
                 @Resource.AddEditProject.AddEditProjectRe.VersionWarning
@@ -34,11 +34,10 @@
         @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
         @Html.HiddenFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
 
-        @*ProjectNumber------------------------*@
         <div class="form-group @(ViewData.ModelState["ProjectNumber"] != null && ViewData.ModelState["ProjectNumber"].Errors.Any() ? "has-error" : "")">
             @Html.LabelFor(model => model.ProjectNumber, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
-                @if (ViewBag.NewOREdit == "New")
+                @if (ViewBag.EditMode == EditMode.New)
                 {
                     @Html.EditorFor(model => model.ProjectNumber,
                          new { htmlAttributes = new { @class = "form-control", style = "width:200px;", type = "number" } })
@@ -50,7 +49,7 @@
                     @Html.HiddenFor(model => model.ProjectNumber,
                           new { htmlAttributes = new { @class = "form-control", style = "width:200px;" } })
                 }
-                @*@Html.EditorFor(model => model.ProjectNumber, ViewBag.NewOREdit == "New" ?
+                @*@Html.EditorFor(model => model.ProjectNumber, ViewBag.EditMode == "New" ?
                     new { @class = "form-control", style = "width:200px;" } :
                     new { @class = "form-control", style = "width:200px;", @disabled = "disabled" })*@
 
@@ -59,7 +58,6 @@
             </div>
         </div>
 
-        @*Name------------------------*@
         <div class="form-group @(ViewData.ModelState["Name"] != null && ViewData.ModelState["Name"].Errors.Any() ? "has-error" : "")">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
@@ -68,7 +66,6 @@
             </div>
         </div>
 
-        @*Customer------------------------*@
         <div class="form-group @(ViewData.ModelState["Customer"] != null && ViewData.ModelState["Customer"].Errors.Any() ? "has-error" : "")">
             @Html.LabelFor(model => model.Customer, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
@@ -77,7 +74,6 @@
             </div>
         </div>
 
-        @*GroupID------------------------*@
         <div class="form-group @(ViewData.ModelState["GroupID"] != null && ViewData.ModelState["GroupID"].Errors.Any() ? "has-error" : "")">
             @Html.LabelFor(model => model.GroupID, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
@@ -95,7 +91,7 @@
 
                 }
                 @Html.DropDownListFor(model => model.GroupID, groupList,
-     ViewBag.NewOREdit == "New"
+     ViewBag.EditMode == EditMode.New
      ? Resource.AddEditProject.AddEditProjectRe.GroupIDHolder_Label
      : ""
      , new { @class = "form-control", style = "width: 200px;" })
@@ -103,11 +99,10 @@
             </div>
         </div>
 
-        @*Members------------------------*@
         <div class="form-group">
-            @Html.LabelFor(model => model.Members, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
+            @Html.LabelFor(model => model.MemberString, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
-                @Html.HiddenFor(model => model.Members, new { name = "Members" })
+                @Html.HiddenFor(model => model.MemberString, new { name = "Members" })
                 @*@Html.EditorFor(model => model.Members, new { htmlAttributes = new { @class = "form-control" } })*@
                 <select id="member-select" class="info__select" multiple style="width:600px;">
                     @foreach (var item in ViewBag.VisaList)
@@ -115,11 +110,10 @@
                         <option value="@item.Visa">@item.Visa: @item.FirstName @item.LastName</option>
                     }
                 </select>
-                @Html.ValidationMessageFor(model => model.Members, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.MemberString, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        @*Status------------------------*@
         <div class="form-group  @(ViewData.ModelState["Status"] != null && ViewData.ModelState["Status"].Errors.Any() ? "has-error" : "")">
             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
@@ -151,18 +145,15 @@
                     });
                 }
                 @Html.DropDownListFor(model => model.Status, statusList,
-                            ViewBag.NewOREdit == "New"
+                            ViewBag.EditMode == EditMode.New
                             ? Resource.AddEditProject.AddEditProjectRe.ProjectStatusHolder_Label
                             : ""
                             , new { @class = "form-control", style = "width: 200px;" })
-                @*@Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        @*StartDate and EndDate div*@
         <div class="form-group" style="padding:0;margin: -25px 0 -20px 0;">
-            @*StartDate------------------------*@
             <div class="form-group col-md-6 @(ViewData.ModelState["StartDate"] != null && ViewData.ModelState["StartDate"].Errors.Any() ? "has-error" : "")">
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-4", style = "text-align: left; padding-left:34px;" })
                 <div class="col-md-8">
@@ -178,7 +169,6 @@
 
             </div>
 
-            @*EndDate------------------------*@
             <div style="margin-left: -120px;" class="form-group col-md-6 @(ViewData.ModelState["EndDate"] != null && ViewData.ModelState["EndDate"].Errors.Any() ? "has-error" : "")">
                 @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-9">
@@ -201,7 +191,7 @@
             <input type="button" style="width:160px;" value="@Resource.AddEditProject.AddEditProjectRe.CanButton_Label" class="btn btn-default" onclick="location.href = '/Project';">
         </div>
         <div style="display: inline-block;width: 205px;text-align: right;">
-            <input type="button" style="width: 160px;" value="@( ViewBag.NewOREdit == "New" ? Resource.AddEditProject.AddEditProjectRe.SubmitButtonForCreateNew_Label : Resource.AddEditProject.AddEditProjectRe.SubmitButtonForEdit_Label)" class="btn btn-primary" onclick="appendVisaBeforeSubmit();">
+            <input type="button" style="width: 160px;" value="@( ViewBag.EditMode == EditMode.New ? Resource.AddEditProject.AddEditProjectRe.SubmitButtonForCreateNew_Label : Resource.AddEditProject.AddEditProjectRe.SubmitButtonForEdit_Label)" class="btn btn-primary" onclick="appendVisaBeforeSubmit();">
         </div>
     </div>
 }
@@ -211,12 +201,11 @@
 
 <script>
 
-    ///-----------------------
     var memberSelect = new SlimSelect({
         select: '#member-select'
     })
     RenderOriginalMember();
-    @if (ViewBag.NewOREdit == "Edit")
+    @if (ViewBag.EditMode == EditMode.Edit)
     {
     @:$("#ID").prop('disabled', true);
     }
@@ -234,7 +223,7 @@
         var selectedVisa = memberSelect.selected();
         var memberString = "";
         selectedVisa.forEach(element => memberString += element+",");
-        document.getElementById("Members").value = memberString;
+        document.getElementById("MemberString").value = memberString;
 
         $("#main-form").submit();
     }

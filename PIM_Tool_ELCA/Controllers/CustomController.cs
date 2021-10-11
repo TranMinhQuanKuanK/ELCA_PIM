@@ -10,15 +10,10 @@ namespace PIM_Tool_ELCA.Controllers
 {
     public class CustomController : Controller
     {
-        // GET: Custom
+        const string CookieName = "_culture";
         protected override void OnException(ExceptionContext filterContext)
         {
             filterContext.ExceptionHandled = true;
-
-            //Log the error!!
-            //_Logger.Error(filterContext.Exception);
-
-            //Redirect or return a view, but not both.
             filterContext.Result = RedirectToAction("Home", "NotFound");
         }
         protected override void OnResultExecuting(ResultExecutingContext filterContext)
@@ -30,14 +25,18 @@ namespace PIM_Tool_ELCA.Controllers
         {
             string cultureName = null;
 
-            HttpCookie cultureCookie = Request.Cookies["_culture"];
+            HttpCookie cultureCookie = Request.Cookies[CookieName];
             if (cultureCookie != null)
+            {
                 cultureName = cultureCookie.Value;
-            else
-                cultureName = Request.UserLanguages != null && Request.UserLanguages.Length > 0
-                    ? Request.UserLanguages[0]
-                    : null;
 
+            }
+            else
+            {
+                cultureName = Request.UserLanguages != null && Request.UserLanguages.Length > 0
+                ? Request.UserLanguages[0]
+                : null;
+            }
             cultureName = CultureHelper.GetImplementedCulture(cultureName);
 
             // Modify current thread's cultures            

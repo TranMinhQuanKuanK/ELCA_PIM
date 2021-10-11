@@ -9,18 +9,18 @@ namespace Utilities
 {
     public static class VisaHelper
     {
-        public static IList<String> SplitVisa(string visaList)
+        public static IList<String> SplitVisa(string visaString)
         {
-            if (visaList == null || visaList == "")
+            if (visaString == null || visaString == "")
             {
                 return new List<string>();
             }
             else
             {
-                String[] spearator = { "," };
-                visaList = Regex.Replace(visaList, @"\s+", "");
+                String[] separator = { "," };
+                string removedSpaceVisasString = Regex.Replace(visaString, @"\s+", string.Empty);
                 // using the method
-                return visaList.Split(spearator,
+                return removedSpaceVisasString.Split(separator,
                        StringSplitOptions.RemoveEmptyEntries);
             }
 

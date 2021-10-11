@@ -54,11 +54,9 @@ namespace TestProject1
                     session.Save(emp1);
                     session.Save(emp2);
                     session.Save(emp3);
-                    //insert Group----------------------------------------------------------------
 
                     tx.Commit();
                 }
-                //insert Employee----------------------------------------------------------------
             }
         }
         [OneTimeTearDown]
@@ -114,7 +112,6 @@ namespace TestProject1
             {
                 using (var tx = session.BeginTransaction())
                 {
-                    //-----------------------Setup--------------------------
                     expectedGrp1 = new Group
                     {
                         GroupLeaderID = emp2.ID,
@@ -124,10 +121,8 @@ namespace TestProject1
                     tx.Commit();
                 }
             }
-            //-----------------------Test--------------------------
             var actualGrp = _groupRepo.GetGroupByID(expectedGrp1.ID + 999);
             Assert.IsNull(actualGrp);
-            //--------------------Cleaning-----------------------------  
         }
         [Test]
         public void GetAllGroup_ExpectedValidGroups()
@@ -137,7 +132,6 @@ namespace TestProject1
             {
                 using (var tx = session.BeginTransaction())
                 {
-                    //-----------------------Setup--------------------------
                     expectedGrp1 = new Group
                     {
                         GroupLeaderID = emp2.ID,
@@ -159,7 +153,6 @@ namespace TestProject1
                     tx.Commit();
                 }
             }
-            //-----------------------Test--------------------------
             var actualGroupList = _groupRepo.GetAllGroup();
             Assert.AreEqual(3, actualGroupList.Count);
             Assert.AreEqual(expectedGrp1.ID, actualGroupList[0].ID);
@@ -173,7 +166,6 @@ namespace TestProject1
             Assert.AreEqual(expectedGrp3.ID, actualGroupList[2].ID);
             Assert.AreEqual(expectedGrp3.GroupLeaderID, actualGroupList[2].GroupLeaderID);
             Assert.AreEqual(expectedGrp3.Version, actualGroupList[2].Version);
-            //--------------------Cleaning-----------------------------  
         }
     }
 }

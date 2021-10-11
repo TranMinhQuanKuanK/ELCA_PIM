@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NHibernate" Version="5.3.10" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
@@ -20,12 +21,6 @@
     <ProjectReference Include="..\Resource\Resource.csproj" />
     <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="NHibernate">
-      <HintPath>..\PIM_Tool_ELCA\Bin\NHibernate.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ namespace ContractLayer
 {
     public class DeleteProjectRequestModel
     {
-        public long ID { get; set; }
+        public long Id { get; set; }
         public int Version { get; set; }
     }
 }

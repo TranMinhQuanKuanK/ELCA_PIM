@@ -9,15 +9,14 @@ namespace PIM_Tool_ELCA.Controllers
 {
     public class LanguageController : CustomController
     {
-        // GET: Language
         public ActionResult Index(string culture)
         {
-            // Validate input
             culture = CultureHelper.GetImplementedCulture(culture);
-            // Save culture in a cookie
             HttpCookie cookie = Request.Cookies["_culture"];
             if (cookie != null)
-                cookie.Value = culture;   // update cookie value
+            {
+                cookie.Value = culture;  
+            }
             else
             {
                 cookie = new HttpCookie("_culture");

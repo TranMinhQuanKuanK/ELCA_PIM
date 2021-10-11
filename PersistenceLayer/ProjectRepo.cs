@@ -32,23 +32,23 @@ namespace PersistenceLayer
                 criteria.Add(Expression.Like("Status", $"%{searchStatus}%"));
 
         }
-        public ProjectListPageDomainResult GetProjectList(string searchTerm, string searchStatus, int pageIndex, int pageSize)
+        public ProjectListPageDomainResult GetProjectList(SearchProjectRequest request)
         {
             using (var session = _sessionhelper.OpenSession())
             {
                 IList<Project> result = new List<Project>();
-                searchTerm = searchTerm == null ? "" : searchTerm.Trim().ToUpper();
-                searchStatus = searchStatus == null ? "" : searchStatus.Trim().ToUpper();
+                request.SearchTerm = request.SearchTerm == null ? "" : request.SearchTerm.Trim().ToUpper();
+                request.SearchStatus = request.SearchStatus == null ? "" : request.SearchStatus.Trim().ToUpper();
 
                 var criteria = session.CreateCriteria<Project>();
-                BuildRestrictionForCritera(criteria, searchTerm, searchStatus);
+                BuildRestrictionForCritera(criteria, request.SearchTerm, request.SearchStatus);
                 criteria.AddOrder(Order.Asc("ProjectNumber"));
-                criteria.SetFirstResult((pageIndex - 1) * pageSize).SetMaxResults(pageSize);
+                criteria.SetFirstResult((request.PageIndex - 1) * request.PageSize).SetMaxResults(request.PageSize);
                 result = criteria.List<Project>();
+
+
                 var countCriteria = session.CreateCriteria<Project>();
-
-
-                BuildRestrictionForCritera(countCriteria, searchTerm, searchStatus);
+                BuildRestrictionForCritera(countCriteria, request.SearchTerm, request.SearchStatus);
                 var count = countCriteria.SetProjection(Projections.Count(Projections.Id())).UniqueResult<int>();
                 return new ProjectListPageDomainResult
                 {
