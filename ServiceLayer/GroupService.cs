@@ -1,4 +1,6 @@
 ﻿using PersistenceLayer;
+using PersistenceLayer.Helper;
+using PersistenceLayer.Interface;
 using ServiceLayer.Interface;
 using System;
 using System.Collections.Generic;
@@ -10,19 +12,30 @@ namespace ServiceLayer
 {
     public class GroupService : IGroupService
     {
-        private readonly GroupRepo _groupRepo;
+        private readonly IGroupRepo _groupRepo;
+        private readonly INHibernateSessionHelper _sessionhelper;
 
-        public GroupService(GroupRepo groupRepo)
+        public GroupService(IGroupRepo groupRepo, INHibernateSessionHelper sessionhelper)
         {
             _groupRepo = groupRepo;
+            _sessionhelper = sessionhelper;
         }
-        public bool CheckGroupIdExist(long groupID) => _groupRepo.GetGroupById(groupID) != null;
+
+        public bool CheckGroupIdExist(long groupID)
+        {
+            using (var session = _sessionhelper.OpenSession())
+            {
+                return _groupRepo.GetGroupById(groupID, session) != null;
+            }
+        }
 
         public IList<long> GetGroupIdList()
         {
-            List<long> result = new List<long>();
-            _groupRepo.GetAllGroup().ToList().ForEach(x => result.Add(x.Id));
-            return result;
+            using (var session = _sessionhelper.OpenSession())
+            {
+                List<long> result = (List<long>)_groupRepo.GetAllGroup(session).Select(x => x.Id).ToList();
+                return result;
+            }
         }
     }
 }

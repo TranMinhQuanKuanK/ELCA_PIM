@@ -1,4 +1,5 @@
 ﻿using DomainLayer;
+using NHibernate;
 using PersistenceLayer.Helper;
 using PersistenceLayer.Interface;
 using System;
@@ -11,26 +12,13 @@ namespace PersistenceLayer
 {
     public class GroupRepo : IGroupRepo
     {
-        private readonly INHibernateSessionHelper _sessionhelper;
-
-        public GroupRepo(INHibernateSessionHelper sessionhelper)
+        public Group GetGroupById(long groupId, ISession session)
         {
-            _sessionhelper = sessionhelper;
+            return session.QueryOver<Group>().Where(gr => gr.Id == groupId).SingleOrDefault<Group>();
         }
-
-        public Group GetGroupById(long groupId)
+        public IList<Group> GetAllGroup(ISession session)
         {
-            using (var session = _sessionhelper.OpenSession())
-            {
-                return session.QueryOver<Group>().Where(gr => gr.Id==groupId).SingleOrDefault<Group>();
-            }
-        }
-        public IList<Group> GetAllGroup()
-        {
-            using (var session = _sessionhelper.OpenSession())
-            {
-                return session.QueryOver<Group>().List<Group>();
-            }
+            return session.QueryOver<Group>().List<Group>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DomainLayer;
+using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace PersistenceLayer.Interface
 {
     public interface IEmployeeRepo
     {
-        IList<Employee> GetAllEmployees();
-        Employee GetEmployeeByVisa(string visa);
-        IList<Employee> GetMemberListOfProject(long id);
-        IList<Employee> GetEmployeesBasedOnVisaList(IList<string> visalist);
+        IList<Employee> GetAllEmployees(ISession session);
+        Employee GetEmployeeByVisa(string visa, ISession session);
+        IList<Employee> GetMemberListOfProject(long id, ISession session);
+        IList<Employee> GetEmployeesBasedOnVisaList(IList<string> visalist, ISession session);
     }
 }

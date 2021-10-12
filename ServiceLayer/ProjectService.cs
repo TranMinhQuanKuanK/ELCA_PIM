@@ -45,18 +45,18 @@ namespace ServiceLayer
                     SearchStatus = request.SearchStatus,
                     SearchTerm = request.SearchTerm,
                 };
-                ProjectListPageDomainResult result = _projectRepo.GetProjectList(requestDomain,session);
-
-                result.projectList.ToList().ForEach(x => projectList.Add(new ProjectListModel
-                {
-                    Id = x.Id,
-                    Customer = x.Customer,
-                    Name = x.Name,
-                    ProjectNumber = x.ProjectNumber,
-                    StartDate = x.StartDate,
-                    Status = x.Status,
-                    Version = x.Version
-                }));
+                ProjectListPageDomainResult result = _projectRepo.GetProjectList(requestDomain, session);
+                projectList = (List<ProjectListModel>)result.projectList
+                    .Select(x => new ProjectListModel
+                    {
+                        Id = x.Id,
+                        Customer = x.Customer,
+                        Name = x.Name,
+                        ProjectNumber = x.ProjectNumber,
+                        StartDate = x.StartDate,
+                        Status = x.Status,
+                        Version = x.Version
+                    }).ToList();
                 return new ProjectListPageContractResult()
                 {
                     projectList = projectList,
@@ -69,7 +69,7 @@ namespace ServiceLayer
             using (var session = _sessionhelper.OpenSession())
             {
                 var project = _projectRepo.GetProjectById(id, session);
-                IList<string> empList = _employeeRepo.GetMemberListOfProject(id).Select(x => x.Visa).ToList();
+                IList<string> empList = _employeeRepo.GetMemberListOfProject(id, session).Select(x => x.Visa).ToList();
                 return project == null ? null : new AddEditProjectModel
                 {
                     Id = project.Id,
@@ -112,7 +112,10 @@ namespace ServiceLayer
         {
             try
             {
-                membersList = _employeeRepo.GetEmployeesBasedOnVisaList(project.MembersList);
+                using (var session = _sessionhelper.OpenSession())
+                {
+                    membersList = _employeeRepo.GetEmployeesBasedOnVisaList(project.MembersList, session);
+                }
             }
             catch (InvalidVisaDetectedException e)
             {
@@ -165,7 +168,7 @@ namespace ServiceLayer
                         EndDate = project.EndDate,
                         Status = project.Status,
                         Version = project.Version
-                    }, session); 
+                    }, session);
                 }
             }
             catch (PersistenceLayer.CustomException.Project.VersionLowerThanCurrentVersionException e)
