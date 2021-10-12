@@ -12,7 +12,7 @@ namespace PersistenceLayer.Interface
     {
         IList<Employee> GetAllEmployees(ISession session);
         Employee GetEmployeeByVisa(string visa, ISession session);
-        IList<Employee> GetMemberListOfProject(long id, ISession session);
+        IList<string> GetMemberListOfProject(long id, ISession session);
         IList<Employee> GetEmployeesBasedOnVisaList(IList<string> visalist, ISession session);
     }
 }

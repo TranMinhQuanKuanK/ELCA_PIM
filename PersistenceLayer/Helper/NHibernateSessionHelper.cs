@@ -20,8 +20,10 @@ namespace PersistenceLayer.Helper
         {
             get
             {
-                if (_sessionFactory != null) return _sessionFactory;
-
+                if (_sessionFactory != null)
+                {
+                    return _sessionFactory;
+                }
                 var cfg = new Configuration();
                 cfg.DataBaseIntegration(x =>
                 {
@@ -30,8 +32,6 @@ namespace PersistenceLayer.Helper
                     x.LogSqlInConsole = true;
                     x.Dialect<MsSql2012Dialect>();
                 });
-
-                //cfg.AddFile("Mapping/Product.hbm.xml").AddFile("Mapping/Category.hbm.xml");
 
                 cfg.AddAssembly(Assembly.GetExecutingAssembly());
 

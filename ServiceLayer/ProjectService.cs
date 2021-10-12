@@ -20,15 +20,13 @@ namespace ServiceLayer
         private readonly IProjectRepo _projectRepo;
         private readonly IEmployeeRepo _employeeRepo;
         private readonly IGroupService _groupService;
-        private readonly IEmployeeService _employeeService;
         private readonly INHibernateSessionHelper _sessionhelper;
 
-        public ProjectService(IProjectRepo projectRepo, IEmployeeRepo employeeRepo, IGroupService groupService, IEmployeeService employeeService, INHibernateSessionHelper sessionhelper)
+        public ProjectService(IProjectRepo projectRepo, IEmployeeRepo employeeRepo, IGroupService groupService, INHibernateSessionHelper sessionhelper)
         {
             _projectRepo = projectRepo;
             _employeeRepo = employeeRepo;
             _groupService = groupService;
-            _employeeService = employeeService;
             _sessionhelper = sessionhelper;
         }
 
@@ -69,7 +67,7 @@ namespace ServiceLayer
             using (var session = _sessionhelper.OpenSession())
             {
                 var project = _projectRepo.GetProjectById(id, session);
-                IList<string> empList = _employeeRepo.GetMemberListOfProject(id, session).Select(x => x.Visa).ToList();
+                var empList = _employeeRepo.GetMemberListOfProject(id, session).ToList();
                 return project == null ? null : new AddEditProjectModel
                 {
                     Id = project.Id,
@@ -80,9 +78,9 @@ namespace ServiceLayer
                     Status = project.Status,
                     EndDate = project.EndDate,
                     GroupId = project.GroupId,
-                    MemberString = string.Empty,
+                    MemberString = null,
                     Version = project.Version,
-                    MembersList = (List<string>)empList
+                    MembersList = empList
                 };
             }
         }
@@ -95,7 +93,7 @@ namespace ServiceLayer
         }
         private void CheckGroupID(AddEditProjectModel project)
         {
-            if (_groupService.CheckGroupIdExist((long)project.GroupId) == false)
+            if (_groupService.CheckGroupIdExist(project.GroupId.Value) == false)
             {
                 throw new GroupIDDoesntExistException();
             }
@@ -103,18 +101,20 @@ namespace ServiceLayer
 
         private void CheckProjectNumberDuplicate(AddEditProjectModel project)
         {
-            if (GetProjectById((long)project.Id).ProjectNumber != project.ProjectNumber)
+            var domainProj = GetProjectById(project.Id.Value);
+            if (domainProj.ProjectNumber != project.ProjectNumber)
             {
                 throw new CantChangeProjectNumberException();
             }
         }
-        private void CheckVisaExisted(AddEditProjectModel project, out IList<Employee> membersList)
+        private IList<Employee> CheckVisaExisted(AddEditProjectModel project)
         {
             try
             {
                 using (var session = _sessionhelper.OpenSession())
                 {
-                    membersList = _employeeRepo.GetEmployeesBasedOnVisaList(project.MembersList, session);
+                    var membersList = _employeeRepo.GetEmployeesBasedOnVisaList(project.MembersList, session);
+                    return membersList;
                 }
             }
             catch (InvalidVisaDetectedException e)
@@ -138,18 +138,12 @@ namespace ServiceLayer
             }
         }
 
-        public bool Update(AddEditProjectModel project)
+        public void Update(AddEditProjectModel project)
         {
-            //GroupID exist
             CheckGroupID(project);
-            //check project number duplicate
             CheckProjectNumberDuplicate(project);
-            //check visa exist
-            IList<Employee> membersList = null;
-            CheckVisaExisted(project, out membersList);
-            //check tình trạng
+            IList<Employee> membersList = CheckVisaExisted(project);
             CheckStatus(project);
-            //check enddate
             CheckEndDateSoonerThanStartDate(project);
 
             try
@@ -158,12 +152,12 @@ namespace ServiceLayer
                 {
                     _projectRepo.UpdateProject(new Project()
                     {
-                        Id = (long)project.Id,
+                        Id = project.Id.Value,
                         Name = project.Name,
                         Customer = project.Customer,
-                        GroupId = (long)project.GroupId,
+                        GroupId = project.GroupId.Value,
                         Members = membersList,
-                        ProjectNumber = (short)project.ProjectNumber,
+                        ProjectNumber = project.ProjectNumber.Value,
                         StartDate = project.StartDate,
                         EndDate = project.EndDate,
                         Status = project.Status,
@@ -173,56 +167,42 @@ namespace ServiceLayer
             }
             catch (PersistenceLayer.CustomException.Project.VersionLowerThanCurrentVersionException e)
             {
-                throw new CustomException.ProjectException.VersionLowerThanCurrentVersionException("Version lower than current version", e);
+                throw new CustomException.ProjectException.ProjectHaveBeenEditedByAnotherUserException("Version lower than current version", e);
             }
-            return true;
         }
         private void CheckProjectNumberExist(AddEditProjectModel project)
         {
             var session = _sessionhelper.OpenSession();
-            if (_projectRepo.GetProjectByProjectNumber((short)project.ProjectNumber, session) != null)
+            if (_projectRepo.GetProjectByProjectNumber(project.ProjectNumber.Value, session) != null)
             {
                 throw new ProjectNumberDuplicateException();
             }
         }
-        public bool Create(AddEditProjectModel project)
+        public void Create(AddEditProjectModel project)
         {
-            //GroupID exist
             CheckGroupID(project);
-            //check project number duplicate
             CheckProjectNumberExist(project);
-            //check visa exist
-            IList<Employee> membersList = null;
-            CheckVisaExisted(project, out membersList);
-            //check tình trạng
+            IList<Employee> membersList = CheckVisaExisted(project);
             CheckStatus(project);
-            //check enddate
             CheckEndDateSoonerThanStartDate(project);
-            try
+
+            using (var session = _sessionhelper.OpenSession())
             {
-                using (var session = _sessionhelper.OpenSession())
+                _projectRepo.CreateNewProject(new Project()
                 {
-                    _projectRepo.CreateNewProject(new Project()
-                    {
-                        Name = project.Name,
-                        Customer = project.Customer,
-                        GroupId = (long)project.GroupId,
-                        Members = membersList,
-                        ProjectNumber = (short)project.ProjectNumber,
-                        StartDate = project.StartDate,
-                        EndDate = project.EndDate,
-                        Status = project.Status,
-                        Version = project.Version
-                    }, session);
-                }
+                    Name = project.Name,
+                    Customer = project.Customer,
+                    GroupId = project.GroupId.Value,
+                    Members = membersList,
+                    ProjectNumber = project.ProjectNumber.Value,
+                    StartDate = project.StartDate,
+                    EndDate = project.EndDate,
+                    Status = project.Status,
+                    Version = project.Version
+                }, session);
             }
-            catch (PersistenceLayer.CustomException.Project.VersionLowerThanCurrentVersionException e)
-            {
-                throw new CustomException.ProjectException.VersionLowerThanCurrentVersionException("Version lower than current version", e);
-            }
-            return true;
         }
-        public bool DeleteProject(IList<DeleteProjectRequestModel> projectList)
+        public void DeleteProject(IList<DeleteProjectRequestModel> projectList)
         {
             IDictionary<long, int> projectListDictionary = new Dictionary<long, int>();
             foreach (var item in projectList)
@@ -240,15 +220,15 @@ namespace ServiceLayer
             {
                 throw new CustomException.ProjectException.ProjectNotExistedException("ProjectNotExistedException", e);
             }
-            catch (PersistenceLayer.CustomException.Project.CantDeleteProjectDueToLowerVersionException e)
+            catch (CantDeleteProjectDueToLowerVersionException e)
             {
-                throw new CustomException.ProjectException.CantDeleteProjectDueToLowerVersionException("CantDeleteProjectDueToLowerVersionException", e);
+                throw new CantDeleteProjectBecauseProjectHasBeenChangedException("CantDeleteProjectBecauseProjectHasBeenChangedException", e);
             }
             catch (PersistenceLayer.CustomException.Project.ProjectStatusNotNewException e)
             {
                 throw new CustomException.ProjectException.ProjectStatusNotNewException("ProjectStatusNotNewException", e);
             }
-            return false;
         }
     }
+   
 }

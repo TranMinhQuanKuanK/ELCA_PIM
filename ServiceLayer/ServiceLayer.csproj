@@ -60,10 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomException\ProjectException\ProjectStatusNotNewException.cs" />
-    <Compile Include="CustomException\ProjectException\CantDeleteProjectDueToLowerVersionException.cs" />
+    <Compile Include="CustomException\ProjectException\CantDeleteProjectBecauseProjectHasBeenChangedException.cs" />
     <Compile Include="CustomException\ProjectException\ProjectNotExistedException.cs" />
     <Compile Include="CustomException\ProjectException\ProjectNumberDuplicateException.cs" />
-    <Compile Include="CustomException\ProjectException\VersionLowerThanCurrentVersionException.cs" />
+    <Compile Include="CustomException\ProjectException\ProjectHaveBeenEditedByAnotherUserException.cs" />
     <Compile Include="CustomException\ProjectException\EndDateSoonerThanStartDateException.cs" />
     <Compile Include="CustomException\ProjectException\InvalidStatusException.cs" />
     <Compile Include="CustomException\ProjectException\InvalidVisaException.cs" />

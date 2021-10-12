@@ -16,16 +16,12 @@ namespace PersistenceLayer
 
         public IList<Employee> GetAllEmployees(ISession session)
         {
-
             return session.QueryOver<Employee>().List<Employee>();
-
         }
         public IList<Employee> GetEmployeesBasedOnVisaList(IList<string> visalist, ISession session)
         {
-
-            //  Employee employeeAlias = null;
             var result = session.QueryOver<Employee>().WhereRestrictionOn(k => k.Visa)
-                .IsIn((List<string>)visalist)
+                .IsIn(visalist.ToList<string>())
                 .List<Employee>();
             if (result.Count != visalist.Count)
             {
@@ -36,13 +32,16 @@ namespace PersistenceLayer
                 return result;
             }
         }
-        public IList<Employee> GetMemberListOfProject(long id, ISession session)
+        public IList<string> GetMemberListOfProject(long id, ISession session)
         {
             Project projectAlias = null;
             Employee memberAlias = null;
-            List<Employee> projectList = (List<Employee>)
-            session.QueryOver<Employee>(() => memberAlias).JoinAlias(() => memberAlias.Projects, () => projectAlias)
-            .Where(() => projectAlias.Id == id).List();
+            var projectList = 
+                session.QueryOver<Employee>(() => memberAlias)
+                .JoinAlias(() => memberAlias.Projects, () => projectAlias)
+                .Where(() => projectAlias.Id == id)
+                .Select(c => c.Visa)
+                .List<string>();
             return projectList;
         }
         public Employee GetEmployeeByVisa(string visa, ISession session)

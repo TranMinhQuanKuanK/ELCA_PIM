@@ -109,7 +109,7 @@ namespace PIM_Tool_ELCA.Controllers
 
 
             }
-            catch (VersionLowerThanCurrentVersionException)
+            catch (ProjectHaveBeenEditedByAnotherUserException)
             {
                 ViewBag.HasVersionWarning = true;
                 ModelState.Clear();
@@ -233,7 +233,7 @@ namespace PIM_Tool_ELCA.Controllers
                     : Resource.ProjectList.ProjectListRe.ProjectDoesntExistMultiple_DeleteError
                 });
             }
-            catch (CantDeleteProjectDueToLowerVersionException e)
+            catch (CantDeleteProjectBecauseProjectHasBeenChangedException e)
             {
                 return Json(new DeleteProjectResponseModel()
                 {
