@@ -16,12 +16,12 @@ namespace ServiceLayer
         {
             _groupRepo = groupRepo;
         }
-        public bool CheckGroupIDExist(long groupID) => _groupRepo.GetGroupByID(groupID) != null;
+        public bool CheckGroupIdExist(long groupID) => _groupRepo.GetGroupById(groupID) != null;
 
-        public IList<long> GetGroupIDList()
+        public IList<long> GetGroupIdList()
         {
             List<long> result = new List<long>();
-            _groupRepo.GetAllGroup().ToList().ForEach(x => result.Add(x.ID));
+            _groupRepo.GetAllGroup().ToList().ForEach(x => result.Add(x.Id));
             return result;
         }
     }

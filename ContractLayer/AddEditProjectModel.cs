@@ -11,8 +11,8 @@ namespace ContractLayer
     {
         public AddEditProjectModel()
         {
-            ID = null;
-            GroupID = null;
+            Id = null;
+            GroupId = null;
             ProjectNumber = null;
             Name = "";
             Customer = "";
@@ -28,13 +28,13 @@ namespace ContractLayer
         [Required(ErrorMessageResourceType = typeof(AddEditProjectRe),
             ErrorMessageResourceName = nameof(AddEditProjectRe.IDRequired_ModelError))]
         [Range(0, 9999999999999999999, ErrorMessageResourceType = typeof(AddEditProjectRe), ErrorMessageResourceName = nameof(AddEditProjectRe.IDRange_ModelError))]
-        public long? ID { get; set; }
+        public long? Id { get; set; }
 
         [Display(ResourceType = typeof(AddEditProjectRe), Name = nameof(AddEditProjectRe.GroupID_DisplayName))]
         [Required(ErrorMessageResourceType = typeof(AddEditProjectRe),
             ErrorMessageResourceName = nameof(AddEditProjectRe.GroupIPRequired_ModelError))]
         [Range(0, 9999999999999999999, ErrorMessageResourceType = typeof(AddEditProjectRe), ErrorMessageResourceName = nameof(AddEditProjectRe.GroupIDRange_ModelError))]
-        public long? GroupID { get; set; }
+        public long? GroupId { get; set; }
 
         [Display(ResourceType = typeof(AddEditProjectRe), Name = nameof(AddEditProjectRe.ProjectNumber_DisplayName))]
         [Required(ErrorMessageResourceType = typeof(AddEditProjectRe),

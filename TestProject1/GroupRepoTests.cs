@@ -90,7 +90,7 @@ namespace TestProject1
                     //-----------------------Setup--------------------------
                     expectedGrp1 = new Group
                     {
-                        GroupLeaderID = emp2.ID,
+                        GroupLeaderId = emp2.Id,
                         Version = 1,
                     };
                     session.Save(expectedGrp1);
@@ -98,9 +98,9 @@ namespace TestProject1
                 }
             }
             //-----------------------Test--------------------------
-            var actualGrp = _groupRepo.GetGroupByID(expectedGrp1.ID);
-            Assert.AreEqual(expectedGrp1.ID, actualGrp.ID);
-            Assert.AreEqual(expectedGrp1.GroupLeaderID, actualGrp.GroupLeaderID);
+            var actualGrp = _groupRepo.GetGroupById(expectedGrp1.Id);
+            Assert.AreEqual(expectedGrp1.Id, actualGrp.Id);
+            Assert.AreEqual(expectedGrp1.GroupLeaderId, actualGrp.GroupLeaderId);
             Assert.AreEqual(expectedGrp1.Version, actualGrp.Version);
             //--------------------Cleaning-----------------------------  
         }
@@ -114,14 +114,14 @@ namespace TestProject1
                 {
                     expectedGrp1 = new Group
                     {
-                        GroupLeaderID = emp2.ID,
+                        GroupLeaderId = emp2.Id,
                         Version = 1,
                     };
                     session.Save(expectedGrp1);
                     tx.Commit();
                 }
             }
-            var actualGrp = _groupRepo.GetGroupByID(expectedGrp1.ID + 999);
+            var actualGrp = _groupRepo.GetGroupById(expectedGrp1.Id + 999);
             Assert.IsNull(actualGrp);
         }
         [Test]
@@ -134,17 +134,17 @@ namespace TestProject1
                 {
                     expectedGrp1 = new Group
                     {
-                        GroupLeaderID = emp2.ID,
+                        GroupLeaderId = emp2.Id,
                         Version = 1,
                     };
                      expectedGrp2 = new Group
                      {
-                         GroupLeaderID = emp2.ID,
+                         GroupLeaderId = emp2.Id,
                          Version = 1,
                      };
                     expectedGrp3 = new Group
                     {
-                        GroupLeaderID = emp2.ID,
+                        GroupLeaderId = emp2.Id,
                         Version = 1,
                     };
                     session.Save(expectedGrp1);
@@ -155,16 +155,16 @@ namespace TestProject1
             }
             var actualGroupList = _groupRepo.GetAllGroup();
             Assert.AreEqual(3, actualGroupList.Count);
-            Assert.AreEqual(expectedGrp1.ID, actualGroupList[0].ID);
-            Assert.AreEqual(expectedGrp1.GroupLeaderID, actualGroupList[0].GroupLeaderID);
+            Assert.AreEqual(expectedGrp1.Id, actualGroupList[0].Id);
+            Assert.AreEqual(expectedGrp1.GroupLeaderId, actualGroupList[0].GroupLeaderId);
             Assert.AreEqual(expectedGrp1.Version, actualGroupList[0].Version);
 
-            Assert.AreEqual(expectedGrp2.ID, actualGroupList[1].ID);
-            Assert.AreEqual(expectedGrp2.GroupLeaderID, actualGroupList[1].GroupLeaderID);
+            Assert.AreEqual(expectedGrp2.Id, actualGroupList[1].Id);
+            Assert.AreEqual(expectedGrp2.GroupLeaderId, actualGroupList[1].GroupLeaderId);
             Assert.AreEqual(expectedGrp2.Version, actualGroupList[1].Version);
 
-            Assert.AreEqual(expectedGrp3.ID, actualGroupList[2].ID);
-            Assert.AreEqual(expectedGrp3.GroupLeaderID, actualGroupList[2].GroupLeaderID);
+            Assert.AreEqual(expectedGrp3.Id, actualGroupList[2].Id);
+            Assert.AreEqual(expectedGrp3.GroupLeaderId, actualGroupList[2].GroupLeaderId);
             Assert.AreEqual(expectedGrp3.Version, actualGroupList[2].Version);
         }
     }

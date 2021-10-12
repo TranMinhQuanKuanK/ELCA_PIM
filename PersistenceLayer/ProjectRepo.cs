@@ -57,38 +57,28 @@ namespace PersistenceLayer
                 };
             }
         }
-        public List<Project> GetProjectByIDList(List<long> idList)
+        public List<Project> GetProjectByIdList(List<long> idList)
         {
             using (var session = _sessionhelper.OpenSession())
             {
                 List<Project> result = null;
 
-                result = (List<Project>)session.QueryOver<Project>().Where(item => idList.Contains(item.ID)).List<Project>();
+                result = (List<Project>)session.QueryOver<Project>().Where(item => idList.Contains(item.Id)).List<Project>();
 
                 return result;
             }
         }//saiiiii
-        public Project GetProjectByID(long id)
+        public Project GetProjectById(long id)
         {
 
             using (var session = _sessionhelper.OpenSession())
             {
                 Project result = null;
 
-                result = session.QueryOver<Project>().Where(item => item.ID == id).SingleOrDefault<Project>();
+                result = session.QueryOver<Project>().Where(item => item.Id == id).SingleOrDefault<Project>();
 
                 return result;
             }
-            //List<Project> projList = new List<Project> {
-            //    new Project { ID=1,GroupID = 1, Name="The Morning Ceremony 2332",Customer = "Brigham Malcom" , ProjectNumber=1232, StartDate=new DateTime(2001,11,23),EndDate=new DateTime(2001,2,23),Status="NEW",Version=23},
-            //    new Project { ID=2,GroupID = 2, Name="The Coding Awards",Customer = "Mark Clayton" , ProjectNumber=2332, StartDate=new DateTime(2001,7,23),EndDate=new DateTime(2001,3,23),Status="PLA",Version=22},
-            //    new Project { ID=3,GroupID = 3, Name="Evening Shindig",Customer = "Cecil Baxter" , ProjectNumber=5523, StartDate=new DateTime(2001,6,23),EndDate=new DateTime(2001,4,23),Status="NEW",Version=1},
-            //    new Project { ID=4,GroupID = 4, Name="Associations Now",Customer = "Obadiah Law" , ProjectNumber=6364, StartDate=new DateTime(2001,5,23),EndDate=new DateTime(2001,5,23),Status="FIN",Version=3},
-            //    new Project { ID=5,GroupID = 5, Name="Remembering Our Ancestors",Customer = "Tran Minh Quan" , ProjectNumber=1199, StartDate=new DateTime(2001,4,23),EndDate=new DateTime(2001,6,23),Status="INP",Version=24},
-            //    new Project { ID=6,GroupID = 6, Name="Project Explained",Customer = "Benjamin Glover" , ProjectNumber=8435, StartDate=new DateTime(2001,3,23),EndDate=new DateTime(2001,7,23),Status="PLA",Version=15},
-            //    new Project { ID=7,GroupID = 7, Name="School Leadership 2.0",Customer = "Luke Bourn" , ProjectNumber=8345, StartDate=new DateTime(2001,2,23),EndDate=new DateTime(2001,8,23),Status="NEW",Version=5},
-            //};
-            //return projList.Where(x => x.ID == id).FirstOrDefault();
         }
 
         public Project GetProjectByProjectNumber(short projNumber)
@@ -134,7 +124,7 @@ namespace PersistenceLayer
                 }
             }
         }
-        public void DeleteProject(IDictionary<long, int> projectIDDictionary)
+        public void DeleteProject(IDictionary<long, int> projectIdDictionary)
         {
             using (var session = _sessionhelper.OpenSession())
             {
@@ -142,7 +132,7 @@ namespace PersistenceLayer
                 {
                     try
                     {
-                        foreach (var item in projectIDDictionary)
+                        foreach (var item in projectIdDictionary)
                         {
                             Project _proj = new Project();
                             session.Load(_proj, item.Key);

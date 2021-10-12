@@ -88,8 +88,8 @@ namespace PIM_Tool_ELCA.Controllers
         {
             ViewBag.EditMode = EditMode.Edit;
             ViewBag.VisaList = _employeeService.GetAllMembers();
-            ViewBag.GroupList = _groupService.GetGroupIDList();
-            return View("AddEditProject", _projectService.GetProjectByID(id));
+            ViewBag.GroupList = _groupService.GetGroupIdList();
+            return View("AddEditProject", _projectService.GetProjectById(id));
         }
 
         [HandleError]
@@ -116,29 +116,29 @@ namespace PIM_Tool_ELCA.Controllers
 
                 ViewBag.EditMode = EditMode.Edit;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
-                ViewBag.GroupList = _groupService.GetGroupIDList();
-                var targetProject = _projectService.GetProjectByID((long)projectModel.ID);
+                ViewBag.GroupList = _groupService.GetGroupIdList();
+                var targetProject = _projectService.GetProjectById((long)projectModel.Id);
                 return View("AddEditProject", targetProject);
             }
             catch (GroupIDDoesntExistException)
             {
-                ModelState.AddModelError("GroupID", "GroupID doesn't exist");
+                ModelState.AddModelError(nameof(projectModel.GroupId), "GroupID doesn't exist");
             }
             catch (CantChangeProjectNumberException)
             {
-                ModelState.AddModelError("ProjectNumber", "Can't change project number");
+                ModelState.AddModelError(nameof(projectModel.ProjectNumber), "Can't change project number");
             }
             catch (InvalidVisaException)
             {
-                ModelState.AddModelError("Members", "Invalid member list");
+                ModelState.AddModelError(nameof(projectModel.MemberString), "Invalid member list");
             }
             catch (InvalidStatusException)
             {
-                ModelState.AddModelError("Status", "Invalid status");
+                ModelState.AddModelError(nameof(projectModel.Status), "Invalid status");
             }
             catch (EndDateSoonerThanStartDateException)
             {
-                ModelState.AddModelError("EndDate", "End date can't be sooner than start date.");
+                ModelState.AddModelError(nameof(projectModel.EndDate), "End date can't be sooner than start date.");
             }
 
             if (ModelState.IsValid)
@@ -149,7 +149,7 @@ namespace PIM_Tool_ELCA.Controllers
             {
                 ViewBag.EditMode = EditMode.Edit;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
-                ViewBag.GroupList = _groupService.GetGroupIDList();
+                ViewBag.GroupList = _groupService.GetGroupIdList();
 
                 return View("AddEditProject", projectModel);
             }
@@ -161,18 +161,18 @@ namespace PIM_Tool_ELCA.Controllers
         {
             ViewBag.EditMode = EditMode.New;
             ViewBag.VisaList = _employeeService.GetAllMembers();
-            ViewBag.GroupList = _groupService.GetGroupIDList();
+            ViewBag.GroupList = _groupService.GetGroupIdList();
             return View("AddEditProject", new AddEditProjectModel());
         }
 
         [HttpPost]
         [HandleError]
-        public ActionResult NewProject([Bind(Include = "GroupID,ProjectNumber,Name,Customer,Status,StartDate,EndDate,MemberString,Version")] AddEditProjectModel projectModel)
+        public ActionResult NewProject([Bind(Include = "GroupId,ProjectNumber,Name,Customer,Status,StartDate,EndDate,MemberString,Version")] AddEditProjectModel projectModel)
         {
             try
             {
-                if (ModelState.ContainsKey("ID"))
-                    ModelState["ID"].Errors.Clear();
+                if (ModelState.ContainsKey("Id"))
+                    ModelState["Id"].Errors.Clear();
                 if (ModelState.IsValid)
                 {
                     List<string> memberList = new List<string>(VisaHelper.SplitVisa(projectModel.MemberString));
@@ -183,23 +183,23 @@ namespace PIM_Tool_ELCA.Controllers
             }
             catch (GroupIDDoesntExistException)
             {
-                ModelState.AddModelError("GroupID", "GroupID doesn't exist");
+                ModelState.AddModelError(nameof(projectModel.GroupId), "GroupID doesn't exist");
             }
             catch (ProjectNumberDuplicateException)
             {
-                ModelState.AddModelError("ProjectNumber", Resource.AddEditProject.AddEditProjectRe.DuplicateProjectNumber_ModelError);
+                ModelState.AddModelError(nameof(projectModel.ProjectNumber), Resource.AddEditProject.AddEditProjectRe.DuplicateProjectNumber_ModelError);
             }
             catch (InvalidVisaException)
             {
-                ModelState.AddModelError("Members", "Invalid member list");
+                ModelState.AddModelError(nameof(projectModel.MemberString), "Invalid member list");
             }
             catch (InvalidStatusException)
             {
-                ModelState.AddModelError("Status", "Invalid status");
+                ModelState.AddModelError(nameof(projectModel.Status), "Invalid status");
             }
             catch (EndDateSoonerThanStartDateException)
             {
-                ModelState.AddModelError("EndDate", Resource.AddEditProject.AddEditProjectRe.EndDate_ModelError);
+                ModelState.AddModelError(nameof(projectModel.EndDate), Resource.AddEditProject.AddEditProjectRe.EndDate_ModelError);
             }
 
             if (ModelState.IsValid)
@@ -210,7 +210,7 @@ namespace PIM_Tool_ELCA.Controllers
             {
                 ViewBag.EditMode = EditMode.New;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
-                ViewBag.GroupList = _groupService.GetGroupIDList();
+                ViewBag.GroupList = _groupService.GetGroupIdList();
 
                 return View("AddEditProject", projectModel);
             }

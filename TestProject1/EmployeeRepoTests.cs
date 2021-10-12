@@ -58,12 +58,12 @@ namespace TestProject1
 
                     grp1 = new Group
                     {
-                        GroupLeaderID = emp1.ID,
+                        GroupLeaderId = emp1.Id,
                         Version = 1,
                     };
                     grp2 = new Group
                     {
-                        GroupLeaderID = emp2.ID,
+                        GroupLeaderId = emp2.Id,
                         Version = 1,
                     };
                     session.Save(grp1);
@@ -71,7 +71,7 @@ namespace TestProject1
                   
                     proj1 = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test",
                         Name = "Project Test",
                         ProjectNumber = 1234,
@@ -147,7 +147,7 @@ namespace TestProject1
         [Test]
         public void GetMemberListOfProject_TrueID_ExpectedTrueEmployeeList()
         {
-            var actualtEmpList = _empRepo.GetMemberListOfProject(proj1.ID);
+            var actualtEmpList = _empRepo.GetMemberListOfProject(proj1.Id);
             Assert.IsTrue(actualtEmpList.Count==2);
             Assert.IsTrue(actualtEmpList.Contains(emp1));
             Assert.IsTrue(actualtEmpList.Contains(emp2));
@@ -156,7 +156,7 @@ namespace TestProject1
         public void GetEmployeeByVisa_TrueVisa_ExpectedTrueEmployee()
         {
             var actualtEmp  = _empRepo.GetEmployeeByVisa("HND");
-            Assert.AreEqual(emp3.ID, actualtEmp.ID);
+            Assert.AreEqual(emp3.Id, actualtEmp.Id);
             Assert.AreEqual(emp3.Visa, actualtEmp.Visa);
             Assert.AreEqual(emp3.FirstName, actualtEmp.FirstName);
             Assert.AreEqual(emp3.LastName, actualtEmp.LastName);

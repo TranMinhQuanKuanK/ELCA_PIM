@@ -10,6 +10,5 @@ namespace ServiceLayer.Interface
     public interface IEmployeeService
     {
         List<MemberModel> GetAllMembers();
-        bool CheckExistVisa(string visa);
     }
 }

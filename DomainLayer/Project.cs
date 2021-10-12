@@ -8,8 +8,8 @@ namespace DomainLayer
 {
     public class Project
     {
-        public virtual long ID { get; set; }
-        public virtual long GroupID { get; set; }
+        public virtual long Id { get; set; }
+        public virtual long GroupId { get; set; }
         public virtual short ProjectNumber { get; set; }
         public virtual string Name { get; set; }
         public virtual string Customer { get; set; }

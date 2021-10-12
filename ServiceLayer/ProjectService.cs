@@ -44,7 +44,7 @@ namespace ServiceLayer
 
             result.projectList.ToList().ForEach(x => projectList.Add(new ProjectListModel
             {
-                ID = x.ID,
+                Id = x.Id,
                 Customer = x.Customer,
                 Name = x.Name,
                 ProjectNumber = x.ProjectNumber,
@@ -58,20 +58,20 @@ namespace ServiceLayer
                 resultCount = result.resultCount
             };
         }
-        public AddEditProjectModel GetProjectByID(long id)
+        public AddEditProjectModel GetProjectById(long id)
         {
-            var project = _projectRepo.GetProjectByID(id);
+            var project = _projectRepo.GetProjectById(id);
             IList<string> empList = _employeeRepo.GetMemberListOfProject(id).Select(x => x.Visa).ToList();
             return project == null ? null : new AddEditProjectModel
             {
-                ID = project.ID,
+                Id = project.Id,
                 Customer = project.Customer,
                 Name = project.Name,
                 ProjectNumber = project.ProjectNumber,
                 StartDate = project.StartDate,
                 Status = project.Status,
                 EndDate = project.EndDate,
-                GroupID = project.GroupID,
+                GroupId = project.GroupId,
                 MemberString  = "",//khong can thiet
                 Version = project.Version,
                 MembersList = (List<string>)empList
@@ -80,7 +80,7 @@ namespace ServiceLayer
         public bool CheckProjectNumberExist(short projectNumber) => _projectRepo.GetProjectByProjectNumber(projectNumber) != null;
         private void CheckGroupID(AddEditProjectModel project)
         {
-            if (_groupService.CheckGroupIDExist((long)project.GroupID) == false)
+            if (_groupService.CheckGroupIdExist((long)project.GroupId) == false)
             {
                 throw new GroupIDDoesntExistException();
             }
@@ -88,7 +88,7 @@ namespace ServiceLayer
 
         private void CheckProjectNumberDuplicate(AddEditProjectModel project)
         {
-            if (GetProjectByID((long)project.ID).ProjectNumber != project.ProjectNumber)
+            if (GetProjectById((long)project.Id).ProjectNumber != project.ProjectNumber)
             {
                 throw new CantChangeProjectNumberException();
             }
@@ -138,10 +138,10 @@ namespace ServiceLayer
             {
                 _projectRepo.UpdateProject(new Project()
                 {
-                    ID = (long)project.ID,
+                    Id = (long)project.Id,
                     Name = project.Name,
                     Customer = project.Customer,
-                    GroupID = (long)project.GroupID,
+                    GroupId = (long)project.GroupId,
                     Members = membersList,
                     ProjectNumber = (short)project.ProjectNumber,
                     StartDate = project.StartDate,
@@ -182,7 +182,7 @@ namespace ServiceLayer
                 {
                     Name = project.Name,
                     Customer = project.Customer,
-                    GroupID = (long)project.GroupID,
+                    GroupId = (long)project.GroupId,
                     Members = membersList,
                     ProjectNumber = (short)project.ProjectNumber,
                     StartDate = project.StartDate,

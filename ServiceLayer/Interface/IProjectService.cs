@@ -11,7 +11,7 @@ namespace ServiceLayer.Interface
     public interface IProjectService
     {
         ProjectListPageContractResult GetProjectList(SearchProjectRequestModel request);
-        AddEditProjectModel GetProjectByID(long id);
+        AddEditProjectModel GetProjectById(long id);
         bool CheckProjectNumberExist(short projectNumber);
         bool ValidateProjectModelAndUpdate(AddEditProjectModel project);
         bool ValidateAndCreateNewProject(AddEditProjectModel project);

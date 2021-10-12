@@ -4,9 +4,9 @@
                    namespace="DomainLayer">
 
 	<class name = "Group" table="[GROUP]">
-		<id name = "ID" column="ID" generator="identity">
+		<id name = "Id" column="ID" generator="identity">
 		</id>
 		<version name="Version" column="VERSION" unsaved-value="0" />
-		<property name = "GroupLeaderID" column="GROUP_LEADER_ID"/>
+		<property name = "GroupLeaderId" column="GROUP_LEADER_ID"/>
 	</class>
 </hibernate-mapping>

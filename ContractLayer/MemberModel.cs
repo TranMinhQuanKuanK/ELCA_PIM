@@ -8,7 +8,7 @@ namespace ContractLayer
 {
     public class MemberModel
     {
-        public long ID { get; set; }
+        public long Id { get; set; }
         public string Visa { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

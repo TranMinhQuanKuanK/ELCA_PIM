@@ -56,12 +56,12 @@ namespace TestProject1
                     session.Save(emp3);
                     grp1 = new Group
                     {
-                        GroupLeaderID = emp1.ID,
+                        GroupLeaderId = emp1.Id,
                         Version = 1,
                     };
                     grp2 = new Group
                     {
-                        GroupLeaderID = emp2.ID,
+                        GroupLeaderId = emp2.Id,
                         Version = 1,
                     };
                     session.Save(grp1);
@@ -100,7 +100,7 @@ namespace TestProject1
                 {
                     expectedProj1 = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 1,
@@ -110,7 +110,7 @@ namespace TestProject1
                     };
                     expectedProj2 = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Unique 2",
                         ProjectNumber = 2,
@@ -120,7 +120,7 @@ namespace TestProject1
                     };
                     expectedProj3 = new Project()
                     {
-                        GroupID = grp2.ID,
+                        GroupId = grp2.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Unique 2",
                         ProjectNumber = 3,
@@ -130,7 +130,7 @@ namespace TestProject1
                     };
                     expectedProj4 = new Project()
                     {
-                        GroupID = grp2.ID,
+                        GroupId = grp2.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 2",
                         ProjectNumber = 4,
@@ -140,7 +140,7 @@ namespace TestProject1
                     };
                     expectedProj5 = new Project()
                     {
-                        GroupID = grp2.ID,
+                        GroupId = grp2.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 5",
                         ProjectNumber = 5,
@@ -150,7 +150,7 @@ namespace TestProject1
                     };
                     expectedProj6 = new Project()
                     {
-                        GroupID = grp2.ID,
+                        GroupId = grp2.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 999",
                         ProjectNumber = 6,
@@ -198,7 +198,7 @@ namespace TestProject1
                 {
                     expectedProj1 = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 1234,
@@ -210,7 +210,7 @@ namespace TestProject1
                     tx.Commit();
                 }
             }
-            var actualProj1 = _proRepo.GetProjectByID(expectedProj1.ID);
+            var actualProj1 = _proRepo.GetProjectById(expectedProj1.Id);
             Assert.AreEqual(expectedProj1.ProjectNumber, actualProj1.ProjectNumber);
             Assert.AreEqual(expectedProj1.Name, actualProj1.Name);
             Assert.AreEqual(expectedProj1.StartDate, actualProj1.StartDate);
@@ -227,7 +227,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 1235,
@@ -239,8 +239,8 @@ namespace TestProject1
                     tx.Commit();
                 }
             }
-            var actualProj1 = _proRepo.GetProjectByID(-1);
-            var actualProj2 = _proRepo.GetProjectByID(proj.ID + 100);
+            var actualProj1 = _proRepo.GetProjectById(-1);
+            var actualProj2 = _proRepo.GetProjectById(proj.Id + 100);
             Assert.IsNull(actualProj1);
             Assert.IsNull(actualProj2);
         }
@@ -254,7 +254,7 @@ namespace TestProject1
                 {
                     expectedProj1 = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 6979,
@@ -283,7 +283,7 @@ namespace TestProject1
                 {
                     expectedProj1 = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 7823,
@@ -310,7 +310,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 1112,
@@ -323,8 +323,8 @@ namespace TestProject1
             }
             Project toUpdateProj = new Project()
             {
-                ID = proj.ID,
-                GroupID = grp1.ID,
+                Id = proj.Id,
+                GroupId = grp1.Id,
                 Customer = "Customer Test Updated",
                 Name = "Project Test 1",
                 ProjectNumber = 1112,
@@ -333,7 +333,7 @@ namespace TestProject1
                 Version = proj.Version,
             };
             _proRepo.UpdateProject(toUpdateProj);
-            var actualUpdatedProject = _proRepo.GetProjectByID(proj.ID);
+            var actualUpdatedProject = _proRepo.GetProjectById(proj.Id);
             Assert.AreEqual(toUpdateProj.ProjectNumber, actualUpdatedProject.ProjectNumber);
             Assert.AreEqual(toUpdateProj.Name, actualUpdatedProject.Name);
             Assert.AreEqual(toUpdateProj.StartDate, actualUpdatedProject.StartDate);
@@ -350,7 +350,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 1113,
@@ -363,8 +363,8 @@ namespace TestProject1
             }
             Project toUpdateProj = new Project()
             {
-                ID = proj.ID,
-                GroupID = grp1.ID,
+                Id = proj.Id,
+                GroupId = grp1.Id,
                 Customer = "Customer Test Updated",
                 Name = "Project Test 1",
                 ProjectNumber = 1113,
@@ -383,7 +383,7 @@ namespace TestProject1
 
             Project newProj = new Project()
             {
-                GroupID = grp2.ID,
+                GroupId = grp2.Id,
                 Customer = "Customer Test 2",
                 Name = "Project Test 2",
                 ProjectNumber = 1213,
@@ -408,7 +408,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 4544,
@@ -420,9 +420,9 @@ namespace TestProject1
                 }
             }
             var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
+            deleteProjectList.Add(proj.Id, proj.Version);
             _proRepo.DeleteProject(deleteProjectList);
-            var deletedProject = _proRepo.GetProjectByID(proj.ID);
+            var deletedProject = _proRepo.GetProjectById(proj.Id);
             Assert.IsNull(deletedProject);
         }
         [Test]
@@ -435,7 +435,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 4549,
@@ -447,7 +447,7 @@ namespace TestProject1
                 }
             }
             var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version - 1);
+            deleteProjectList.Add(proj.Id, proj.Version - 1);
             Assert.Throws<CantDeleteProjectDueToLowerVersionException>
                (() => _proRepo.DeleteProject(deleteProjectList));
         }
@@ -461,7 +461,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 7291,
@@ -473,7 +473,7 @@ namespace TestProject1
                 }
             }
             var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
+            deleteProjectList.Add(proj.Id, proj.Version);
             Assert.Throws<ProjectStatusNotNewException>
                (() => _proRepo.DeleteProject(deleteProjectList));
         }
@@ -487,7 +487,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 4241,
@@ -499,7 +499,7 @@ namespace TestProject1
                 }
             }
             var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID+999, proj.Version);
+            deleteProjectList.Add(proj.Id+999, proj.Version);
             Assert.Throws<ProjectNotExistedException>
                (() => _proRepo.DeleteProject(deleteProjectList));
         }
@@ -513,7 +513,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 1291,
@@ -522,7 +522,7 @@ namespace TestProject1
                     };
                     proj2 = new Project()
                     {
-                        GroupID = grp2.ID,
+                        GroupId = grp2.Id,
                         Customer = "Customer Test 2",
                         Name = "Project Test 1",
                         ProjectNumber = 1209,
@@ -531,7 +531,7 @@ namespace TestProject1
                     };
                      proj3 = new Project()
                      {
-                         GroupID = grp1.ID,
+                         GroupId = grp1.Id,
                          Customer = "Customer Test 2",
                          Name = "Project Test 1",
                          ProjectNumber = 1978,
@@ -545,13 +545,13 @@ namespace TestProject1
                 }
             }
             var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
-            deleteProjectList.Add(proj2.ID, proj2.Version);
-            deleteProjectList.Add(proj3.ID, proj3.Version);
+            deleteProjectList.Add(proj.Id, proj.Version);
+            deleteProjectList.Add(proj2.Id, proj2.Version);
+            deleteProjectList.Add(proj3.Id, proj3.Version);
             _proRepo.DeleteProject(deleteProjectList);
-            var deletedProject1 = _proRepo.GetProjectByID(proj.ID);
-            var deletedProject2 = _proRepo.GetProjectByID(proj2.ID);
-            var deletedProject3 = _proRepo.GetProjectByID(proj3.ID);
+            var deletedProject1 = _proRepo.GetProjectById(proj.Id);
+            var deletedProject2 = _proRepo.GetProjectById(proj2.Id);
+            var deletedProject3 = _proRepo.GetProjectById(proj3.Id);
             Assert.IsNull(deletedProject1);
             Assert.IsNull(deletedProject2);
             Assert.IsNull(deletedProject3);
@@ -566,7 +566,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 1411,
@@ -575,7 +575,7 @@ namespace TestProject1
                     };
                     proj2 = new Project()
                     {
-                        GroupID = grp2.ID,
+                        GroupId = grp2.Id,
                         Customer = "Customer Test 2",
                         Name = "Project Test 1",
                         ProjectNumber = 1412,
@@ -584,7 +584,7 @@ namespace TestProject1
                     };
                     proj3 = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 2",
                         Name = "Project Test 1",
                         ProjectNumber = 1413,
@@ -598,9 +598,9 @@ namespace TestProject1
                 }
             }
             var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version - 1);
-            deleteProjectList.Add(proj2.ID, proj2.Version);
-            deleteProjectList.Add(proj3.ID, proj3.Version );
+            deleteProjectList.Add(proj.Id, proj.Version - 1);
+            deleteProjectList.Add(proj2.Id, proj2.Version);
+            deleteProjectList.Add(proj3.Id, proj3.Version );
             Assert.Throws<CantDeleteProjectDueToLowerVersionException>
                (() => _proRepo.DeleteProject(deleteProjectList));
         }
@@ -614,7 +614,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 5411,
@@ -623,7 +623,7 @@ namespace TestProject1
                     };
                     proj2 = new Project()
                     {
-                        GroupID = grp2.ID,
+                        GroupId = grp2.Id,
                         Customer = "Customer Test 2",
                         Name = "Project Test 1",
                         ProjectNumber = 5412,
@@ -632,7 +632,7 @@ namespace TestProject1
                     };
                     proj3 = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 2",
                         Name = "Project Test 1",
                         ProjectNumber = 5413,
@@ -646,9 +646,9 @@ namespace TestProject1
                 }
             }
             var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
-            deleteProjectList.Add(proj2.ID, proj2.Version);
-            deleteProjectList.Add(proj3.ID, proj3.Version);
+            deleteProjectList.Add(proj.Id, proj.Version);
+            deleteProjectList.Add(proj2.Id, proj2.Version);
+            deleteProjectList.Add(proj3.Id, proj3.Version);
             Assert.Throws<ProjectStatusNotNewException>
                (() => _proRepo.DeleteProject(deleteProjectList));
         }
@@ -662,7 +662,7 @@ namespace TestProject1
                 {
                     proj = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 1",
                         Name = "Project Test 1",
                         ProjectNumber = 5492,
@@ -671,7 +671,7 @@ namespace TestProject1
                     };
                     proj2 = new Project()
                     {
-                        GroupID = grp2.ID,
+                        GroupId = grp2.Id,
                         Customer = "Customer Test 2",
                         Name = "Project Test 1",
                         ProjectNumber = 5912,
@@ -680,7 +680,7 @@ namespace TestProject1
                     };
                     proj3 = new Project()
                     {
-                        GroupID = grp1.ID,
+                        GroupId = grp1.Id,
                         Customer = "Customer Test 2",
                         Name = "Project Test 1",
                         ProjectNumber = 9413,
@@ -694,9 +694,9 @@ namespace TestProject1
                 }
             }
             var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.ID, proj.Version);
-            deleteProjectList.Add(proj2.ID + 999, proj2.Version);
-            deleteProjectList.Add(proj3.ID, proj3.Version);
+            deleteProjectList.Add(proj.Id, proj.Version);
+            deleteProjectList.Add(proj2.Id + 999, proj2.Version);
+            deleteProjectList.Add(proj3.Id, proj3.Version);
             Assert.Throws<ProjectNotExistedException>
                (() => _proRepo.DeleteProject(deleteProjectList));
         }

@@ -8,8 +8,8 @@ namespace DomainLayer
 {
     public class Group
     {
-        public virtual long ID { get; set; }
-        public virtual long GroupLeaderID { get; set; }
+        public virtual long Id { get; set; }
+        public virtual long GroupLeaderId { get; set; }
         public virtual int Version { get; set; }
     }
 }

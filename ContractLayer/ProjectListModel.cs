@@ -9,7 +9,7 @@ namespace ContractLayer
 {
     public class ProjectListModel
     {
-        public long ID { get; set; }
+        public long Id { get; set; }
         public short ProjectNumber { get; set; }
         public string Name { get; set; }
         public string Customer { get; set; }

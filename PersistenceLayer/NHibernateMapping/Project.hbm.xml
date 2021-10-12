@@ -4,10 +4,10 @@
                    namespace="DomainLayer">
 
 	<class name = "Project" table="PROJECT" optimistic-lock="version">
-		<id name = "ID" column="ID"  generator="identity">
+		<id name = "Id" column="ID"  generator="identity">
 		</id>
 		<version name="Version" column="VERSION" unsaved-value="0" />
-		<property name = "GroupID" column="GROUP_ID"/>
+		<property name = "GroupId" column="GROUP_ID"/>
 		<property name = "ProjectNumber" column="PROJECT_NUMBER"/>
 		<property name = "Name" column="NAME"/>
 		<property name = "Customer" column="CUSTOMER"/>

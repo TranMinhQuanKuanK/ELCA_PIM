@@ -22,17 +22,12 @@ namespace ServiceLayer
             List<MemberModel> memberList = new List<MemberModel>();
             _employeeRepo.GetAllEmployees().ToList().ForEach(x => memberList.Add(new MemberModel
             {
-                ID = x.ID,
+                Id = x.Id,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 Visa = x.Visa
             }));
             return memberList;
-        }
-
-        public bool CheckExistVisa(string visa)
-        {
-            return _employeeRepo.GetEmployeeByVisa(visa)!=null;
         }
     }
 }

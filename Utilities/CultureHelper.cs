@@ -20,15 +20,12 @@ namespace Utilities
 
             if (_validCultures.Any(c => c.Equals(name, StringComparison.InvariantCultureIgnoreCase)))
             {
-                return GetDefaultCulture();
-            }
-
-            if (_validCultures.Any(c => c.Equals(name, StringComparison.InvariantCultureIgnoreCase)))
-            {
                 return name;
             }
-
-            return GetDefaultCulture();
+            else
+            {
+                return GetDefaultCulture();
+            }
         }
 
         public static string GetDefaultCulture()

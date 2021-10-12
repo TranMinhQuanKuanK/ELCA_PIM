@@ -10,6 +10,6 @@ namespace PersistenceLayer.Interface
     public interface IGroupRepo
     {
          IList<Group> GetAllGroup();
-        Group GetGroupByID(long groupID);
+        Group GetGroupById(long groupID);
     }
 }

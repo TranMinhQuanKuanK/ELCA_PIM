@@ -53,7 +53,7 @@ namespace PersistenceLayer
                 Employee memberAlias = null;
                 List<Employee> projectList = (List<Employee>)
                 session.QueryOver<Employee>(() => memberAlias).JoinAlias(() => memberAlias.Projects, () => projectAlias)
-                .Where(() => projectAlias.ID == id).List();
+                .Where(() => projectAlias.Id == id).List();
                 return projectList;
             }
 

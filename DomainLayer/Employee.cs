@@ -9,7 +9,7 @@ namespace DomainLayer
 {
     public class Employee
     {
-        public virtual long ID { get; set; }
+        public virtual long Id { get; set; }
         public virtual string Visa { get; set; }
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
@@ -20,12 +20,12 @@ namespace DomainLayer
         public override bool Equals(object obj)
         {
             return obj is Employee employee &&
-                   ID == employee.ID;
+                   Id == employee.Id;
         }
 
         public override int GetHashCode()
         {
-            return 1213502048 + ID.GetHashCode();
+            return 1213502048 + Id.GetHashCode();
         }
     }
 }

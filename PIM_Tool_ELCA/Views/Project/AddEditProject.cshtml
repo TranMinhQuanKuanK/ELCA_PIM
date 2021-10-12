@@ -31,7 +31,7 @@
                 @: <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             @:</div>
         }
-        @Html.HiddenFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
         @Html.HiddenFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
 
         <div class="form-group @(ViewData.ModelState["ProjectNumber"] != null && ViewData.ModelState["ProjectNumber"].Errors.Any() ? "has-error" : "")">
@@ -75,7 +75,7 @@
         </div>
 
         <div class="form-group @(ViewData.ModelState["GroupID"] != null && ViewData.ModelState["GroupID"].Errors.Any() ? "has-error" : "")">
-            @Html.LabelFor(model => model.GroupID, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
+            @Html.LabelFor(model => model.GroupId, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
                 @{
                     List<SelectListItem> groupList = new List<SelectListItem>();
@@ -85,17 +85,17 @@
                         {
                             Text = Resource.AddEditProject.AddEditProjectRe.Group_WordLabel + " " + item.ToString(),
                             Value = item.ToString(),
-                            Selected = Model.GroupID == item
+                            Selected = Model.GroupId == item
                         });
                     }
 
                 }
-                @Html.DropDownListFor(model => model.GroupID, groupList,
+                @Html.DropDownListFor(model => model.GroupId, groupList,
      ViewBag.EditMode == EditMode.New
      ? Resource.AddEditProject.AddEditProjectRe.GroupIDHolder_Label
      : ""
      , new { @class = "form-control", style = "width: 200px;" })
-                @Html.ValidationMessageFor(model => model.GroupID, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.GroupId, "", new { @class = "text-danger" })
             </div>
         </div>
 
