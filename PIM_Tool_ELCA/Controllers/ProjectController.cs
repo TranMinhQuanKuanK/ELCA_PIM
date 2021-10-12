@@ -104,7 +104,7 @@ namespace PIM_Tool_ELCA.Controllers
                 {
                     List<string> memberList = new List<string>(VisaHelper.SplitVisa(projectModel.MemberString));
                     projectModel.MembersList = memberList;
-                    _projectService.ValidateProjectModelAndUpdate(projectModel);
+                    _projectService.Update(projectModel);
                 }
 
 
@@ -177,7 +177,7 @@ namespace PIM_Tool_ELCA.Controllers
                 {
                     List<string> memberList = new List<string>(VisaHelper.SplitVisa(projectModel.MemberString));
                     projectModel.MembersList = memberList;
-                    _projectService.ValidateAndCreateNewProject(projectModel);
+                    _projectService.Create(projectModel);
                 }
 
             }

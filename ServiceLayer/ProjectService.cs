@@ -3,6 +3,7 @@ using DomainLayer;
 using NHibernate;
 using PersistenceLayer;
 using PersistenceLayer.CustomException.Project;
+using PersistenceLayer.Helper;
 using PersistenceLayer.Interface;
 using ServiceLayer.CustomException.ProjectException;
 using ServiceLayer.Interface;
@@ -20,64 +21,78 @@ namespace ServiceLayer
         private readonly IEmployeeRepo _employeeRepo;
         private readonly IGroupService _groupService;
         private readonly IEmployeeService _employeeService;
+        private readonly INHibernateSessionHelper _sessionhelper;
 
-        public ProjectService(IProjectRepo projectRepo, IEmployeeRepo employeeRepo, IGroupService groupService, IEmployeeService employeeService)
+        public ProjectService(IProjectRepo projectRepo, IEmployeeRepo employeeRepo, IGroupService groupService, IEmployeeService employeeService, INHibernateSessionHelper sessionhelper)
         {
             _projectRepo = projectRepo;
             _employeeRepo = employeeRepo;
             _groupService = groupService;
             _employeeService = employeeService;
+            _sessionhelper = sessionhelper;
         }
 
         public ProjectListPageContractResult GetProjectList
             (SearchProjectRequestModel request)
         {
-            List<ProjectListModel> projectList = new List<ProjectListModel>();
-            SearchProjectRequest requestDomain = new SearchProjectRequest()
+            using (var session = _sessionhelper.OpenSession())
             {
-                PageIndex = request.PageIndex,
-                PageSize = request.PageSize,
-                SearchStatus = request.SearchStatus,
-                SearchTerm = request.SearchTerm,
-            };
-            ProjectListPageDomainResult result = _projectRepo.GetProjectList(requestDomain);
+                List<ProjectListModel> projectList = new List<ProjectListModel>();
+                SearchProjectRequest requestDomain = new SearchProjectRequest()
+                {
+                    PageIndex = request.PageIndex,
+                    PageSize = request.PageSize,
+                    SearchStatus = request.SearchStatus,
+                    SearchTerm = request.SearchTerm,
+                };
+                ProjectListPageDomainResult result = _projectRepo.GetProjectList(requestDomain,session);
 
-            result.projectList.ToList().ForEach(x => projectList.Add(new ProjectListModel
-            {
-                Id = x.Id,
-                Customer = x.Customer,
-                Name = x.Name,
-                ProjectNumber = x.ProjectNumber,
-                StartDate = x.StartDate,
-                Status = x.Status,
-                Version = x.Version
-            }));
-            return new ProjectListPageContractResult()
-            {
-                projectList = projectList,
-                resultCount = result.resultCount
-            };
+                result.projectList.ToList().ForEach(x => projectList.Add(new ProjectListModel
+                {
+                    Id = x.Id,
+                    Customer = x.Customer,
+                    Name = x.Name,
+                    ProjectNumber = x.ProjectNumber,
+                    StartDate = x.StartDate,
+                    Status = x.Status,
+                    Version = x.Version
+                }));
+                return new ProjectListPageContractResult()
+                {
+                    projectList = projectList,
+                    resultCount = result.resultCount
+                };
+            }
         }
         public AddEditProjectModel GetProjectById(long id)
         {
-            var project = _projectRepo.GetProjectById(id);
-            IList<string> empList = _employeeRepo.GetMemberListOfProject(id).Select(x => x.Visa).ToList();
-            return project == null ? null : new AddEditProjectModel
+            using (var session = _sessionhelper.OpenSession())
             {
-                Id = project.Id,
-                Customer = project.Customer,
-                Name = project.Name,
-                ProjectNumber = project.ProjectNumber,
-                StartDate = project.StartDate,
-                Status = project.Status,
-                EndDate = project.EndDate,
-                GroupId = project.GroupId,
-                MemberString  = "",//khong can thiet
-                Version = project.Version,
-                MembersList = (List<string>)empList
-            };
+                var project = _projectRepo.GetProjectById(id, session);
+                IList<string> empList = _employeeRepo.GetMemberListOfProject(id).Select(x => x.Visa).ToList();
+                return project == null ? null : new AddEditProjectModel
+                {
+                    Id = project.Id,
+                    Customer = project.Customer,
+                    Name = project.Name,
+                    ProjectNumber = project.ProjectNumber,
+                    StartDate = project.StartDate,
+                    Status = project.Status,
+                    EndDate = project.EndDate,
+                    GroupId = project.GroupId,
+                    MemberString = string.Empty,
+                    Version = project.Version,
+                    MembersList = (List<string>)empList
+                };
+            }
         }
-        public bool CheckProjectNumberExist(short projectNumber) => _projectRepo.GetProjectByProjectNumber(projectNumber) != null;
+        public bool CheckProjectNumberExist(short projectNumber)
+        {
+            using (var session = _sessionhelper.OpenSession())
+            {
+                return _projectRepo.GetProjectByProjectNumber(projectNumber, session) != null;
+            }
+        }
         private void CheckGroupID(AddEditProjectModel project)
         {
             if (_groupService.CheckGroupIdExist((long)project.GroupId) == false)
@@ -120,7 +135,7 @@ namespace ServiceLayer
             }
         }
 
-        public bool ValidateProjectModelAndUpdate(AddEditProjectModel project)
+        public bool Update(AddEditProjectModel project)
         {
             //GroupID exist
             CheckGroupID(project);
@@ -136,19 +151,22 @@ namespace ServiceLayer
 
             try
             {
-                _projectRepo.UpdateProject(new Project()
+                using (var session = _sessionhelper.OpenSession())
                 {
-                    Id = (long)project.Id,
-                    Name = project.Name,
-                    Customer = project.Customer,
-                    GroupId = (long)project.GroupId,
-                    Members = membersList,
-                    ProjectNumber = (short)project.ProjectNumber,
-                    StartDate = project.StartDate,
-                    EndDate = project.EndDate,
-                    Status = project.Status,
-                    Version = project.Version
-                }); ;
+                    _projectRepo.UpdateProject(new Project()
+                    {
+                        Id = (long)project.Id,
+                        Name = project.Name,
+                        Customer = project.Customer,
+                        GroupId = (long)project.GroupId,
+                        Members = membersList,
+                        ProjectNumber = (short)project.ProjectNumber,
+                        StartDate = project.StartDate,
+                        EndDate = project.EndDate,
+                        Status = project.Status,
+                        Version = project.Version
+                    }, session); 
+                }
             }
             catch (PersistenceLayer.CustomException.Project.VersionLowerThanCurrentVersionException e)
             {
@@ -158,12 +176,13 @@ namespace ServiceLayer
         }
         private void CheckProjectNumberExist(AddEditProjectModel project)
         {
-            if (_projectRepo.GetProjectByProjectNumber((short)project.ProjectNumber) != null)
+            var session = _sessionhelper.OpenSession();
+            if (_projectRepo.GetProjectByProjectNumber((short)project.ProjectNumber, session) != null)
             {
                 throw new ProjectNumberDuplicateException();
             }
         }
-        public bool ValidateAndCreateNewProject(AddEditProjectModel project)
+        public bool Create(AddEditProjectModel project)
         {
             //GroupID exist
             CheckGroupID(project);
@@ -178,18 +197,21 @@ namespace ServiceLayer
             CheckEndDateSoonerThanStartDate(project);
             try
             {
-                _projectRepo.CreateNewProject(new Project()
+                using (var session = _sessionhelper.OpenSession())
                 {
-                    Name = project.Name,
-                    Customer = project.Customer,
-                    GroupId = (long)project.GroupId,
-                    Members = membersList,
-                    ProjectNumber = (short)project.ProjectNumber,
-                    StartDate = project.StartDate,
-                    EndDate = project.EndDate,
-                    Status = project.Status,
-                    Version = project.Version
-                });
+                    _projectRepo.CreateNewProject(new Project()
+                    {
+                        Name = project.Name,
+                        Customer = project.Customer,
+                        GroupId = (long)project.GroupId,
+                        Members = membersList,
+                        ProjectNumber = (short)project.ProjectNumber,
+                        StartDate = project.StartDate,
+                        EndDate = project.EndDate,
+                        Status = project.Status,
+                        Version = project.Version
+                    }, session);
+                }
             }
             catch (PersistenceLayer.CustomException.Project.VersionLowerThanCurrentVersionException e)
             {
@@ -206,7 +228,10 @@ namespace ServiceLayer
             }
             try
             {
-                _projectRepo.DeleteProject(projectListDictionary);
+                using (var session = _sessionhelper.OpenSession())
+                {
+                    _projectRepo.DeleteProject(projectListDictionary, session);
+                }
             }
             catch (PersistenceLayer.CustomException.Project.ProjectNotExistedException e)
             {

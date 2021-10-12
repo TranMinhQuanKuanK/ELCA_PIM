@@ -13,8 +13,8 @@ namespace ServiceLayer.Interface
         ProjectListPageContractResult GetProjectList(SearchProjectRequestModel request);
         AddEditProjectModel GetProjectById(long id);
         bool CheckProjectNumberExist(short projectNumber);
-        bool ValidateProjectModelAndUpdate(AddEditProjectModel project);
-        bool ValidateAndCreateNewProject(AddEditProjectModel project);
+        bool Update(AddEditProjectModel project);
+        bool Create(AddEditProjectModel project);
         bool DeleteProject(IList<DeleteProjectRequestModel> projectList);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DomainLayer;
+using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace PersistenceLayer.Interface
 {
     public interface IProjectRepo
     {
-        ProjectListPageDomainResult GetProjectList(SearchProjectRequest request);
-        Project GetProjectById(long id);
-        Project GetProjectByProjectNumber(short projNumber);
-        void UpdateProject(Project project);
-        void CreateNewProject(Project project);
-        void DeleteProject(IDictionary<long, int> projectIDDictionary);
+        ProjectListPageDomainResult GetProjectList(SearchProjectRequest request, ISession session);
+        Project GetProjectById(long id, ISession session);
+        Project GetProjectByProjectNumber(short projNumber, ISession session);
+        void UpdateProject(Project project, ISession session);
+        void CreateNewProject(Project project, ISession session);
+        void DeleteProject(IDictionary<long, int> projectIDDictionary, ISession session);
     }
 }

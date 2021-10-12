@@ -32,9 +32,9 @@ namespace PersistenceLayer
                 criteria.Add(Expression.Like("Status", $"%{searchStatus}%"));
 
         }
-        public ProjectListPageDomainResult GetProjectList(SearchProjectRequest request)
+        public ProjectListPageDomainResult GetProjectList(SearchProjectRequest request, ISession session)
         {
-            using (var session = _sessionhelper.OpenSession())
+            using (session)
             {
                 IList<Project> result = new List<Project>();
                 request.SearchTerm = request.SearchTerm == null ? "" : request.SearchTerm.Trim().ToUpper();
@@ -57,9 +57,9 @@ namespace PersistenceLayer
                 };
             }
         }
-        public List<Project> GetProjectByIdList(List<long> idList)
+        public List<Project> GetProjectByIdList(List<long> idList, ISession session)
         {
-            using (var session = _sessionhelper.OpenSession())
+            using (session)
             {
                 List<Project> result = null;
 
@@ -68,10 +68,10 @@ namespace PersistenceLayer
                 return result;
             }
         }//saiiiii
-        public Project GetProjectById(long id)
+        public Project GetProjectById(long id, ISession session)
         {
 
-            using (var session = _sessionhelper.OpenSession())
+            using (session)
             {
                 Project result = null;
 
@@ -81,9 +81,9 @@ namespace PersistenceLayer
             }
         }
 
-        public Project GetProjectByProjectNumber(short projNumber)
+        public Project GetProjectByProjectNumber(short projNumber, ISession session)
         {
-            using (var session = _sessionhelper.OpenSession())
+            using (session)
             {
                 Project result = null;
 
@@ -95,9 +95,9 @@ namespace PersistenceLayer
             }
         }
 
-        public void UpdateProject(Project project)
+        public void UpdateProject(Project project, ISession session)
         {
-            using (var session = _sessionhelper.OpenSession())
+            using (session)
             {
                 using (var tx = session.BeginTransaction())
                 {
@@ -113,9 +113,9 @@ namespace PersistenceLayer
                 }
             }
         }
-        public void CreateNewProject(Project project)
+        public void CreateNewProject(Project project, ISession session)
         {
-            using (var session = _sessionhelper.OpenSession())
+            using (session)
             {
                 using (var tx = session.BeginTransaction())
                 {
@@ -124,9 +124,9 @@ namespace PersistenceLayer
                 }
             }
         }
-        public void DeleteProject(IDictionary<long, int> projectIdDictionary)
+        public void DeleteProject(IDictionary<long, int> projectIdDictionary, ISession session)
         {
-            using (var session = _sessionhelper.OpenSession())
+            using (session)
             {
                 using (var tx = session.BeginTransaction())
                 {
