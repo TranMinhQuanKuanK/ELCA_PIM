@@ -57,8 +57,8 @@ namespace ServiceLayer
                     }).ToList();
                 return new ProjectListPageContractResult()
                 {
-                    projectList = projectList,
-                    resultCount = result.resultCount
+                    ProjectList = projectList,
+                    ResultCount = result.resultCount
                 };
             }
         }

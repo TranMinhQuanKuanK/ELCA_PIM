@@ -160,7 +160,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">@Resource.ProjectList.ProjectListRe.Close_WordLabel</button>
-                <button type="button" class="btn btn-danger" onclick="obSubmitDeleteProject()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
+                <button type="button" class="btn btn-danger" onclick="onSubmitDeleteProject()">@Resource.ProjectList.ProjectListRe.Delete_WordLabel</button>
             </div>
         </div>
     </div>
@@ -212,7 +212,6 @@
 <script>
     var currentProjectSelectedForDeleteID;
     var deleteList = [];
-    var itemcount = 0;
 
     function onCloseErrorWarningModal() {
         window.location.href = '/Project/ProjectList';
@@ -226,14 +225,12 @@
 
     function handleResponseDelete() {
         document.getElementById("spinning-submit-form").classList.remove("is-active");
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState == 4 && this.status === 200) {
             let responseObject = JSON.parse(this.responseText);
             if (responseObject.hasError == true) {
-                //modal hiện error message!
-                console.log(responseObject.errMessage);
                 document.getElementById("delete-error-warning-text").innerHTML = responseObject.errMessage;
                 $('#delete-error-modal').modal('show');
-            } else if (responseObject.hasError == false) {
+            } else if (responseObject.hasError === false) {
                 $('#confirmMultipleDeleteModal').modal('hide');
                 window.location.href = '/Project/ProjectList';
             }
@@ -242,7 +239,7 @@
         }
     }
 
-    function obSubmitDeleteProject() {
+    function onSubmitDeleteProject() {
 
         let xhttp = new XMLHttpRequest();
         let JSONObject = [currentProjectSelectedForDeleteID];
@@ -263,10 +260,9 @@
 
     function handleChange(checkbox, id, version) {
         const projectObj = { ID: id, Version: version };
-        if (checkbox.checked == true) {
+        if (checkbox.checked === true) {
             deleteList.push(projectObj);
-            itemcount++;
-            document.getElementById("item-count").innerHTML = itemcount;
+            document.getElementById("item-count").innerHTML = deleteList.length;
             document.getElementById("delete-selected-button").style.visibility = "visible";
 
         } else {
@@ -274,9 +270,8 @@
             if (index > -1) {
                 deleteList.splice(index, 1);
             }
-            itemcount--;
-            document.getElementById("item-count").innerHTML = itemcount;
-            if (itemcount == 0) {
+            document.getElementById("item-count").innerHTML = deleteList.length;
+            if (deleteList.length === 0) {
                 document.getElementById("delete-selected-button").style.visibility = "hidden";
             }
 
@@ -284,9 +279,9 @@
     }
 
     function onSubmitDeleteMultiple() {
-        if (itemcount > 0) {
+        if (deleteList.length > 0) {
             let xhttp = new XMLHttpRequest();
-            let JSONObject = [...deleteList];
+            let JSONObject = deleteList;
             xhttp.open("POST", "/Project/DeleteProject", true);
             xhttp.onreadystatechange = handleResponseDelete;
             xhttp.setRequestHeader("Content-type", "application/json");

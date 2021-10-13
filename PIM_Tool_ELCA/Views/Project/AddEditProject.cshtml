@@ -77,24 +77,11 @@
         <div class="form-group @(ViewData.ModelState["GroupID"] != null && ViewData.ModelState["GroupID"].Errors.Any() ? "has-error" : "")">
             @Html.LabelFor(model => model.GroupId, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
-                @{
-                    List<SelectListItem> groupList = new List<SelectListItem>();
-                    foreach (var item in ViewBag.GroupList)
-                    {
-                        groupList.Add(new SelectListItem
-                        {
-                            Text = Resource.AddEditProject.AddEditProjectRe.Group_WordLabel + " " + item.ToString(),
-                            Value = item.ToString(),
-                            Selected = Model.GroupId == item
-                        });
-                    }
-
-                }
-                @Html.DropDownListFor(model => model.GroupId, groupList,
-     ViewBag.EditMode == EditMode.New
-     ? Resource.AddEditProject.AddEditProjectRe.GroupIDHolder_Label
-     : ""
-     , new { @class = "form-control", style = "width: 200px;" })
+                @Html.DropDownListFor(model => model.GroupId, (List<SelectListItem>)ViewBag.GroupList,
+                 ViewBag.EditMode == EditMode.New
+                 ? Resource.AddEditProject.AddEditProjectRe.GroupIDHolder_Label
+                 : ""
+                 , new { @class = "form-control", style = "width: 200px;" })
                 @Html.ValidationMessageFor(model => model.GroupId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -144,7 +131,7 @@
                         Selected = Model.Status == "FIN"
                     });
                 }
-                @Html.DropDownListFor(model => model.Status, statusList, "" , new { @class = "form-control", style = "width: 200px;" })
+                @Html.DropDownListFor(model => model.Status, statusList, "", new { @class = "form-control", style = "width: 200px;" })
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -154,12 +141,12 @@
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-4", style = "text-align: left; padding-left:34px;" })
                 <div class="col-md-8">
                     @Html.TextBoxFor(model => model.StartDate, new
-               {
-                   @type = "date",
-                   @class = "form-control datepicker",
-                   @style = "width: 200px;",
-                   @Value = Model.StartDate.ToString("yyyy-MM-dd")
-               })
+                   {
+                       @type = "date",
+                       @class = "form-control datepicker",
+                       @style = "width: 200px;",
+                       @Value = Model.StartDate.ToString("yyyy-MM-dd")
+                   })
                     @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                 </div>
 
@@ -169,12 +156,12 @@
                 @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-9">
                     @Html.TextBoxFor(model => model.EndDate, new
-               {
-                   @type = "date",
-                   @class = "form-control datepicker",
-                   @style = "width: 200px;",
-                   @Value = Model.EndDate?.ToString("yyyy-MM-dd")
-               })
+                   {
+                       @type = "date",
+                       @class = "form-control datepicker",
+                       @style = "width: 200px;",
+                       @Value = Model.EndDate?.ToString("yyyy-MM-dd")
+                   })
                     @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                 </div>
             </div>

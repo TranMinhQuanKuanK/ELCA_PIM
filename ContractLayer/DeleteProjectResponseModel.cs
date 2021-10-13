@@ -8,8 +8,8 @@ namespace ContractLayer
 {
     public class DeleteProjectResponseModel
     {
-        public bool hasError { get; set; }
-        public string errMessage { get; set; }
+        public bool HasError { get; set; }
+        public string ErrMessage { get; set; }
      
     }
 }

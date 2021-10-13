@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Style/util.css" rel="stylesheet" />
@@ -28,11 +28,12 @@
         </div>
         <div id="header-right">
             <div class="right-header-item" id="language-choose">
-                <a style="color: @(ViewBag.CurrentLanguage.Name=="vi-VN"?"blue":"black");align-self: flex-end; margin: 0 5px 0 5px;"
-                   href="@(@ViewBag.CurrentLanguage.Name!="vi-VN"?"/Language?culture=vi-VN":"#") ">VI</a>
+                @{ var currentLanguage = ViewBag.CurrentLanguage; }  
+                <a style="color: @(currentLanguage.Name=="vi-VN"?"blue":"black");align-self: flex-end; margin: 0 5px 0 5px;"
+                   href="@(currentLanguage.Name!="vi-VN"?"/Language?culture=vi-VN":"#") ">VI</a>
                 <span style=" align-self: flex-end; color: black; font-weight:bold;">|</span>
-                <a style=" color: @(ViewBag.CurrentLanguage.Name=="en-US" ?"blue":"black"); align-self: flex-end; margin: 0 5px 0 5px;"
-                   href="@(@ViewBag.CurrentLanguage.Name!="en-US"?"/Language?culture=en-US":"#")">EN</a>
+                <a style=" color: @(currentLanguage.Name=="en-US" ?"blue":"black"); align-self: flex-end; margin: 0 5px 0 5px;"
+                   href="@(currentLanguage.Name!="en-US"?"/Language?culture=en-US":"#")">EN</a>
             </div>
             <div class="right-header-item" id="help-header">
                 <a style="color: rgb(168, 168, 168); align-self: flex-end;">@Resource.Layout.LayoutRe.Help_Label</a>
@@ -50,7 +51,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("scripts", required: false)
 
 </body>

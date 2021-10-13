@@ -49,9 +49,9 @@ namespace PIM_Tool_ELCA.Controllers
                 SearchStatus = Session["SearchStatus"] != null ? Session["SearchStatus"].ToString() : string.Empty,
             };
             var result = _projectService.GetProjectList(request);
-            ViewBag.ProjectList = result.projectList.ToList<ProjectListModel>();
+            ViewBag.ProjectList = result.ProjectList.ToList<ProjectListModel>();
 
-            ViewBag.ResultCount = result.resultCount;
+            ViewBag.ResultCount = result.ResultCount;
             ViewBag.CurrentPage = 1;
             ViewBag.CurrentPageSize = 5;
             return View("ProjectList");
@@ -75,20 +75,33 @@ namespace PIM_Tool_ELCA.Controllers
 
             var result = _projectService.GetProjectList(request);
 
-            ViewBag.ProjectList = result.projectList
+            ViewBag.ProjectList = result.ProjectList
                 .OrderBy(proj => proj.ProjectNumber).ToList<ProjectListModel>();
-            ViewBag.ResultCount = result.resultCount;
+            ViewBag.ResultCount = result.ResultCount;
             ViewBag.CurrentPage = searchProjectModel.PageIndex;
             ViewBag.CurrentPageSize = searchProjectModel.PageSize;
             return View("ProjectList");
         }
-
-        [HandleError]
-        public ActionResult EditProject(int id)
+        private List<SelectListItem> BuildGroupList(IList<long> groupIdList, long id)
+        {
+            List<SelectListItem> groupList = new List<SelectListItem>();
+            foreach (var item in groupIdList)
+            {
+                groupList.Add(new SelectListItem
+                {
+                    Text = Resource.AddEditProject.AddEditProjectRe.Group_WordLabel + " " + item.ToString(),
+                    Value = item.ToString(),
+                    Selected = id == item
+                });
+            }
+            return groupList;
+        }
+            [HandleError]
+        public ActionResult EditProject(long id)
         {
             ViewBag.EditMode = EditMode.Edit;
             ViewBag.VisaList = _employeeService.GetAllMembers();
-            ViewBag.GroupList = _groupService.GetGroupIdList();
+            ViewBag.GroupList = BuildGroupList(_groupService.GetGroupIdList(), id);
             return View("AddEditProject", _projectService.GetProjectById(id));
         }
 
@@ -116,7 +129,7 @@ namespace PIM_Tool_ELCA.Controllers
 
                 ViewBag.EditMode = EditMode.Edit;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
-                ViewBag.GroupList = _groupService.GetGroupIdList();
+                ViewBag.GroupList = BuildGroupList(_groupService.GetGroupIdList(), projectModel.Id.Value);
                 var targetProject = _projectService.GetProjectById((long)projectModel.Id);
                 return View("AddEditProject", targetProject);
             }
@@ -149,7 +162,7 @@ namespace PIM_Tool_ELCA.Controllers
             {
                 ViewBag.EditMode = EditMode.Edit;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
-                ViewBag.GroupList = _groupService.GetGroupIdList();
+                ViewBag.GroupList = BuildGroupList(_groupService.GetGroupIdList(), projectModel.Id.Value);
 
                 return View("AddEditProject", projectModel);
             }
@@ -161,7 +174,7 @@ namespace PIM_Tool_ELCA.Controllers
         {
             ViewBag.EditMode = EditMode.New;
             ViewBag.VisaList = _employeeService.GetAllMembers();
-            ViewBag.GroupList = _groupService.GetGroupIdList();
+            ViewBag.GroupList = BuildGroupList(_groupService.GetGroupIdList(), 0);
             return View("AddEditProject", new AddEditProjectModel());
         }
 
@@ -210,7 +223,7 @@ namespace PIM_Tool_ELCA.Controllers
             {
                 ViewBag.EditMode = EditMode.New;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
-                ViewBag.GroupList = _groupService.GetGroupIdList();
+                ViewBag.GroupList = BuildGroupList(_groupService.GetGroupIdList(),0);
 
                 return View("AddEditProject", projectModel);
             }
@@ -227,8 +240,8 @@ namespace PIM_Tool_ELCA.Controllers
             {
                 return Json(new DeleteProjectResponseModel()
                 {
-                    hasError = true,
-                    errMessage = projectList.Count == 1
+                    HasError = true,
+                    ErrMessage = projectList.Count == 1
                     ? Resource.ProjectList.ProjectListRe.ProjectDoesntExist_DeleteError
                     : Resource.ProjectList.ProjectListRe.ProjectDoesntExistMultiple_DeleteError
                 });
@@ -237,8 +250,8 @@ namespace PIM_Tool_ELCA.Controllers
             {
                 return Json(new DeleteProjectResponseModel()
                 {
-                    hasError = true,
-                    errMessage = projectList.Count == 1
+                    HasError = true,
+                    ErrMessage = projectList.Count == 1
                     ? Resource.ProjectList.ProjectListRe.ProjectHasLowerVersion_DeleteError
                     : Resource.ProjectList.ProjectListRe.ProjectHasLowerVersionMultiple_DeleteError
                 });
@@ -247,8 +260,8 @@ namespace PIM_Tool_ELCA.Controllers
             {
                 return Json(new DeleteProjectResponseModel()
                 {
-                    hasError = true,
-                    errMessage = "Project status invalid"
+                    HasError = true,
+                    ErrMessage = "Project status invalid"
                 });
             }
             catch (Exception e)
@@ -257,8 +270,8 @@ namespace PIM_Tool_ELCA.Controllers
             }
             return Json(new DeleteProjectResponseModel()
             {
-                hasError = false,
-                errMessage = "No error "
+                HasError = false,
+                ErrMessage = "No error "
             });
         }
     }

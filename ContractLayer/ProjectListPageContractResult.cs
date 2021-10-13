@@ -8,7 +8,7 @@ namespace ContractLayer
 {
     public class ProjectListPageContractResult
     {
-        public IList<ProjectListModel> projectList { get; set; }
-        public int resultCount { get; set; }
+        public IList<ProjectListModel> ProjectList { get; set; }
+        public int ResultCount { get; set; }
     }
 }
