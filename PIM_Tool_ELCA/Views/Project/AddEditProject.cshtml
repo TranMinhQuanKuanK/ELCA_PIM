@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using PIM_Tool_ELCA.Controllers;
-<h3 style="padding: 0 0 15px 0; width:800px; border-bottom:2px rgb(168, 168, 168) solid">
+<h3 id="add-edit-header">
     @(ViewBag.EditMode == EditMode.New
         ? Resource.AddEditProject.AddEditProjectRe.AddNewProjectHeader_Label
         : Resource.AddEditProject.AddEditProjectRe.EditProjectHeader_Label )
@@ -16,7 +16,7 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal" style="margin: 20px 0 20px 0;">
+    <div class="form-horizontal" id="main-edit-new-form">
         @if (!ViewContext.ViewData.ModelState.IsValid)
         {
             @:<div class="alert alert-danger alert-dismissable" role="alert">
@@ -131,7 +131,7 @@
             </div>
         </div>
 
-        <div class="form-group" style="padding:0;margin: -25px 0 -20px 0;">
+        <div class="form-group" id="start-end-date-parent-div">
             <div class="form-group col-md-6 @(ViewData.ModelState["StartDate"] != null && ViewData.ModelState["StartDate"].Errors.Any() ? "has-error" : "")">
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-4", style = "text-align: left; padding-left:34px;" })
                 <div class="col-md-8">
@@ -144,10 +144,9 @@
                    })
                     @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                 </div>
-
             </div>
 
-            <div style="margin-left: -120px;" class="form-group col-md-6 @(ViewData.ModelState["EndDate"] != null && ViewData.ModelState["EndDate"].Errors.Any() ? "has-error" : "")">
+            <div id="end-date-div" class="form-group col-md-6 @(ViewData.ModelState["EndDate"] != null && ViewData.ModelState["EndDate"].Errors.Any() ? "has-error" : "")">
                 @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-9">
                     @Html.TextBoxFor(model => model.EndDate, new
@@ -164,12 +163,12 @@
 
 
     </div>
-    <div style="width: 800px; border-top: 2px rgb(168, 168, 168) solid; padding: 20px 0 0 0; " class="form-group">
-        <div style="display:inline-block;width: 585px;text-align:right;padding: 0 20px 0 0;">
-            <input type="button" style="width:160px;" value="@Resource.AddEditProject.AddEditProjectRe.CanButton_Label" class="btn btn-default" onclick="location.href = '/Project';">
+    <div id="cancel-submit-button-div" class="form-group">
+        <div  id="cancel-button-div">
+            <input type="button" id ="cancel-button"value="@Resource.AddEditProject.AddEditProjectRe.CanButton_Label" class="btn btn-default" onclick="location.href = '/Project';">
         </div>
-        <div style="display: inline-block;width: 205px;text-align: right;">
-            <input type="button" style="width: 160px;" value="@( ViewBag.EditMode == EditMode.New ? Resource.AddEditProject.AddEditProjectRe.SubmitButtonForCreateNew_Label : Resource.AddEditProject.AddEditProjectRe.SubmitButtonForEdit_Label)" class="btn btn-primary" onclick="appendVisaBeforeSubmit();">
+        <div id="submit-button-div">
+            <input type="button" id ="submit-button" value="@( ViewBag.EditMode == EditMode.New ? Resource.AddEditProject.AddEditProjectRe.SubmitButtonForCreateNew_Label : Resource.AddEditProject.AddEditProjectRe.SubmitButtonForEdit_Label)" class="btn btn-primary" onclick="appendVisaBeforeSubmit();">
         </div>
     </div>
 }

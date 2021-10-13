@@ -1,0 +1,52 @@
+﻿body {
+}
+
+#add-edit-header {
+    padding: 0 0 15px 0;
+    width: 800px;
+    border-bottom: 2px rgb(168, 168, 168) solid;
+}
+
+#main-edit-new-form {
+    margin: 20px 0 20px 0;
+}
+
+#member-select {
+    width: 600px;
+}
+
+#start-end-date-parent-div {
+    padding: 0;
+    margin: -25px 0 -20px 0;
+}
+
+#end-date-div {
+    margin-left: -120px;
+}
+
+#cancel-submit-button-div {
+    width: 800px;
+    border-top: 2px rgb(168, 168, 168) solid;
+    padding: 20px 0 0 0;
+}
+
+#cancel-button-div {
+    display: inline-block;
+    width: 585px;
+    text-align: right;
+    padding: 0 20px 0 0;
+}
+
+#submit-button-div {
+    display: inline-block;
+    width: 205px;
+    text-align: right;
+}
+
+#cancel-button {
+    width: 160px;
+}
+
+#submit-button {
+    width: 160px;
+}

@@ -7,8 +7,6 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link href="~/Style/util.css" rel="stylesheet" />
-    <link href="~/Style/main.css" rel="stylesheet" />
     <link href="~/Style/ErrorPageStyle.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -23,7 +21,7 @@
                 <img src="~/Content/ELCALogo.png" alt="Elca logo" style="width: 8vh; height: 8vh; align-self:flex-end; margin: 3px">
             </div>
             <div id="pim-brand">
-                <a style="color: rgb(84, 84, 84); font-weight: bold; ">@Resource.Layout.LayoutRe.Brand_Label</a>
+                <a style="color: rgb(84, 84, 84); font-weight: bold;" href="/Project">@Resource.Layout.LayoutRe.Brand_Label</a>
             </div>
         </div>
         <div id="header-right">

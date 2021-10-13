@@ -101,7 +101,6 @@
                         <td style="text-align:center;" @(x.Status == "NEW" ? $"onclick=onDeleteProject({x.Id},{x.Version}) " : "" ) class="project-delete-column">
                             @if (x.Status == "NEW")
                             {
-                                //style="font-size: 20px; font-weight: bold; color: rgb(255, 89, 89);
                                 <i class="fa fa-trash-o delete-icon"></i>
                             }
                         </td>
