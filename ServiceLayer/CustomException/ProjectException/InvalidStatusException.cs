@@ -12,17 +12,5 @@ namespace ServiceLayer.CustomException.ProjectException
         public InvalidStatusException()
         {
         }
-
-        public InvalidStatusException(string message) : base(message)
-        {
-        }
-
-        public InvalidStatusException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected InvalidStatusException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

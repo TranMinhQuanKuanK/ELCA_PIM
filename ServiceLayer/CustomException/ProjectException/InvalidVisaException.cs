@@ -13,15 +13,7 @@ namespace ServiceLayer.CustomException.ProjectException
         {
         }
 
-        public InvalidVisaException(string message) : base(message)
-        {
-        }
-
         public InvalidVisaException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected InvalidVisaException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

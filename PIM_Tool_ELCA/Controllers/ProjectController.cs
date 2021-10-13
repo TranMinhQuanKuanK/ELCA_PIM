@@ -96,7 +96,7 @@ namespace PIM_Tool_ELCA.Controllers
             }
             return groupList;
         }
-            [HandleError]
+        [HandleError]
         public ActionResult EditProject(long id)
         {
             ViewBag.EditMode = EditMode.Edit;
@@ -223,7 +223,7 @@ namespace PIM_Tool_ELCA.Controllers
             {
                 ViewBag.EditMode = EditMode.New;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
-                ViewBag.GroupList = BuildGroupList(_groupService.GetGroupIdList(),0);
+                ViewBag.GroupList = BuildGroupList(_groupService.GetGroupIdList(), 0);
 
                 return View("AddEditProject", projectModel);
             }
@@ -232,41 +232,39 @@ namespace PIM_Tool_ELCA.Controllers
         [HttpPost]
         public ActionResult DeleteProject(List<DeleteProjectRequestModel> projectList)
         {
+            bool isMultiple = true;
             try
             {
                 _projectService.DeleteProject(projectList);
+                isMultiple = projectList.Count == 1;
             }
-            catch (ProjectNotExistedException e)
+            catch (ProjectNotExistedException)
             {
                 return Json(new DeleteProjectResponseModel()
                 {
                     HasError = true,
-                    ErrMessage = projectList.Count == 1
+                    ErrMessage = isMultiple
                     ? Resource.ProjectList.ProjectListRe.ProjectDoesntExist_DeleteError
                     : Resource.ProjectList.ProjectListRe.ProjectDoesntExistMultiple_DeleteError
                 });
             }
-            catch (CantDeleteProjectBecauseProjectHasBeenChangedException e)
+            catch (CantDeleteProjectBecauseProjectHasBeenChangedException)
             {
                 return Json(new DeleteProjectResponseModel()
                 {
                     HasError = true,
-                    ErrMessage = projectList.Count == 1
+                    ErrMessage = isMultiple
                     ? Resource.ProjectList.ProjectListRe.ProjectHasLowerVersion_DeleteError
                     : Resource.ProjectList.ProjectListRe.ProjectHasLowerVersionMultiple_DeleteError
                 });
             }
-            catch (ProjectStatusNotNewException e)
+            catch (ProjectStatusNotNewException)
             {
                 return Json(new DeleteProjectResponseModel()
                 {
                     HasError = true,
                     ErrMessage = "Project status invalid"
                 });
-            }
-            catch (Exception e)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
             return Json(new DeleteProjectResponseModel()
             {

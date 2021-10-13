@@ -13,15 +13,7 @@ namespace ServiceLayer.CustomException.ProjectException
         {
         }
 
-        public ProjectStatusNotNewException(string message) : base(message)
-        {
-        }
-
         public ProjectStatusNotNewException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ProjectStatusNotNewException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

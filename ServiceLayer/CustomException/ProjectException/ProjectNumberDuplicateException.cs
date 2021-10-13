@@ -12,17 +12,5 @@ namespace ServiceLayer.CustomException.ProjectException
         public ProjectNumberDuplicateException()
         {
         }
-
-        public ProjectNumberDuplicateException(string message) : base(message)
-        {
-        }
-
-        public ProjectNumberDuplicateException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ProjectNumberDuplicateException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

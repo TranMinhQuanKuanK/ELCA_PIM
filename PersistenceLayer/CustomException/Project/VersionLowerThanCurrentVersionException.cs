@@ -13,15 +13,7 @@ namespace PersistenceLayer.CustomException.Project
         {
         }
 
-        public VersionLowerThanCurrentVersionException(string message) : base(message)
-        {
-        }
-
         public VersionLowerThanCurrentVersionException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected VersionLowerThanCurrentVersionException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

@@ -12,17 +12,5 @@ namespace PersistenceLayer.CustomException.Project
         public CantDeleteProjectDueToLowerVersionException()
         {
         }
-
-        public CantDeleteProjectDueToLowerVersionException(string message) : base(message)
-        {
-        }
-
-        public CantDeleteProjectDueToLowerVersionException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected CantDeleteProjectDueToLowerVersionException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

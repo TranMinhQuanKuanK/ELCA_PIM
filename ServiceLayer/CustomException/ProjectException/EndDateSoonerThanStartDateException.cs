@@ -12,17 +12,5 @@ namespace ServiceLayer.CustomException.ProjectException
         public EndDateSoonerThanStartDateException()
         {
         }
-
-        public EndDateSoonerThanStartDateException(string message) : base(message)
-        {
-        }
-
-        public EndDateSoonerThanStartDateException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected EndDateSoonerThanStartDateException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

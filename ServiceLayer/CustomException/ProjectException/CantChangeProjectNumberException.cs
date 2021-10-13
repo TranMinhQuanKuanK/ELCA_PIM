@@ -12,17 +12,5 @@ namespace ServiceLayer.CustomException.ProjectException
         public CantChangeProjectNumberException()
         {
         }
-
-        public CantChangeProjectNumberException(string message) : base(message)
-        {
-        }
-
-        public CantChangeProjectNumberException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected CantChangeProjectNumberException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

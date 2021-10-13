@@ -13,15 +13,7 @@ namespace ServiceLayer.CustomException.ProjectException
         {
         }
 
-        public ProjectNotExistedException(string message) : base(message)
-        {
-        }
-
         public ProjectNotExistedException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ProjectNotExistedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

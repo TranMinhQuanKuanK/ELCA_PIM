@@ -12,15 +12,5 @@ namespace ServiceLayer.CustomException.ProjectException
         public GroupIDDoesntExistException()
         {
         }
-
-        public GroupIDDoesntExistException(string message) : base(message)
-        {
-        }
-
-        public GroupIDDoesntExistException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        
     }
 }

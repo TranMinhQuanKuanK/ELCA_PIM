@@ -49,10 +49,6 @@
                     @Html.HiddenFor(model => model.ProjectNumber,
                           new { htmlAttributes = new { @class = "form-control", style = "width:200px;" } })
                 }
-                @*@Html.EditorFor(model => model.ProjectNumber, ViewBag.EditMode == "New" ?
-                    new { @class = "form-control", style = "width:200px;" } :
-                    new { @class = "form-control", style = "width:200px;", @disabled = "disabled" })*@
-
 
                 @Html.ValidationMessageFor(model => model.ProjectNumber, "", new { @class = "text-danger" })
             </div>
@@ -90,7 +86,6 @@
             @Html.LabelFor(model => model.MemberString, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.MemberString, new { name = "Members" })
-                @*@Html.EditorFor(model => model.Members, new { htmlAttributes = new { @class = "form-control" } })*@
                 <select id="member-select" class="info__select" multiple style="width:600px;">
                     @foreach (var item in ViewBag.VisaList)
                     {
@@ -204,9 +199,7 @@
     }
     function appendVisaBeforeSubmit() {
         var selectedVisa = memberSelect.selected();
-        var memberString = "";
-        selectedVisa.forEach(element => memberString += element+",");
-        document.getElementById("MemberString").value = memberString;
+        //document.getElementById("MemberString").value = selectedVisa.join(',');
 
         $("#main-form").submit();
     }

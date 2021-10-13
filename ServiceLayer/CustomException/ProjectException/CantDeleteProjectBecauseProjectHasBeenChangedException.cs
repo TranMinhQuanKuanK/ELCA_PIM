@@ -13,15 +13,7 @@ namespace ServiceLayer.CustomException.ProjectException
         {
         }
 
-        public CantDeleteProjectBecauseProjectHasBeenChangedException(string message) : base(message)
-        {
-        }
-
         public CantDeleteProjectBecauseProjectHasBeenChangedException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected CantDeleteProjectBecauseProjectHasBeenChangedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }
