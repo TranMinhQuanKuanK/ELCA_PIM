@@ -14,11 +14,12 @@ namespace PersistenceLayer
     {
         public Group GetGroupById(long groupId, ISession session)
         {
-            return session.QueryOver<Group>().Where(gr => gr.Id == groupId).SingleOrDefault<Group>();
+            return session.Get<Group>(groupId);
         }
         public IList<Group> GetAllGroup(ISession session)
         {
-            return session.QueryOver<Group>().List<Group>();
+            return session.QueryOver<Group>()
+                .List<Group>();
         }
     }
 }

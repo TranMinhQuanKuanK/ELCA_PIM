@@ -46,33 +46,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="AddEditProject\AddEditProjectRe.en-US.Designer.cs">
-      <DependentUpon>AddEditProjectRe.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="AddEditProject\AddEditProjectRe.Designer.cs">
       <DependentUpon>AddEditProjectRe.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="DefaultMessage\DefaultMessageRe.en-US.Designer.cs">
-      <DependentUpon>DefaultMessageRe.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="DefaultMessage\DefaultMessageRe.vi-VN.Designer.cs">
-      <DependentUpon>DefaultMessageRe.vi-VN.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="DefaultMessage\DefaultMessageRe.Designer.cs">
-      <DependentUpon>DefaultMessageRe.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Layout\LayoutRe.en-US.Designer.cs">
-      <DependentUpon>LayoutRe.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -91,11 +66,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ProjectList\ProjectListRe.en-US.Designer.cs">
-      <DependentUpon>ProjectListRe.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="ProjectList\ProjectListRe.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -108,29 +78,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AddEditProjectRe.vi-VN.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddEditProject\AddEditProjectRe.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AddEditProjectRe.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="AddEditProject\AddEditProjectRe.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AddEditProjectRe.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DefaultMessage\DefaultMessageRe.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>DefaultMessageRe.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DefaultMessage\DefaultMessageRe.vi-VN.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>DefaultMessageRe.vi-VN.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DefaultMessage\DefaultMessageRe.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>DefaultMessageRe.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Layout\LayoutRe.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LayoutRe.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Layout\LayoutRe.vi-VN.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -143,10 +93,6 @@
     <EmbeddedResource Include="ProjectList\ProjectListRe.vi-VN.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProjectListRe.vi-VN.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProjectList\ProjectListRe.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ProjectListRe.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectList\ProjectListRe.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

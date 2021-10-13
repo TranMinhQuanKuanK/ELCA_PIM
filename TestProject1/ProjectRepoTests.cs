@@ -13,13 +13,13 @@ namespace TestProject1
     {
         NHibernateSessionHelper helper;
         ProjectRepo _proRepo;
-        static Employee emp1;
-        static Employee emp2;
-        static Employee emp3;
-        static Group grp1;
-        static Group grp2;
+        private Employee emp1;
+        private Employee emp2;
+        private Employee emp3;
+        private Group grp1;
+        private Group grp2;
         [OneTimeSetUp]
-        public void Setup()
+        public void OneTimeSetUp()
         {
             helper = new NHibernateSessionHelper();
             _proRepo = new ProjectRepo(helper);
@@ -71,7 +71,7 @@ namespace TestProject1
             }
         }
         [OneTimeTearDown]
-        public void TearDown()
+        public void OneTimeTearDown()
         {
             using (ISession session = helper.OpenSession())
             {
@@ -245,7 +245,7 @@ namespace TestProject1
             Assert.IsNull(actualProj2);
         }
         [Test]
-        public void GetProjectByProjectNumber_ValidGroupID_ExpectedTrueProject()
+        public void GetProjectByProjectNumber_ValidProjectNumber_ExpectedTrueProject()
         {
             Project expectedProj1;
             using (ISession session = helper.OpenSession())
@@ -274,7 +274,7 @@ namespace TestProject1
             Assert.AreEqual(expectedProj1.Status, actualProj1.Status);
         }
         [Test]
-        public void GetProjectByProjectNumber_WrongGroupID_ExpectedNullt()
+        public void GetProjectByProjectNumber_WrongProjectNumber_ExpectedNull()
         {
             Project expectedProj1;
             using (ISession session = helper.OpenSession())
@@ -316,6 +316,7 @@ namespace TestProject1
                         ProjectNumber = 1112,
                         StartDate = new System.DateTime(2012, 1, 1),
                         Status = "NEW",
+                        Version = 10
                     };
                     session.Save(proj);
                     tx.Commit();
@@ -330,7 +331,6 @@ namespace TestProject1
                 ProjectNumber = 1112,
                 StartDate = new System.DateTime(2012, 1, 1),
                 Status = "NEW",
-                Version = proj.Version,
             };
             _proRepo.UpdateProject(toUpdateProj);
             var actualUpdatedProject = _proRepo.GetProjectById(proj.Id);
@@ -339,6 +339,8 @@ namespace TestProject1
             Assert.AreEqual(toUpdateProj.StartDate, actualUpdatedProject.StartDate);
             Assert.AreEqual(toUpdateProj.EndDate, actualUpdatedProject.EndDate);
             Assert.AreEqual(toUpdateProj.Status, actualUpdatedProject.Status);
+            Assert.AreEqual(toUpdateProj.Status, actualUpdatedProject.Status);
+            Assert.AreEqual(11, actualUpdatedProject.Status);
         }
         [Test]
         public void UpdateProject_VersionLowerProject_ExpectedException()

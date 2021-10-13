@@ -144,11 +144,7 @@
                         Selected = Model.Status == "FIN"
                     });
                 }
-                @Html.DropDownListFor(model => model.Status, statusList,
-                            ViewBag.EditMode == EditMode.New
-                            ? Resource.AddEditProject.AddEditProjectRe.ProjectStatusHolder_Label
-                            : ""
-                            , new { @class = "form-control", style = "width: 200px;" })
+                @Html.DropDownListFor(model => model.Status, statusList, "" , new { @class = "form-control", style = "width: 200px;" })
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
         </div>

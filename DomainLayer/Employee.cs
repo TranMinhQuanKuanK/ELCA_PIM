@@ -17,15 +17,5 @@ namespace DomainLayer
         public virtual int Version { get; set; }
         public virtual IList<Project> Projects { get; set; }
 
-        public override bool Equals(object obj)
-        {
-            return obj is Employee employee &&
-                   Id == employee.Id;
-        }
-
-        public override int GetHashCode()
-        {
-            return 1213502048 + Id.GetHashCode();
-        }
     }
 }

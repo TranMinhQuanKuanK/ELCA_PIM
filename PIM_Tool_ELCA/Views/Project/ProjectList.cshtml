@@ -9,15 +9,14 @@
     <input id="search-input" type="text" class="form-control"
            name="SearchTerm" placeholder="@Resource.ProjectList.ProjectListRe.CategoryFilterHolder_Label"
            value="@Session["SearchTerm"]">
-    @*<select id="status-search-input" class="form-control" name="Status">
-            <option value="ALL">@Resource.ProjectList.ProjectListRe.ProjectStatusHolder_Label</option>
-            <option value="NEW">@Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label</option>
-            <option value="PLA">@Resource.ProjectList.ProjectListRe.ProjectStatusPlanned_Label</option>
-            <option value="INP">@Resource.ProjectList.ProjectListRe.ProjectStatusInProgress_Label</option>
-            <option value="FIN">@Resource.ProjectList.ProjectListRe.ProjectStatusFinished_Label</option>
-        </select>*@
     @{
         List<SelectListItem> statusList = new List<SelectListItem>();
+        statusList.Add(new SelectListItem
+        {
+            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusHolder_Label,
+            Value = "",
+            Selected = Session["SearchStatus"]?.ToString() == "",
+        });
         statusList.Add(new SelectListItem
         {
             Text = @Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label,
@@ -43,7 +42,7 @@
             Selected = Session["SearchStatus"]?.ToString() == "FIN"
         });
     }
-    @Html.DropDownList("SearchStatus", statusList, @Resource.ProjectList.ProjectListRe.ProjectStatusHolder_Label, new { @class = "form-control", id = "status-search-input" })
+    @Html.DropDownList("SearchStatus", statusList, new { @class = "form-control", id = "status-search-input" })
     <input id="submit-button" class="btn btn-primary" type="submit" value="@Resource.ProjectList.ProjectListRe.Search_Label" />
     <input id="page-index-input" type="hidden" name="PageIndex" value="1">
     <input id="page-size-input" type="hidden" name="PageSize" value="5">
@@ -257,9 +256,9 @@
         document.getElementById("spinning-submit-form").classList.add("is-active");
     }
 
-    function onDeleteProject(_id,_version) {
+    function onDeleteProject(_id, _version) {
         $('#confirmDeleteModal').modal('show');
-        currentProjectSelectedForDeleteID = { ID : _id, Version : _version } ;
+        currentProjectSelectedForDeleteID = { ID: _id, Version: _version };
     }
 
     function handleChange(checkbox, id, version) {

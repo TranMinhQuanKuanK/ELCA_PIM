@@ -13,12 +13,12 @@ namespace TestProject1
     {
         NHibernateSessionHelper helper;
         EmployeeRepo _empRepo;
-        static Employee emp1;
-        static Employee emp2;
-        static Employee emp3;
-        static Group grp1;
-        static Group grp2;
-        static Project proj1;
+        private Employee emp1;
+        private Employee emp2;
+        private Employee emp3;
+        private Group grp1;
+        private Group grp2;
+        private Project proj1;
         [OneTimeSetUp]
         public void Setup()
         {

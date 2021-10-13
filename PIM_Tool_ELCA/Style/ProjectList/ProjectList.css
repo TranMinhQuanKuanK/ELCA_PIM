@@ -1,6 +1,8 @@
 ﻿body {
 }
-
+option[value=""] {
+    display: none;
+}
 table {
     color: rgb(105, 105, 105);
     margin: 5px;
