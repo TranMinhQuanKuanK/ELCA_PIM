@@ -11,6 +11,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Utilities;
+using Utilities.Constant;
 
 namespace PIM_Tool_ELCA.Controllers
 {
@@ -49,8 +50,8 @@ namespace PIM_Tool_ELCA.Controllers
             };
             var result = _projectService.GetProjectList(request);
             ViewBag.ProjectList = result.ProjectList.ToList<ProjectListModel>();
-            ViewBag.StatusList = BuildStatusList(string.Empty);
-
+            var searchStatus = Session[ProjectSearchConstant.SearchStatusSessionVar]?.ToString();
+            ViewBag.StatusList = BuildStatusListForProjectListPage(searchStatus);
             ViewBag.ResultCount = result.ResultCount;
             ViewBag.CurrentPage = ProjectSearchConstant.DefaultPageIndex;
             ViewBag.CurrentPageSize = ProjectSearchConstant.DefaultPageSize;
@@ -74,10 +75,10 @@ namespace PIM_Tool_ELCA.Controllers
             };
 
             var result = _projectService.GetProjectList(request);
-
             ViewBag.ProjectList = result.ProjectList
                 .OrderBy(proj => proj.ProjectNumber).ToList<ProjectListModel>();
-            ViewBag.StatusList = BuildStatusList(string.Empty);
+            var searchStatus = Session[ProjectSearchConstant.SearchStatusSessionVar]?.ToString();
+            ViewBag.StatusList = BuildStatusListForProjectListPage(searchStatus);
             ViewBag.ResultCount = result.ResultCount;
             ViewBag.CurrentPage = searchProjectModel.PageIndex;
             ViewBag.CurrentPageSize = searchProjectModel.PageSize;
@@ -123,6 +124,19 @@ namespace PIM_Tool_ELCA.Controllers
                 Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusFinished_Label,
                 Value = ProjectStatusConstant.Finished,
                 Selected = status == ProjectStatusConstant.Finished
+            });
+            return statusList;
+        }
+
+        private List<SelectListItem> BuildStatusListForProjectListPage(string status)
+        {
+            List<SelectListItem> statusList = new List<SelectListItem>();
+            statusList = BuildStatusList(status);
+            statusList.Add(new SelectListItem
+            {
+                Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusHolder_Label,
+                Value = string.Empty,
+                Selected = String.IsNullOrEmpty(status) ? true : false
             });
             return statusList;
         }
@@ -198,7 +212,7 @@ namespace PIM_Tool_ELCA.Controllers
                 ViewBag.EditMode = EditMode.Edit;
                 ViewBag.VisaList = _employeeService.GetAllMembers();
                 ViewBag.GroupList = BuildGroupList(groupIdList, projectModel.Id.Value);
-
+                ViewBag.StatusList = BuildStatusList(projectModel.Status);
                 return View("AddEditProject", projectModel);
             }
         }
@@ -211,6 +225,7 @@ namespace PIM_Tool_ELCA.Controllers
             ViewBag.EditMode = EditMode.New;
             ViewBag.VisaList = _employeeService.GetAllMembers();
             ViewBag.GroupList = BuildGroupList(groupIdList, 0);
+            ViewBag.StatusList = BuildStatusList(string.Empty);
             return View("AddEditProject", new AddEditProjectModel());
         }
 
@@ -227,8 +242,8 @@ namespace PIM_Tool_ELCA.Controllers
                     List<string> memberList = new List<string>(VisaHelper.SplitVisa(projectModel.MemberString));
                     projectModel.MembersList = memberList;
                     _projectService.Create(projectModel);
+                    return RedirectToAction("Index");
                 }
-
             }
             catch (GroupIDDoesntExistException)
             {
@@ -250,19 +265,12 @@ namespace PIM_Tool_ELCA.Controllers
             {
                 ModelState.AddModelError(nameof(projectModel.EndDate), Resource.AddEditProject.AddEditProjectRe.EndDate_ModelError);
             }
-
-            if (ModelState.IsValid)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                var groupIdList = _groupService.GetGroupIdList();
-                ViewBag.EditMode = EditMode.New;
-                ViewBag.VisaList = _employeeService.GetAllMembers();
-                ViewBag.GroupList = BuildGroupList(groupIdList, 0);
-                return View("AddEditProject", projectModel);
-            }
+            var groupIdList = _groupService.GetGroupIdList();
+            ViewBag.EditMode = EditMode.New;
+            ViewBag.VisaList = _employeeService.GetAllMembers();
+            ViewBag.GroupList = BuildGroupList(groupIdList, 0);
+            ViewBag.StatusList = BuildStatusList(projectModel.Status);
+            return View("AddEditProject", projectModel);
         }
 
         [HttpPost]

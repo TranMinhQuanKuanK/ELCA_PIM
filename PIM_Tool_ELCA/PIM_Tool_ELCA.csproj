@@ -161,7 +161,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constant\CookieConstant.cs" />
     <Compile Include="Constant\ProjectSearchConstant.cs" />
-    <Compile Include="Constant\ProjectStatusConstant.cs" />
     <Compile Include="Controllers\CustomController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />

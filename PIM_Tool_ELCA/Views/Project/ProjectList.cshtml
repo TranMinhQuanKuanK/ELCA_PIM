@@ -2,13 +2,14 @@
 @{
     ViewBag.Title = "Project List";
 }
-@using PIM_Tool_ELCA.Constant;
+@using Utilities.Constant;
 <h2 id="project-list-label">@Resource.ProjectList.ProjectListRe.ProjectList_Label</h2>
 <div id="spinning-submit-form" class="loader loader-default" data-text="@Resource.ProjectList.ProjectListRe.DeletingProject_SpinningMessage"></div>
 <form id="search-form" action="/Project/SearchProject" method="get">
     <input id="search-input" type="text" class="form-control"
            name="SearchTerm" placeholder="@Resource.ProjectList.ProjectListRe.CategoryFilterHolder_Label"
            value="@Session["SearchTerm"]">
+
     @Html.DropDownList("SearchStatus", (List<SelectListItem>)ViewBag.StatusList, new { @class = "form-control", id = "status-search-input" })
     <input id="submit-button" class="btn btn-primary" type="submit" value="@Resource.ProjectList.ProjectListRe.Search_Label" />
     <input id="page-index-input" type="hidden" name="PageIndex" value="1">

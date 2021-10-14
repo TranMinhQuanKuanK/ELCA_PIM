@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Resource.AddEditProject;
+using Utilities.Constant;
+
 namespace ContractLayer
 {
     public class AddEditProjectModel
@@ -16,7 +18,7 @@ namespace ContractLayer
             ProjectNumber = null;
             Name = string.Empty;
             Customer = string.Empty;
-            Status = "NEW";
+            Status = ProjectStatusConstant.New;
             StartDate = DateTime.Now;
             EndDate = null;
             MemberString = string.Empty;
