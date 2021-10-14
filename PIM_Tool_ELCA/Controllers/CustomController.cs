@@ -23,7 +23,7 @@ namespace PIM_Tool_ELCA.Controllers
         }
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
         {
-            string cultureName = null;
+            string cultureName;
 
             HttpCookie cultureCookie = Request.Cookies[CookieName];
             if (cultureCookie != null)

@@ -32,7 +32,7 @@
         <div id="header-right">
             <div class="right-header-item" id="language-choose">
                 @{ var currentLanguage = ViewBag.CurrentLanguage; }
-                <a style="color: @currentLanguage.Name=="vi-VN"?"blue":"black");align-self: flex-end; margin: 0 5px 0 5px;"
+                <a style="color: @(currentLanguage.Name=="vi-VN"?"blue":"black");align-self: flex-end; margin: 0 5px 0 5px;"
                    href="@(currentLanguage.Name!="vi-VN"?"/Language?culture=vi-VN":"#") ">VI</a>
                 <span style=" align-self: flex-end; color: black; font-weight:bold;">|</span>
                 <a style=" color: @(currentLanguage.Name=="en-US" ?"blue":"black"); align-self: flex-end; margin: 0 5px 0 5px;"

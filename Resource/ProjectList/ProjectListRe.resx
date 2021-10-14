@@ -119,7 +119,6 @@
   </resheader>
   <data name="CategoryFilterHolder_Label" xml:space="preserve">
     <value>Project number, name, customer name</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="Close_WordLabel" xml:space="preserve">
     <value>Close</value>
@@ -135,15 +134,12 @@
   </data>
   <data name="Customer_Header" xml:space="preserve">
     <value>Customer</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="DeleteSelectedItems_Label" xml:space="preserve">
     <value>Delete selected items</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="Delete_Header" xml:space="preserve">
     <value>Delete</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="Delete_WordLabel" xml:space="preserve">
     <value>Delete</value>
@@ -153,19 +149,15 @@
   </data>
   <data name="ID_Header" xml:space="preserve">
     <value>ID</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ItemSelected_Label" xml:space="preserve">
     <value>items selected</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="Name_Header" xml:space="preserve">
     <value>Name</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ProjectCantBeDeleted_Label" xml:space="preserve">
     <value>The following projects couldn't be deleted due to its status:</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ProjectDoesntExistMultiple_DeleteError" xml:space="preserve">
     <value>Couldn't complete the action because some of the projects don't exist anymore. Please refresh to update new information.</value>
@@ -181,49 +173,38 @@
   </data>
   <data name="ProjectList_Label" xml:space="preserve">
     <value>Project List</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ProjectNumber_Header" xml:space="preserve">
     <value>Number</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ProjectsFoundLabel" xml:space="preserve">
     <value>Projects found: </value>
   </data>
   <data name="ProjectStatusFinished_Label" xml:space="preserve">
     <value>Finished</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ProjectStatusHolder_Label" xml:space="preserve">
     <value>Project Status</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ProjectStatusInProgress_Label" xml:space="preserve">
     <value>In progress</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ProjectStatusNew_Label" xml:space="preserve">
     <value>New</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ProjectStatusPlanned_Label" xml:space="preserve">
     <value>Planned</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="ResetSearch_Label" xml:space="preserve">
     <value>Reset Search</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="Search_Label" xml:space="preserve">
     <value>Search</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="StartDate_Header" xml:space="preserve">
     <value>Start Date</value>
-    <comment>ProjectList Page</comment>
   </data>
   <data name="Status_Header" xml:space="preserve">
     <value>Status</value>
-    <comment>ProjectList Page</comment>
   </data>
 </root>
