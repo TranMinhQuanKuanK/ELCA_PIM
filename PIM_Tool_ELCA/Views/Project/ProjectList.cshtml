@@ -2,47 +2,14 @@
 @{
     ViewBag.Title = "Project List";
 }
-
+@using PIM_Tool_ELCA.Constant;
 <h2 id="project-list-label">@Resource.ProjectList.ProjectListRe.ProjectList_Label</h2>
 <div id="spinning-submit-form" class="loader loader-default" data-text="@Resource.ProjectList.ProjectListRe.DeletingProject_SpinningMessage"></div>
 <form id="search-form" action="/Project/SearchProject" method="get">
     <input id="search-input" type="text" class="form-control"
            name="SearchTerm" placeholder="@Resource.ProjectList.ProjectListRe.CategoryFilterHolder_Label"
            value="@Session["SearchTerm"]">
-    @{
-        List<SelectListItem> statusList = new List<SelectListItem>();
-        statusList.Add(new SelectListItem
-        {
-            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusHolder_Label,
-            Value = "",
-            Selected = Session["SearchStatus"]?.ToString() == "",
-        });
-        statusList.Add(new SelectListItem
-        {
-            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label,
-            Value = "NEW",
-            Selected = Session["SearchStatus"]?.ToString() == "NEW"
-        });
-        statusList.Add(new SelectListItem
-        {
-            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusPlanned_Label,
-            Value = "PLA",
-            Selected = Session["SearchStatus"]?.ToString() == "PLA"
-        });
-        statusList.Add(new SelectListItem
-        {
-            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusInProgress_Label,
-            Value = "INP",
-            Selected = Session["SearchStatus"]?.ToString() == "INP"
-        });
-        statusList.Add(new SelectListItem
-        {
-            Text = @Resource.ProjectList.ProjectListRe.ProjectStatusFinished_Label,
-            Value = "FIN",
-            Selected = Session["SearchStatus"]?.ToString() == "FIN"
-        });
-    }
-    @Html.DropDownList("SearchStatus", statusList, new { @class = "form-control", id = "status-search-input" })
+    @Html.DropDownList("SearchStatus", (List<SelectListItem>)ViewBag.StatusList, new { @class = "form-control", id = "status-search-input" })
     <input id="submit-button" class="btn btn-primary" type="submit" value="@Resource.ProjectList.ProjectListRe.Search_Label" />
     <input id="page-index-input" type="hidden" name="PageIndex" value="1">
     <input id="page-size-input" type="hidden" name="PageSize" value="5">
@@ -72,22 +39,22 @@
                 @foreach (var x in ViewBag.ProjectList)
                 {
                     <tr>
-                        <td><input type="checkbox" @(x.Status != "NEW" ? "disabled" : "") onchange='handleChange(this,@x.Id,@x.Version)'></td>
+                        <td><input type="checkbox" @(x.Status != ProjectStatusConstant.New ? "disabled" : string.Empty) onchange='handleChange(this,@x.Id,@x.Version)'></td>
                         <td class="project-number-column"><a href="/Project/EditProject/@x.Id">@x.ProjectNumber</a></td>
                         <td>@x.Name</td>
                         <td>
                             @switch (x.Status)
                             {
-                                case "NEW":
+                                case ProjectStatusConstant.New:
                                     @Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label;
                                     break;
-                                case "PLA":
+                                case ProjectStatusConstant.Planned:
                                     @Resource.ProjectList.ProjectListRe.ProjectStatusPlanned_Label;
                                     break;
-                                case "INP":
+                                case ProjectStatusConstant.InProgress:
                                     @Resource.ProjectList.ProjectListRe.ProjectStatusInProgress_Label;
                                     break;
-                                case "FIN":
+                                case ProjectStatusConstant.Finished:
                                     @Resource.ProjectList.ProjectListRe.ProjectStatusFinished_Label;
                                     break;
                             }
@@ -98,8 +65,8 @@
 
                         <td>@x.Customer</td>
                         <td>@Convert.ToDateTime(x.StartDate).ToString("dd.MM.yyyy")</td>
-                        <td style="text-align:center;" @(x.Status == "NEW" ? $"onclick=onDeleteProject({x.Id},{x.Version}) " : "" ) class="project-delete-column">
-                            @if (x.Status == "NEW")
+                        <td style="text-align:center;" @(x.Status == ProjectStatusConstant.New ? $"onclick=onDeleteProject({x.Id},{x.Version}) " : string.Empty ) class="project-delete-column">
+                            @if (x.Status == ProjectStatusConstant.New)
                             {
                                 <i class="fa fa-trash-o delete-icon"></i>
                             }
@@ -134,7 +101,7 @@
         </li>
         @for (int i = 0; i < (int)Math.Ceiling((decimal)ViewBag.ResultCount / ViewBag.CurrentPageSize); i++)
         {
-            <li class="page-item @(ViewBag.CurrentPage==i+1 ? "active" : "")" onclick="pageSelect(@(i+1))"><a class="page-link">@(i+1)</a></li>
+            <li class="page-item @(ViewBag.CurrentPage==i+1 ? "active" : string.Empty)" onclick="pageSelect(@(i+1))"><a class="page-link">@(i+1)</a></li>
         }
         <li class="page-item">
             <a class="page-link" href="#" aria-label="Next">

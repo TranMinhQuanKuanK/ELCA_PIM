@@ -22,7 +22,8 @@ namespace ServiceLayer
         private readonly IGroupService _groupService;
         private readonly INHibernateSessionHelper _sessionhelper;
 
-        public ProjectService(IProjectRepo projectRepo, IEmployeeRepo employeeRepo, IGroupService groupService, INHibernateSessionHelper sessionhelper)
+        public ProjectService(IProjectRepo projectRepo, IEmployeeRepo employeeRepo, 
+            IGroupService groupService, INHibernateSessionHelper sessionhelper)
         {
             _projectRepo = projectRepo;
             _employeeRepo = employeeRepo;

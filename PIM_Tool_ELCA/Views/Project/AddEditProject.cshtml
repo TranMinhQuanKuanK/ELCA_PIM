@@ -3,7 +3,7 @@
     ViewBag.Title = "Add/Edit Project";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using PIM_Tool_ELCA.Controllers;
+@using PIM_Tool_ELCA.Enum;
 <h3 id="add-edit-header">
     @(ViewBag.EditMode == EditMode.New
         ? Resource.AddEditProject.AddEditProjectRe.AddNewProjectHeader_Label
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <div class="form-group @(ViewData.ModelState["GroupID"] != null && ViewData.ModelState["GroupID"].Errors.Any() ? "has-error" : "")">
+        <div class="form-group @(ViewData.ModelState["GroupId"] != null && ViewData.ModelState["GroupId"].Errors.Any() ? "has-error" : "")">
             @Html.LabelFor(model => model.GroupId, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.GroupId, (List<SelectListItem>)ViewBag.GroupList,
@@ -99,34 +99,7 @@
         <div class="form-group  @(ViewData.ModelState["Status"] != null && ViewData.ModelState["Status"].Errors.Any() ? "has-error" : "")">
             @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left; padding-left:50px;" })
             <div class="col-md-10">
-                @{
-                    List<SelectListItem> statusList = new List<SelectListItem>();
-                    statusList.Add(new SelectListItem
-                    {
-                        Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusNew_Label,
-                        Value = "NEW",
-                        Selected = Model.Status == "NEW"
-                    });
-                    statusList.Add(new SelectListItem
-                    {
-                        Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusPlanned_Label,
-                        Value = "PLA",
-                        Selected = Model.Status == "PLA"
-                    });
-                    statusList.Add(new SelectListItem
-                    {
-                        Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusInProgress_Label,
-                        Value = "INP",
-                        Selected = Model.Status == "INP"
-                    });
-                    statusList.Add(new SelectListItem
-                    {
-                        Text = @Resource.AddEditProject.AddEditProjectRe.ProjectStatusFinished_Label,
-                        Value = "FIN",
-                        Selected = Model.Status == "FIN"
-                    });
-                }
-                @Html.DropDownListFor(model => model.Status, statusList, "", new { @class = "form-control", style = "width: 200px;" })
+                @Html.DropDownListFor(model => model.Status, (List<SelectListItem>)ViewBag.StatusList, new { @class = "form-control", style = "width: 200px;" })
                 @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -164,11 +137,11 @@
 
     </div>
     <div id="cancel-submit-button-div" class="form-group">
-        <div  id="cancel-button-div">
-            <input type="button" id ="cancel-button"value="@Resource.AddEditProject.AddEditProjectRe.CanButton_Label" class="btn btn-default" onclick="location.href = '/Project';">
+        <div id="cancel-button-div">
+            <input type="button" id="cancel-button" value="@Resource.AddEditProject.AddEditProjectRe.CanButton_Label" class="btn btn-default" onclick="location.href = '/Project';">
         </div>
         <div id="submit-button-div">
-            <input type="button" id ="submit-button" value="@( ViewBag.EditMode == EditMode.New ? Resource.AddEditProject.AddEditProjectRe.SubmitButtonForCreateNew_Label : Resource.AddEditProject.AddEditProjectRe.SubmitButtonForEdit_Label)" class="btn btn-primary" onclick="appendVisaBeforeSubmit();">
+            <input type="button" id="submit-button" value="@( ViewBag.EditMode == EditMode.New ? Resource.AddEditProject.AddEditProjectRe.SubmitButtonForCreateNew_Label : Resource.AddEditProject.AddEditProjectRe.SubmitButtonForEdit_Label)" class="btn btn-primary" onclick="appendVisaBeforeSubmit();">
         </div>
     </div>
 }
@@ -198,7 +171,7 @@
     }
     function appendVisaBeforeSubmit() {
         var selectedVisa = memberSelect.selected();
-        //document.getElementById("MemberString").value = selectedVisa.join(',');
+        document.getElementById("MemberString").value = selectedVisa.join(',');
 
         $("#main-form").submit();
     }

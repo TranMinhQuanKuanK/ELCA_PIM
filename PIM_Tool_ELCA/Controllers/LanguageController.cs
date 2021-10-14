@@ -12,18 +12,18 @@ namespace PIM_Tool_ELCA.Controllers
         public ActionResult Index(string culture)
         {
             culture = CultureHelper.GetImplementedCulture(culture);
-            HttpCookie cookie = Request.Cookies["_culture"];
-            if (cookie != null)
+            HttpCookie cultureCookie = Request.Cookies[Constant.CookieConstant.cultureCookieName];
+            if (cultureCookie != null)
             {
-                cookie.Value = culture;  
+                cultureCookie.Value = culture;  
             }
             else
             {
-                cookie = new HttpCookie("_culture");
-                cookie.Value = culture;
-                cookie.Expires = DateTime.Now.AddYears(1);
+                cultureCookie = new HttpCookie(Constant.CookieConstant.cultureCookieName);
+                cultureCookie.Value = culture;
+                cultureCookie.Expires = DateTime.Now.AddYears(1);
             }
-            Response.Cookies.Add(cookie);
+            Response.Cookies.Add(cultureCookie);
             return Redirect(Request.UrlReferrer.OriginalString);
         }
     }

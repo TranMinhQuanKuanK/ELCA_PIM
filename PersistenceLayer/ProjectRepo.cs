@@ -16,13 +16,13 @@ namespace PersistenceLayer
     {
         private void BuildRestrictionForCritera(ICriteria criteria, string searchTerm, string searchStatus)
         {
-            if (searchTerm != "")
+            if (searchTerm != string.Empty)
                 criteria.Add(Expression.Disjunction()
                                       .Add(Expression.Like("Name", $"%{searchTerm}%"))
                                       .Add(Expression.Like(Projections.Cast(NHibernateUtil.String, Projections.Property("ProjectNumber")), $"%{searchTerm}%"))
                                       .Add(Expression.Like("Customer", $"%{searchTerm}%"))
                                     );
-            if (searchStatus != "")
+            if (searchStatus != string.Empty)
                 criteria.Add(Expression.Like("Status", $"%{searchStatus}%"));
 
         }
@@ -30,8 +30,8 @@ namespace PersistenceLayer
         {
 
             IList<Project> result = new List<Project>();
-            request.SearchTerm = request.SearchTerm == null ? "" : request.SearchTerm.Trim().ToUpper();
-            request.SearchStatus = request.SearchStatus == null ? "" : request.SearchStatus.Trim().ToUpper();
+            request.SearchTerm = request.SearchTerm == null ? string.Empty : request.SearchTerm.Trim().ToUpper();
+            request.SearchStatus = request.SearchStatus == null ? string.Empty : request.SearchStatus.Trim().ToUpper();
 
             var criteria = session.CreateCriteria<Project>();
             BuildRestrictionForCritera(criteria, request.SearchTerm, request.SearchStatus);
@@ -93,7 +93,7 @@ namespace PersistenceLayer
                 }
                 catch (NHibernate.StaleObjectStateException e)
                 {
-                    throw new VersionLowerThanCurrentVersionException("Version lower than current version ", e);
+                    throw new VersionLowerThanCurrentVersionException("Version lower than current version", e);
                 }
             }
         }

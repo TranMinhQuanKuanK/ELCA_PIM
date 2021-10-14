@@ -12,20 +12,6 @@ namespace PIM_Tool_ELCA.Controllers
         {
             return Redirect("Project/ProjectList");
         }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
         public ActionResult NotFound()
         {
             return View("NotFound");

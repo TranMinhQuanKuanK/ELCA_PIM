@@ -11,7 +11,7 @@ namespace Utilities
     {
         public static IList<String> SplitVisa(string visaString)
         {
-            if (visaString == null || visaString == "")
+            if (visaString == null || visaString == string.Empty)
             {
                 return new List<string>();
             }

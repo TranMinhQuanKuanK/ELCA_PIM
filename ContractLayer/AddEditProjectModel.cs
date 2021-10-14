@@ -14,12 +14,12 @@ namespace ContractLayer
             Id = null;
             GroupId = null;
             ProjectNumber = null;
-            Name = "";
-            Customer = "";
+            Name = string.Empty;
+            Customer = string.Empty;
             Status = "NEW";
             StartDate = DateTime.Now;
             EndDate = null;
-            MemberString = "";
+            MemberString = string.Empty;
             MembersList = new List<string>();
             Version = 1;
         }
