@@ -192,12 +192,12 @@
 
     function handleResponseDelete() {
         document.getElementById("spinning-submit-form").classList.remove("is-active");
-        if (this.readyState == 4 && this.status === 200) {
+        if (this.readyState == 4 && this.status == 200) {
             let responseObject = JSON.parse(this.responseText);
-            if (responseObject.hasError == true) {
-                document.getElementById("delete-error-warning-text").innerHTML = responseObject.errMessage;
+            if (responseObject.HasError == true) {
+                document.getElementById("delete-error-warning-text").innerHTML = responseObject.ErrMessage;
                 $('#delete-error-modal').modal('show');
-            } else if (responseObject.hasError === false) {
+            } else if (responseObject.HasError == false) {
                 $('#confirmMultipleDeleteModal').modal('hide');
                 window.location.href = '/Project/ProjectList';
             }

@@ -22,7 +22,7 @@ namespace TestProject1
         public void Setup()
         {
             helper = new NHibernateSessionHelper();
-            _groupRepo = new GroupRepo(helper);
+            _groupRepo = new GroupRepo();
             using (ISession session = helper.OpenSession())
             {
                 using (var tx = session.BeginTransaction())
@@ -87,7 +87,6 @@ namespace TestProject1
             {
                 using (var tx = session.BeginTransaction())
                 {
-                    //-----------------------Setup--------------------------
                     expectedGrp1 = new Group
                     {
                         GroupLeaderId = emp2.Id,
@@ -96,13 +95,12 @@ namespace TestProject1
                     session.Save(expectedGrp1);
                     tx.Commit();
                 }
-            }
-            //-----------------------Test--------------------------
-            var actualGrp = _groupRepo.GetGroupById(expectedGrp1.Id);
+            var actualGrp = _groupRepo.GetGroupById(expectedGrp1.Id,session);
             Assert.AreEqual(expectedGrp1.Id, actualGrp.Id);
             Assert.AreEqual(expectedGrp1.GroupLeaderId, actualGrp.GroupLeaderId);
             Assert.AreEqual(expectedGrp1.Version, actualGrp.Version);
-            //--------------------Cleaning-----------------------------  
+            }
+
         }
         [Test]
         public void GetGroupByID_WrongID_ExpectedNull()
@@ -120,13 +118,15 @@ namespace TestProject1
                     session.Save(expectedGrp1);
                     tx.Commit();
                 }
-            }
-            var actualGrp = _groupRepo.GetGroupById(expectedGrp1.Id + 999);
+            var actualGrp = _groupRepo.GetGroupById(expectedGrp1.Id + 999,session);
             Assert.IsNull(actualGrp);
+            }
+
         }
         [Test]
         public void GetAllGroup_ExpectedValidGroups()
         {
+
             Group expectedGrp1, expectedGrp2, expectedGrp3;
             using (ISession session = helper.OpenSession())
             {
@@ -152,8 +152,7 @@ namespace TestProject1
                     session.Save(expectedGrp3);
                     tx.Commit();
                 }
-            }
-            var actualGroupList = _groupRepo.GetAllGroup();
+            var actualGroupList = _groupRepo.GetAllGroup(session);
             Assert.AreEqual(3, actualGroupList.Count);
             Assert.AreEqual(expectedGrp1.Id, actualGroupList[0].Id);
             Assert.AreEqual(expectedGrp1.GroupLeaderId, actualGroupList[0].GroupLeaderId);
@@ -166,6 +165,8 @@ namespace TestProject1
             Assert.AreEqual(expectedGrp3.Id, actualGroupList[2].Id);
             Assert.AreEqual(expectedGrp3.GroupLeaderId, actualGroupList[2].GroupLeaderId);
             Assert.AreEqual(expectedGrp3.Version, actualGroupList[2].Version);
+            }
+
         }
     }
 }

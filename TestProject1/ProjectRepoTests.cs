@@ -22,7 +22,7 @@ namespace TestProject1
         public void OneTimeSetUp()
         {
             helper = new NHibernateSessionHelper();
-            _proRepo = new ProjectRepo(helper);
+            _proRepo = new ProjectRepo();
             using (ISession session = helper.OpenSession())
             {
                 using (var tx = session.BeginTransaction())
@@ -166,27 +166,27 @@ namespace TestProject1
                     session.Save(expectedProj3);
                     tx.Commit();
                 }
-            }
-            //Test
-            var actualProj1 = _proRepo.GetProjectList(new SearchProjectRequest()
-            {
-                SearchTerm="Unique",
-                PageIndex = 1,
-                PageSize = 3
-            });
-            Assert.IsTrue(actualProj1.resultCount == 2);
-            Assert.IsTrue(actualProj1.projectList.Count == 2);
-            Assert.AreEqual(expectedProj3.ProjectNumber, actualProj1.projectList[1].ProjectNumber);
-            Assert.AreEqual(expectedProj3.Name, actualProj1.projectList[1].Name);
-            Assert.AreEqual(expectedProj3.StartDate, actualProj1.projectList[1].StartDate);
-            Assert.AreEqual(expectedProj3.EndDate, actualProj1.projectList[1].EndDate);
-            Assert.AreEqual(expectedProj3.Status, actualProj1.projectList[1].Status);
+                //Test
+                var actualProj1 = _proRepo.GetProjectList(new SearchProjectRequest()
+                {
+                    SearchTerm = "Unique",
+                    PageIndex = 1,
+                    PageSize = 3
+                }, session);
+                Assert.IsTrue(actualProj1.resultCount == 2);
+                Assert.IsTrue(actualProj1.projectList.Count == 2);
+                Assert.AreEqual(expectedProj3.ProjectNumber, actualProj1.projectList[1].ProjectNumber);
+                Assert.AreEqual(expectedProj3.Name, actualProj1.projectList[1].Name);
+                Assert.AreEqual(expectedProj3.StartDate, actualProj1.projectList[1].StartDate);
+                Assert.AreEqual(expectedProj3.EndDate, actualProj1.projectList[1].EndDate);
+                Assert.AreEqual(expectedProj3.Status, actualProj1.projectList[1].Status);
 
-            Assert.AreEqual(expectedProj2.ProjectNumber, actualProj1.projectList[0].ProjectNumber);
-            Assert.AreEqual(expectedProj2.Name, actualProj1.projectList[0].Name);
-            Assert.AreEqual(expectedProj2.StartDate, actualProj1.projectList[0].StartDate);
-            Assert.AreEqual(expectedProj2.EndDate, actualProj1.projectList[0].EndDate);
-            Assert.AreEqual(expectedProj2.Status, actualProj1.projectList[0].Status);
+                Assert.AreEqual(expectedProj2.ProjectNumber, actualProj1.projectList[0].ProjectNumber);
+                Assert.AreEqual(expectedProj2.Name, actualProj1.projectList[0].Name);
+                Assert.AreEqual(expectedProj2.StartDate, actualProj1.projectList[0].StartDate);
+                Assert.AreEqual(expectedProj2.EndDate, actualProj1.projectList[0].EndDate);
+                Assert.AreEqual(expectedProj2.Status, actualProj1.projectList[0].Status);
+            }
         }
         [Test]
         public void GetProjectByID_ValidID_ExpectedTrueProject()
@@ -209,13 +209,14 @@ namespace TestProject1
                     session.Save(expectedProj1);
                     tx.Commit();
                 }
+
+                var actualProj1 = _proRepo.GetProjectById(expectedProj1.Id, session);
+                Assert.AreEqual(expectedProj1.ProjectNumber, actualProj1.ProjectNumber);
+                Assert.AreEqual(expectedProj1.Name, actualProj1.Name);
+                Assert.AreEqual(expectedProj1.StartDate, actualProj1.StartDate);
+                Assert.AreEqual(expectedProj1.EndDate, actualProj1.EndDate);
+                Assert.AreEqual(expectedProj1.Status, actualProj1.Status);
             }
-            var actualProj1 = _proRepo.GetProjectById(expectedProj1.Id);
-            Assert.AreEqual(expectedProj1.ProjectNumber, actualProj1.ProjectNumber);
-            Assert.AreEqual(expectedProj1.Name, actualProj1.Name);
-            Assert.AreEqual(expectedProj1.StartDate, actualProj1.StartDate);
-            Assert.AreEqual(expectedProj1.EndDate, actualProj1.EndDate);
-            Assert.AreEqual(expectedProj1.Status, actualProj1.Status);
         }
         [Test]
         public void GetProjectByID_WrongID_ExpectedNull()
@@ -238,11 +239,11 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+                var actualProj1 = _proRepo.GetProjectById(-1, session);
+                var actualProj2 = _proRepo.GetProjectById(proj.Id + 100, session);
+                Assert.IsNull(actualProj1);
+                Assert.IsNull(actualProj2);
             }
-            var actualProj1 = _proRepo.GetProjectById(-1);
-            var actualProj2 = _proRepo.GetProjectById(proj.Id + 100);
-            Assert.IsNull(actualProj1);
-            Assert.IsNull(actualProj2);
         }
         [Test]
         public void GetProjectByProjectNumber_ValidProjectNumber_ExpectedTrueProject()
@@ -265,13 +266,13 @@ namespace TestProject1
                     session.Save(expectedProj1);
                     tx.Commit();
                 }
-            }
-            var actualProj1 = _proRepo.GetProjectByProjectNumber(6979);
+            var actualProj1 = _proRepo.GetProjectByProjectNumber(6979,session);
             Assert.AreEqual(expectedProj1.ProjectNumber, actualProj1.ProjectNumber);
             Assert.AreEqual(expectedProj1.Name, actualProj1.Name);
             Assert.AreEqual(expectedProj1.StartDate, actualProj1.StartDate);
             Assert.AreEqual(expectedProj1.EndDate, actualProj1.EndDate);
             Assert.AreEqual(expectedProj1.Status, actualProj1.Status);
+            }
         }
         [Test]
         public void GetProjectByProjectNumber_WrongProjectNumber_ExpectedNull()
@@ -294,11 +295,12 @@ namespace TestProject1
                     session.Save(expectedProj1);
                     tx.Commit();
                 }
-            }
-            var actualProj1 = _proRepo.GetProjectByProjectNumber(1111);
-            var actualProj2 = _proRepo.GetProjectByProjectNumber(-1);
+            var actualProj1 = _proRepo.GetProjectByProjectNumber(1111,session);
+            var actualProj2 = _proRepo.GetProjectByProjectNumber(-1,session);
             Assert.IsNull(actualProj1);
             Assert.IsNull(actualProj2);
+            }
+
         }
         [Test]
         public void UpdateProject_ValidProject_ExpectedDataIsUpdated()
@@ -321,26 +323,27 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+                Project toUpdateProj = new Project()
+                {
+                    Id = proj.Id,
+                    GroupId = grp1.Id,
+                    Customer = "Customer Test Updated",
+                    Name = "Project Test 1",
+                    ProjectNumber = 1119,
+                    StartDate = new System.DateTime(2012, 1, 1),
+                    Status = "NEW",
+                };
+                _proRepo.UpdateProject(toUpdateProj, session);
+                var actualUpdatedProject = _proRepo.GetProjectById(proj.Id, session);
+                Assert.AreEqual(toUpdateProj.ProjectNumber, actualUpdatedProject.ProjectNumber);
+                Assert.AreEqual(toUpdateProj.Name, actualUpdatedProject.Name);
+                Assert.AreEqual(toUpdateProj.StartDate, actualUpdatedProject.StartDate);
+                Assert.AreEqual(toUpdateProj.EndDate, actualUpdatedProject.EndDate);
+                Assert.AreEqual(toUpdateProj.Status, actualUpdatedProject.Status);
+                Assert.AreEqual(toUpdateProj.Status, actualUpdatedProject.Status);
+                Assert.AreEqual(11, actualUpdatedProject.Version);
             }
-            Project toUpdateProj = new Project()
-            {
-                Id = proj.Id,
-                GroupId = grp1.Id,
-                Customer = "Customer Test Updated",
-                Name = "Project Test 1",
-                ProjectNumber = 1112,
-                StartDate = new System.DateTime(2012, 1, 1),
-                Status = "NEW",
-            };
-            _proRepo.UpdateProject(toUpdateProj);
-            var actualUpdatedProject = _proRepo.GetProjectById(proj.Id);
-            Assert.AreEqual(toUpdateProj.ProjectNumber, actualUpdatedProject.ProjectNumber);
-            Assert.AreEqual(toUpdateProj.Name, actualUpdatedProject.Name);
-            Assert.AreEqual(toUpdateProj.StartDate, actualUpdatedProject.StartDate);
-            Assert.AreEqual(toUpdateProj.EndDate, actualUpdatedProject.EndDate);
-            Assert.AreEqual(toUpdateProj.Status, actualUpdatedProject.Status);
-            Assert.AreEqual(toUpdateProj.Status, actualUpdatedProject.Status);
-            Assert.AreEqual(11, actualUpdatedProject.Status);
+
         }
         [Test]
         public void UpdateProject_VersionLowerProject_ExpectedException()
@@ -362,43 +365,45 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
-            }
-            Project toUpdateProj = new Project()
-            {
-                Id = proj.Id,
-                GroupId = grp1.Id,
-                Customer = "Customer Test Updated",
-                Name = "Project Test 1",
-                ProjectNumber = 1113,
-                StartDate = new System.DateTime(2012, 1, 1),
-                Status = "NEW",
-                Version = proj.Version - 1,
-            };
+                Project toUpdateProj = new Project()
+                {
+                    Id = proj.Id,
+                    GroupId = grp1.Id,
+                    Customer = "Customer Test Updated",
+                    Name = "Project Test 1",
+                    ProjectNumber = 1115,
+                    StartDate = new System.DateTime(2012, 1, 1),
+                    Status = "NEW",
+                    Version = proj.Version - 1,
+                };
 
-            Assert.Throws<VersionLowerThanCurrentVersionException>
-                (() => _proRepo.UpdateProject(toUpdateProj));
+                Assert.Throws<VersionLowerThanCurrentVersionException>
+                    (() => _proRepo.UpdateProject(toUpdateProj, session));
+            }
 
         }
         [Test]
         public void CreateNewProject_ValidProject_ExpectedDataIsUpdated()
         {
-
-            Project newProj = new Project()
+            using (ISession session = helper.OpenSession())
             {
-                GroupId = grp2.Id,
-                Customer = "Customer Test 2",
-                Name = "Project Test 2",
-                ProjectNumber = 1213,
-                StartDate = new System.DateTime(2012, 1, 1),
-                Status = "NEW",
-            };
-            _proRepo.CreateNewProject(newProj);
-            var actualCreatedProject = _proRepo.GetProjectByProjectNumber(1213);
-            Assert.AreEqual(newProj.ProjectNumber, actualCreatedProject.ProjectNumber);
-            Assert.AreEqual(newProj.Name, actualCreatedProject.Name);
-            Assert.AreEqual(newProj.StartDate, actualCreatedProject.StartDate);
-            Assert.AreEqual(newProj.EndDate, actualCreatedProject.EndDate);
-            Assert.AreEqual(newProj.Status, actualCreatedProject.Status);
+                Project newProj = new Project()
+                {
+                    GroupId = grp2.Id,
+                    Customer = "Customer Test 2",
+                    Name = "Project Test 2",
+                    ProjectNumber = 1213,
+                    StartDate = new System.DateTime(2012, 1, 1),
+                    Status = "NEW",
+                };
+                _proRepo.CreateNewProject(newProj, session);
+                var actualCreatedProject = _proRepo.GetProjectByProjectNumber(1213, session);
+                Assert.AreEqual(newProj.ProjectNumber, actualCreatedProject.ProjectNumber);
+                Assert.AreEqual(newProj.Name, actualCreatedProject.Name);
+                Assert.AreEqual(newProj.StartDate, actualCreatedProject.StartDate);
+                Assert.AreEqual(newProj.EndDate, actualCreatedProject.EndDate);
+                Assert.AreEqual(newProj.Status, actualCreatedProject.Status);
+            }
         }
         [Test]
         public void DeleteProject_ValidSingleProject_ExpectedProjectIsDeleted()
@@ -420,12 +425,13 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+                var deleteProjectList = new Dictionary<long, int>();
+                deleteProjectList.Add(proj.Id, proj.Version);
+                _proRepo.DeleteProject(deleteProjectList, session);
+                var deletedProject = _proRepo.GetProjectById(proj.Id, session);
+                Assert.IsNull(deletedProject);
             }
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.Id, proj.Version);
-            _proRepo.DeleteProject(deleteProjectList);
-            var deletedProject = _proRepo.GetProjectById(proj.Id);
-            Assert.IsNull(deletedProject);
+
         }
         [Test]
         public void DeleteProject_LowerVersionSingleProject_ExpectedException()
@@ -447,11 +453,11 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+                var deleteProjectList = new Dictionary<long, int>();
+                deleteProjectList.Add(proj.Id, proj.Version - 1);
+                Assert.Throws<CantDeleteProjectDueToLowerVersionException>
+               (() => _proRepo.DeleteProject(deleteProjectList, session));
             }
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.Id, proj.Version - 1);
-            Assert.Throws<CantDeleteProjectDueToLowerVersionException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
         }
         [Test]
         public void DeleteProject_WrongStatusSingleProject_ExpectedException()
@@ -473,11 +479,12 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+                var deleteProjectList = new Dictionary<long, int>();
+                deleteProjectList.Add(proj.Id, proj.Version);
+                Assert.Throws<ProjectStatusNotNewException>
+                   (() => _proRepo.DeleteProject(deleteProjectList, session));
             }
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.Id, proj.Version);
-            Assert.Throws<ProjectStatusNotNewException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
+
         }
         [Test]
         public void DeleteProject_DoesntExistSingleProject_ExpectedException()
@@ -499,16 +506,17 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
-            }
             var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.Id+999, proj.Version);
+            deleteProjectList.Add(proj.Id + 999, proj.Version);
             Assert.Throws<ProjectNotExistedException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
+               (() => _proRepo.DeleteProject(deleteProjectList,session));
+            }
+
         }
         [Test]
         public void DeleteProject_ValidMultipleProject_ExpectedProjectsAreDeleted()
         {
-            Project proj, proj2,proj3;
+            Project proj, proj2, proj3;
             using (ISession session = helper.OpenSession())
             {
                 using (var tx = session.BeginTransaction())
@@ -531,32 +539,33 @@ namespace TestProject1
                         StartDate = new System.DateTime(2012, 1, 1),
                         Status = "NEW",
                     };
-                     proj3 = new Project()
-                     {
-                         GroupId = grp1.Id,
-                         Customer = "Customer Test 2",
-                         Name = "Project Test 1",
-                         ProjectNumber = 1978,
-                         StartDate = new System.DateTime(2012, 1, 1),
-                         Status = "NEW",
-                     };
+                    proj3 = new Project()
+                    {
+                        GroupId = grp1.Id,
+                        Customer = "Customer Test 2",
+                        Name = "Project Test 1",
+                        ProjectNumber = 1978,
+                        StartDate = new System.DateTime(2012, 1, 1),
+                        Status = "NEW",
+                    };
                     session.Save(proj);
                     session.Save(proj2);
                     session.Save(proj3);
                     tx.Commit();
                 }
-            }
             var deleteProjectList = new Dictionary<long, int>();
             deleteProjectList.Add(proj.Id, proj.Version);
             deleteProjectList.Add(proj2.Id, proj2.Version);
             deleteProjectList.Add(proj3.Id, proj3.Version);
-            _proRepo.DeleteProject(deleteProjectList);
-            var deletedProject1 = _proRepo.GetProjectById(proj.Id);
-            var deletedProject2 = _proRepo.GetProjectById(proj2.Id);
-            var deletedProject3 = _proRepo.GetProjectById(proj3.Id);
+            _proRepo.DeleteProject(deleteProjectList,session);
+            var deletedProject1 = _proRepo.GetProjectById(proj.Id,session);
+            var deletedProject2 = _proRepo.GetProjectById(proj2.Id,session);
+            var deletedProject3 = _proRepo.GetProjectById(proj3.Id,session);
             Assert.IsNull(deletedProject1);
             Assert.IsNull(deletedProject2);
             Assert.IsNull(deletedProject3);
+            }
+
         }
         [Test]
         public void DeleteProject_LowerVersionMultipleProject_ExpectedException()
@@ -598,13 +607,14 @@ namespace TestProject1
                     session.Save(proj3);
                     tx.Commit();
                 }
-            }
             var deleteProjectList = new Dictionary<long, int>();
             deleteProjectList.Add(proj.Id, proj.Version - 1);
             deleteProjectList.Add(proj2.Id, proj2.Version);
-            deleteProjectList.Add(proj3.Id, proj3.Version );
+            deleteProjectList.Add(proj3.Id, proj3.Version);
             Assert.Throws<CantDeleteProjectDueToLowerVersionException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
+               (() => _proRepo.DeleteProject(deleteProjectList,session));
+            }
+
         }
         [Test]
         public void DeleteProject_WrongStatusMultipleProject_ExpectedException()
@@ -646,13 +656,14 @@ namespace TestProject1
                     session.Save(proj3);
                     tx.Commit();
                 }
-            }
             var deleteProjectList = new Dictionary<long, int>();
             deleteProjectList.Add(proj.Id, proj.Version);
             deleteProjectList.Add(proj2.Id, proj2.Version);
             deleteProjectList.Add(proj3.Id, proj3.Version);
             Assert.Throws<ProjectStatusNotNewException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
+               (() => _proRepo.DeleteProject(deleteProjectList,session));
+            }
+
         }
         [Test]
         public void DeleteProject_DoesntExistMultipleProject_ExpectedException()
@@ -694,13 +705,13 @@ namespace TestProject1
                     session.Save(proj3);
                     tx.Commit();
                 }
-            }
             var deleteProjectList = new Dictionary<long, int>();
             deleteProjectList.Add(proj.Id, proj.Version);
             deleteProjectList.Add(proj2.Id + 999, proj2.Version);
             deleteProjectList.Add(proj3.Id, proj3.Version);
             Assert.Throws<ProjectNotExistedException>
-               (() => _proRepo.DeleteProject(deleteProjectList));
+               (() => _proRepo.DeleteProject(deleteProjectList,session));
+            }
         }
     }
 }
