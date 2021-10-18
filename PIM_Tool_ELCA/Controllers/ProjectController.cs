@@ -166,8 +166,6 @@ namespace PIM_Tool_ELCA.Controllers
                     projectModel.MembersList = memberList;
                     _projectService.Update(projectModel);
                 }
-
-
             }
             catch (ProjectHaveBeenEditedByAnotherUserException)
             {
@@ -244,10 +242,6 @@ namespace PIM_Tool_ELCA.Controllers
                     _projectService.Create(projectModel);
                     return RedirectToAction("Index");
                 }
-            }
-            catch (GroupIDDoesntExistException)
-            {
-                ModelState.AddModelError(nameof(projectModel.GroupId), "GroupID doesn't exist");
             }
             catch (ProjectNumberDuplicateException)
             {

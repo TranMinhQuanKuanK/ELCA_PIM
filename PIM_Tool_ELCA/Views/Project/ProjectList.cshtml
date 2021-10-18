@@ -3,6 +3,7 @@
     ViewBag.Title = "Project List";
 }
 @using Utilities.Constant;
+@using System.Globalization;
 <h2 id="project-list-label">@Resource.ProjectList.ProjectListRe.ProjectList_Label</h2>
 <div id="spinning-submit-form" class="loader loader-default" data-text="@Resource.ProjectList.ProjectListRe.DeletingProject_SpinningMessage"></div>
 <form id="search-form" action="/Project/SearchProject" method="get">
@@ -65,7 +66,13 @@
 
 
                         <td>@x.Customer</td>
-                        <td>@Convert.ToDateTime(x.StartDate).ToString("dd.MM.yyyy")</td>
+                        <td>
+                            @{
+                                CultureInfo cultureInfo = new CultureInfo(ViewBag.CurrentLanguage.Name);
+                                cultureInfo.DateTimeFormat.DateSeparator = ".";
+                            }
+                            @x.StartDate.ToShortDateString().ToString(cultureInfo)
+                        </td>
                         <td style="text-align:center;" @(x.Status == ProjectStatusConstant.New ? $"onclick=onDeleteProject({x.Id},{x.Version}) " : string.Empty ) class="project-delete-column">
                             @if (x.Status == ProjectStatusConstant.New)
                             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -18,8 +19,10 @@ namespace PIM_Tool_ELCA.Controllers
         }
         protected override void OnResultExecuting(ResultExecutingContext filterContext)
         {
+            
             ViewBag.CurrentLanguage = Thread.CurrentThread.CurrentCulture;
             base.OnResultExecuting(filterContext);
+            
         }
         protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
         {

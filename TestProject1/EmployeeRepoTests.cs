@@ -6,7 +6,7 @@ using PersistenceLayer.CustomException.Project;
 using PersistenceLayer.Helper;
 using System.Collections.Generic;
 using Utilities;
-
+using System.Linq;
 namespace TestProject1
 {
     public class EmployeeRepoTests
@@ -20,7 +20,7 @@ namespace TestProject1
         private Group grp2;
         private Project proj1;
         [OneTimeSetUp]
-        public void Setup()
+        public void OneTimeSetUp()
         {
             helper = new NHibernateSessionHelper();
             _empRepo = new EmployeeRepo();
@@ -79,7 +79,7 @@ namespace TestProject1
                         Status = "NEW",
                         Version = 1,
                         Members = new List<Employee>() {
-                           emp1,emp2
+                          emp1,emp2
                         }
                     };
                     session.Save(proj1);
@@ -87,9 +87,10 @@ namespace TestProject1
                 }
 
             }
+
         }
         [OneTimeTearDown]
-        public void TearDown()
+        public void OneTimeTearDown()
         {
             using (ISession session = helper.OpenSession())
             {
@@ -108,35 +109,47 @@ namespace TestProject1
                 }
             }
         }
+        private bool AssertEmployee(Employee emp1, Employee emp2)
+        {
+            return (
+                emp1.Id == emp2.Id &&
+                emp1.FirstName == emp2.FirstName &&
+                emp1.LastName == emp2.LastName &&
+                emp1.Birthday == emp2.Birthday &&
+                emp1.Version == emp2.Version &&
+                 emp1.Visa == emp2.Visa
+                );
+        }
         [Test]
         public void GetAllEmployees_ExpectedTrueEmployeeList()
         {
             using (ISession session = helper.OpenSession())
             {
-                var actualtEmpList = _empRepo.GetAllEmployees(session);
-                Assert.IsTrue(actualtEmpList.Contains(emp1));
-                Assert.IsTrue(actualtEmpList.Contains(emp2));
-                Assert.IsTrue(actualtEmpList.Contains(emp3));
+                IList<Employee> actualtEmpList = _empRepo.GetAllEmployees(session);
+                Assert.IsTrue(AssertEmployee(actualtEmpList.SingleOrDefault(emp=>emp.Id==emp1.Id),emp1));
+                Assert.IsTrue(AssertEmployee(actualtEmpList.SingleOrDefault(emp => emp.Id == emp2.Id), emp2));
+                Assert.IsTrue(AssertEmployee(actualtEmpList.SingleOrDefault(emp => emp.Id == emp3.Id), emp3));
             }
         }
+
         [Test]
         public void GetEmployeesBasedOnVisaList_TrueVisaList_ExpectedTrueEmployeeList()
         {
             using (ISession session = helper.OpenSession())
             {
                 var actualtEmpList = _empRepo.GetEmployeesBasedOnVisaList(new List<string>()
-            {
-                "TMT","NTH"
-            }, session);
+                    {
+                        "TMT","NTH"
+                    }, session);
                 Assert.IsTrue(actualtEmpList.Count == 2);
-                Assert.IsTrue(actualtEmpList.Contains(emp1));
-                Assert.IsTrue(actualtEmpList.Contains(emp2));
+                Assert.IsTrue(AssertEmployee(actualtEmpList.SingleOrDefault(emp => emp.Id == emp1.Id), emp1));
+                Assert.IsTrue(AssertEmployee(actualtEmpList.SingleOrDefault(emp => emp.Id == emp2.Id), emp2));
                 var actualtEmpList2 = _empRepo.GetEmployeesBasedOnVisaList(new List<string>()
-            {
-                "TMT"
-            }, session);
+                    {
+                        "HND"
+                    }, session);
                 Assert.IsTrue(actualtEmpList2.Count == 1);
-                Assert.IsTrue(actualtEmpList2.Contains(emp1));
+                Assert.IsTrue(AssertEmployee(actualtEmpList2.SingleOrDefault(emp => emp.Id == emp3.Id), emp3));
                 var actualtEmpList3 = _empRepo.GetEmployeesBasedOnVisaList(new List<string>(), session);
                 Assert.IsTrue(actualtEmpList3.Count == 0);
             }

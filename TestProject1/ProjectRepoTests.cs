@@ -266,12 +266,12 @@ namespace TestProject1
                     session.Save(expectedProj1);
                     tx.Commit();
                 }
-            var actualProj1 = _proRepo.GetProjectByProjectNumber(6979,session);
-            Assert.AreEqual(expectedProj1.ProjectNumber, actualProj1.ProjectNumber);
-            Assert.AreEqual(expectedProj1.Name, actualProj1.Name);
-            Assert.AreEqual(expectedProj1.StartDate, actualProj1.StartDate);
-            Assert.AreEqual(expectedProj1.EndDate, actualProj1.EndDate);
-            Assert.AreEqual(expectedProj1.Status, actualProj1.Status);
+                var actualProj1 = _proRepo.GetProjectByProjectNumber(6979, session);
+                Assert.AreEqual(expectedProj1.ProjectNumber, actualProj1.ProjectNumber);
+                Assert.AreEqual(expectedProj1.Name, actualProj1.Name);
+                Assert.AreEqual(expectedProj1.StartDate, actualProj1.StartDate);
+                Assert.AreEqual(expectedProj1.EndDate, actualProj1.EndDate);
+                Assert.AreEqual(expectedProj1.Status, actualProj1.Status);
             }
         }
         [Test]
@@ -295,10 +295,10 @@ namespace TestProject1
                     session.Save(expectedProj1);
                     tx.Commit();
                 }
-            var actualProj1 = _proRepo.GetProjectByProjectNumber(1111,session);
-            var actualProj2 = _proRepo.GetProjectByProjectNumber(-1,session);
-            Assert.IsNull(actualProj1);
-            Assert.IsNull(actualProj2);
+                var actualProj1 = _proRepo.GetProjectByProjectNumber(1111, session);
+                var actualProj2 = _proRepo.GetProjectByProjectNumber(-1, session);
+                Assert.IsNull(actualProj1);
+                Assert.IsNull(actualProj2);
             }
 
         }
@@ -323,15 +323,20 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+
+            }
+            using (ISession session = helper.OpenSession())
+            {
                 Project toUpdateProj = new Project()
                 {
                     Id = proj.Id,
                     GroupId = grp1.Id,
                     Customer = "Customer Test Updated",
                     Name = "Project Test 1",
-                    ProjectNumber = 1119,
+                    ProjectNumber = 1112,
                     StartDate = new System.DateTime(2012, 1, 1),
                     Status = "NEW",
+                    Version = 10
                 };
                 _proRepo.UpdateProject(toUpdateProj, session);
                 var actualUpdatedProject = _proRepo.GetProjectById(proj.Id, session);
@@ -339,7 +344,6 @@ namespace TestProject1
                 Assert.AreEqual(toUpdateProj.Name, actualUpdatedProject.Name);
                 Assert.AreEqual(toUpdateProj.StartDate, actualUpdatedProject.StartDate);
                 Assert.AreEqual(toUpdateProj.EndDate, actualUpdatedProject.EndDate);
-                Assert.AreEqual(toUpdateProj.Status, actualUpdatedProject.Status);
                 Assert.AreEqual(toUpdateProj.Status, actualUpdatedProject.Status);
                 Assert.AreEqual(11, actualUpdatedProject.Version);
             }
@@ -365,6 +369,10 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+
+            }
+            using (ISession session = helper.OpenSession())
+            {
                 Project toUpdateProj = new Project()
                 {
                     Id = proj.Id,
@@ -376,7 +384,6 @@ namespace TestProject1
                     Status = "NEW",
                     Version = proj.Version - 1,
                 };
-
                 Assert.Throws<VersionLowerThanCurrentVersionException>
                     (() => _proRepo.UpdateProject(toUpdateProj, session));
             }
@@ -425,6 +432,9 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+            }
+            using (ISession session = helper.OpenSession())
+            {
                 var deleteProjectList = new Dictionary<long, int>();
                 deleteProjectList.Add(proj.Id, proj.Version);
                 _proRepo.DeleteProject(deleteProjectList, session);
@@ -453,6 +463,9 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+            }
+            using (ISession session = helper.OpenSession())
+            {
                 var deleteProjectList = new Dictionary<long, int>();
                 deleteProjectList.Add(proj.Id, proj.Version - 1);
                 Assert.Throws<CantDeleteProjectDueToLowerVersionException>
@@ -479,6 +492,9 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
+            }
+            using (ISession session = helper.OpenSession())
+            {
                 var deleteProjectList = new Dictionary<long, int>();
                 deleteProjectList.Add(proj.Id, proj.Version);
                 Assert.Throws<ProjectStatusNotNewException>
@@ -506,10 +522,13 @@ namespace TestProject1
                     session.Save(proj);
                     tx.Commit();
                 }
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.Id + 999, proj.Version);
-            Assert.Throws<ProjectNotExistedException>
-               (() => _proRepo.DeleteProject(deleteProjectList,session));
+            }
+            using (ISession session = helper.OpenSession())
+            {
+                var deleteProjectList = new Dictionary<long, int>();
+                deleteProjectList.Add(proj.Id + 999, proj.Version);
+                Assert.Throws<ProjectNotExistedException>
+                   (() => _proRepo.DeleteProject(deleteProjectList, session));
             }
 
         }
@@ -553,17 +572,20 @@ namespace TestProject1
                     session.Save(proj3);
                     tx.Commit();
                 }
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.Id, proj.Version);
-            deleteProjectList.Add(proj2.Id, proj2.Version);
-            deleteProjectList.Add(proj3.Id, proj3.Version);
-            _proRepo.DeleteProject(deleteProjectList,session);
-            var deletedProject1 = _proRepo.GetProjectById(proj.Id,session);
-            var deletedProject2 = _proRepo.GetProjectById(proj2.Id,session);
-            var deletedProject3 = _proRepo.GetProjectById(proj3.Id,session);
-            Assert.IsNull(deletedProject1);
-            Assert.IsNull(deletedProject2);
-            Assert.IsNull(deletedProject3);
+            }
+            using (ISession session = helper.OpenSession())
+            {
+                var deleteProjectList = new Dictionary<long, int>();
+                deleteProjectList.Add(proj.Id, proj.Version);
+                deleteProjectList.Add(proj2.Id, proj2.Version);
+                deleteProjectList.Add(proj3.Id, proj3.Version);
+                _proRepo.DeleteProject(deleteProjectList, session);
+                var deletedProject1 = _proRepo.GetProjectById(proj.Id, session);
+                var deletedProject2 = _proRepo.GetProjectById(proj2.Id, session);
+                var deletedProject3 = _proRepo.GetProjectById(proj3.Id, session);
+                Assert.IsNull(deletedProject1);
+                Assert.IsNull(deletedProject2);
+                Assert.IsNull(deletedProject3);
             }
 
         }
@@ -607,14 +629,16 @@ namespace TestProject1
                     session.Save(proj3);
                     tx.Commit();
                 }
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.Id, proj.Version - 1);
-            deleteProjectList.Add(proj2.Id, proj2.Version);
-            deleteProjectList.Add(proj3.Id, proj3.Version);
-            Assert.Throws<CantDeleteProjectDueToLowerVersionException>
-               (() => _proRepo.DeleteProject(deleteProjectList,session));
             }
-
+            using (ISession session = helper.OpenSession())
+            {
+                var deleteProjectList = new Dictionary<long, int>();
+                deleteProjectList.Add(proj.Id, proj.Version - 1);
+                deleteProjectList.Add(proj2.Id, proj2.Version);
+                deleteProjectList.Add(proj3.Id, proj3.Version);
+                Assert.Throws<CantDeleteProjectDueToLowerVersionException>
+                   (() => _proRepo.DeleteProject(deleteProjectList, session));
+            }
         }
         [Test]
         public void DeleteProject_WrongStatusMultipleProject_ExpectedException()
@@ -656,12 +680,15 @@ namespace TestProject1
                     session.Save(proj3);
                     tx.Commit();
                 }
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.Id, proj.Version);
-            deleteProjectList.Add(proj2.Id, proj2.Version);
-            deleteProjectList.Add(proj3.Id, proj3.Version);
-            Assert.Throws<ProjectStatusNotNewException>
-               (() => _proRepo.DeleteProject(deleteProjectList,session));
+            }
+            using (ISession session = helper.OpenSession())
+            {
+                var deleteProjectList = new Dictionary<long, int>();
+                deleteProjectList.Add(proj.Id, proj.Version);
+                deleteProjectList.Add(proj2.Id, proj2.Version);
+                deleteProjectList.Add(proj3.Id, proj3.Version);
+                Assert.Throws<ProjectStatusNotNewException>
+                   (() => _proRepo.DeleteProject(deleteProjectList, session));
             }
 
         }
@@ -705,12 +732,15 @@ namespace TestProject1
                     session.Save(proj3);
                     tx.Commit();
                 }
-            var deleteProjectList = new Dictionary<long, int>();
-            deleteProjectList.Add(proj.Id, proj.Version);
-            deleteProjectList.Add(proj2.Id + 999, proj2.Version);
-            deleteProjectList.Add(proj3.Id, proj3.Version);
-            Assert.Throws<ProjectNotExistedException>
-               (() => _proRepo.DeleteProject(deleteProjectList,session));
+            }
+            using (ISession session = helper.OpenSession())
+            {
+                var deleteProjectList = new Dictionary<long, int>();
+                deleteProjectList.Add(proj.Id, proj.Version);
+                deleteProjectList.Add(proj2.Id + 999, proj2.Version);
+                deleteProjectList.Add(proj3.Id, proj3.Version);
+                Assert.Throws<ProjectNotExistedException>
+                   (() => _proRepo.DeleteProject(deleteProjectList, session));
             }
         }
     }

@@ -20,7 +20,8 @@ namespace PersistenceLayer
         }
         public IList<Employee> GetEmployeesBasedOnVisaList(IList<string> visalist, ISession session)
         {
-            var result = session.QueryOver<Employee>().WhereRestrictionOn(k => k.Visa)
+            var result = session.QueryOver<Employee>()
+                .WhereRestrictionOn(k => k.Visa)
                 .IsIn(visalist.ToList<string>())
                 .List<Employee>();
             if (result.Count != visalist.Count)
