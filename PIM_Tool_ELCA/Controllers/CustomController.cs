@@ -19,7 +19,10 @@ namespace PIM_Tool_ELCA.Controllers
         }
         protected override void OnResultExecuting(ResultExecutingContext filterContext)
         {
-            
+            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Headers", "*");
+            filterContext.RequestContext.HttpContext.Response.AddHeader("Access-Control-Allow-Credentials", "true");
+
             ViewBag.CurrentLanguage = Thread.CurrentThread.CurrentCulture;
             base.OnResultExecuting(filterContext);
             
@@ -47,6 +50,7 @@ namespace PIM_Tool_ELCA.Controllers
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
             return base.BeginExecuteCore(callback, state);
+           
         }
     }
 }

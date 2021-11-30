@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Resource.AddEditProject;
 using Utilities.Constant;
 
@@ -58,11 +60,12 @@ namespace ContractLayer
         [Required(ErrorMessageResourceType = typeof(AddEditProjectRe),
             ErrorMessageResourceName = nameof(AddEditProjectRe.StatusRequired_ModelError))]
         public string Status { get; set; }
-
+        [JsonConverter(typeof(IsoDateTimeConverter))]
         [Display(ResourceType = typeof(AddEditProjectRe), Name = nameof(AddEditProjectRe.StartDate_DisplayName))]
         [Required(ErrorMessageResourceType = typeof(AddEditProjectRe),
             ErrorMessageResourceName = nameof(AddEditProjectRe.StartDateRequired_ModelError))]
         public DateTime StartDate { get; set; }
+        [JsonConverter(typeof(IsoDateTimeConverter))]
 
         [Display(ResourceType = typeof(AddEditProjectRe), Name = nameof(AddEditProjectRe.EndDate_DisplayName))]
         public DateTime? EndDate { get; set; }

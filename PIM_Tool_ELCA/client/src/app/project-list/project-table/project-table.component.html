@@ -1,0 +1,101 @@
+<!-- <div class="wrap-table100">
+  <div class="" style="width:70vw;">
+    <table style="width:70vw;">
+      <thead>
+        <tr class="">
+          <th style="width:3vw;"> </th>
+          <th style="width:5vw;">Project number</th>
+          <th>Name</th>
+          <th style="width:8vw;">Status </th>
+          <th style="width:10vw;">Customer</th>
+          <th style="width:8vw;">StartDate</th>
+          <th style="width:4vw;">Delete</th>
+        </tr>
+      </thead> -->
+<!-- <tbody>
+              @Html.AntiForgeryToken()
+              @foreach (var x in ViewBag.ProjectList)
+              {
+                  <tr>
+                      <td><input type="checkbox" @(x.Status != ProjectStatusConstant.New ? "disabled" : string.Empty) onchange='handleChange(this,@x.Id,@x.Version)'></td>
+                      <td class="project-number-column"><a href="/Project/EditProject/@x.Id">@x.ProjectNumber</a></td>
+                      <td>@x.Name</td>
+                      <td>
+                          @switch (x.Status)
+                          {
+                              case ProjectStatusConstant.New:
+                                  @Resource.ProjectList.ProjectListRe.ProjectStatusNew_Label;
+                                  break;
+                              case ProjectStatusConstant.Planned:
+                                  @Resource.ProjectList.ProjectListRe.ProjectStatusPlanned_Label;
+                                  break;
+                              case ProjectStatusConstant.InProgress:
+                                  @Resource.ProjectList.ProjectListRe.ProjectStatusInProgress_Label;
+                                  break;
+                              case ProjectStatusConstant.Finished:
+                                  @Resource.ProjectList.ProjectListRe.ProjectStatusFinished_Label;
+                                  break;
+                          }
+                      </td>
+
+
+
+
+                      <td>@x.Customer</td>
+                      <td>
+                          @{
+                              CultureInfo cultureInfo = new CultureInfo(ViewBag.CurrentLanguage.Name);
+                              cultureInfo.DateTimeFormat.DateSeparator = ".";
+                          }
+                          @x.StartDate.ToShortDateString().ToString(cultureInfo)
+                      </td>
+                      <td style="text-align:center;" @(x.Status == ProjectStatusConstant.New ? $"onclick=onDeleteProject({x.Id},{x.Version}) " : string.Empty ) class="project-delete-column">
+                          @if (x.Status == ProjectStatusConstant.New)
+                          {
+                              <i class="fa fa-trash-o delete-icon"></i>
+                          }
+                      </td>
+
+                  </tr>
+
+              }
+              <tr id="delete-multiple-tr">
+                  <td id="item-count-td" colspan="3">
+                      <p id="num-item-selected-text"><span id="item-count">0 </span>item selected</p>
+                  </td>
+                  <td colspan="4" id="delete-multiple-td">
+                      <span id="delete-selected-button" data-toggle="modal" data-target="#confirmMultpleDeleteModal">
+                          <i class="fa fa-trash-o delete-icon"></i> Delete selected
+                      </span>
+                  </td>
+              </tr>
+          </tbody> -->
+<!-- </table>
+
+
+  </div>
+</div> -->
+<kendo-grid [selectable]="selectableSettings" [data]="data" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+  (pageChange)="onPageChange($event)" kendoGridSelectBy="id" [selectedKeys]="selectedId">
+  <!-- <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }" [class]="{ 'text-center': true }"
+    [columnMenu]="false" [showSelectAll]="true"></kendo-grid-checkbox-column> -->
+  <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }" [class]="{ 'text-center': true }">
+    <ng-template kendoGridCellTemplate let-idx="rowIndex" let-dataItem>
+      <input kendoCheckBox [kendoGridSelectionCheckbox]="idx" [disabled]="!(dataItem.status=='NEW')">
+    </ng-template>
+  </kendo-grid-checkbox-column>
+  <kendo-grid-column field="projectNumber" title="Project number"> </kendo-grid-column>
+  <kendo-grid-column field="name" title="Name">
+  </kendo-grid-column>
+  <kendo-grid-column field="customer" title="Customer"> </kendo-grid-column>
+  <kendo-grid-column field="status" title="Status">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{ dataItem.status | statusText}}
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="startDate" title="Start date"> </kendo-grid-column>
+
+
+
+
+</kendo-grid>

@@ -29,8 +29,9 @@ namespace PersistenceLayer.Helper
                 {
                     x.ConnectionStringName = "default";
                     x.Driver<SqlClientDriver>();
-                    x.LogSqlInConsole = true;
+                    //x.LogSqlInConsole = true;
                     x.Dialect<MsSql2012Dialect>();
+                    x.LogFormattedSql = true;
                 });
 
                 cfg.AddAssembly(Assembly.GetExecutingAssembly());

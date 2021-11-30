@@ -1,0 +1,30 @@
+<div id="header-all">
+  <div id="header-left">
+    <div id="elca-logo">
+      <img src="~/Content/ELCALogo.png" alt="Elca logo"
+        style="width: 8vh; height: 8vh; align-self:flex-end; margin: 3px">
+    </div>
+    <div id="pim-brand">
+      <a style="color: rgb(84, 84, 84); font-weight: bold; " href="/Project">ELCA PIM BRAND change later</a>
+    </div>
+  </div>
+  <div id="header-right">
+    <div class="right-header-item" id="language-choose">
+      <!-- @{ var currentLanguage = ViewBag.CurrentLanguage; }
+      <a style="color: @(currentLanguage.Name==" vi-VN"?"blue":"black");align-self: flex-end; margin: 0 5px 0 5px;"
+        href="@(currentLanguage.Name!=" vi-VN"?"/Language?culture=vi-VN":"#") ">VI</a>
+                <span style=" align-self: flex-end; color: black; font-weight:bold;">|</span>
+        <a style=" color: @(currentLanguage.Name==" en-US" ?"blue":"black"); align-self: flex-end; margin: 0 5px 0 5px;"
+          href="@(currentLanguage.Name!=" en-US"?"/Language?culture=en-US":"#")">EN</a> -->
+      <a style="color:blue; align-self: flex-end; margin: 0 5px 0 5px;" href="#">VI</a>
+      <span style=" align-self: flex-end; color: black; font-weight:bold;">|</span>
+      <a style="color:black; align-self: flex-end; margin: 0 5px 0 5px;" href="#">EN</a>
+    </div>
+    <div class="right-header-item" id="help-header">
+      <a style="color: rgb(168, 168, 168); align-self: flex-end;">Help</a>
+    </div>
+    <div class="right-header-item" id="logout-header">
+      <a style="color: rgb(168, 168, 168); align-self: flex-end;">Logout</a>
+    </div>
+  </div>
+</div>

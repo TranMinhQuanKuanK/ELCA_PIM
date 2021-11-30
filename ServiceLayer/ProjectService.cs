@@ -45,7 +45,7 @@ namespace ServiceLayer
                     SearchTerm = request.SearchTerm,
                 };
                 ProjectListPageDomainResult result = _projectRepo.GetProjectList(requestDomain, session);
-                projectList = (List<ProjectListModel>)result.projectList
+                projectList = result.projectList
                     .Select(x => new ProjectListModel
                     {
                         Id = x.Id,
@@ -166,9 +166,9 @@ namespace ServiceLayer
                     }, session);
                 }
             }
-            catch (PersistenceLayer.CustomException.Project.VersionLowerThanCurrentVersionException e)
+            catch (VersionLowerThanCurrentVersionException e)
             {
-                throw new CustomException.ProjectException.ProjectHaveBeenEditedByAnotherUserException("Version lower than current version", e);
+                throw new ProjectHaveBeenEditedByAnotherUserException("Version lower than current version", e);
             }
         }
         private void CheckProjectNumberExist(AddEditProjectModel project)

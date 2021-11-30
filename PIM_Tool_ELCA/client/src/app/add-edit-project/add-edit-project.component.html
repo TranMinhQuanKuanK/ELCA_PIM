@@ -1,0 +1,105 @@
+<h3 id="add-edit-header">
+  Edit Projecttttttt
+</h3>
+<div id="spinning-submit-form" class="loader loader-default"
+  data-text="@Resource.AddEditProject.AddEditProjectRe.SubmittingForm_SpinningMessage"></div>
+<!-- form below -->
+<form #formTemplate="ngForm">
+  <div class="form-horizontal" id="main-edit-new-form">
+    <div class="form-group">
+      <label for="ProjectNumber" class="control-label col-md-2" style="text-align: left; padding-left:50px;">Project
+        Number</label>
+      <div class="col-md-10">
+        <input type="text" id="ProjectNumber" class="form-control" style="width: 600px;" name="ProjectNumber" required
+          [(ngModel)]="ProjectNumber" #prNumber="ngModel">
+        <span class="text-danger" *ngIf="!prNumber.valid && prNumber.touched">Project number required</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="Name" class="control-label col-md-2" style="text-align: left; padding-left:50px;">Name</label>
+      <div class="col-md-10">
+        <input type="text" id="Name" class="form-control" style="width: 600px;" [(ngModel)]="Name" name="Name" required
+          #prName="ngModel">
+        <span class="text-danger" *ngIf="!prName.valid && prName.touched">Project name required</span>
+
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="Customer" class="control-label col-md-2" style="text-align: left; padding-left:50px;">Customer</label>
+      <div class="col-md-10">
+        <input type="text" id="Customer" class="form-control" style="width: 600px;" [(ngModel)]="Customer"
+          name="Customer" required #prCustomer="ngModel" [ngModelOptions]="{standalone: true}">
+        <span class="text-danger" *ngIf="!prCustomer.valid && prCustomer.touched">Customer name required</span>
+
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="Group" class="control-label col-md-2" style="text-align: left; padding-left:50px;">Group</label>
+      <div class="col-md-10">
+        <kendo-dropdownlist id="Group" [data]="GroupListData" textField="text" valueField="value" [(ngModel)]="GroupId"
+          #prGroup="ngModel" name="Group">
+        </kendo-dropdownlist>
+        <span class="text-danger" *ngIf="!prGroup.valid && prGroup.touched">Group required</span>
+
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="Member" class="control-label col-md-2" style="text-align: left; padding-left:50px;">Member</label>
+      <div class="col-md-10">
+        <kendo-multiselect id="Member" [data]="MemberListData" [(ngModel)]="MembersList" textField="text"
+          valueField="value" #prMember="ngModel" name="Member" style="width:600px;"></kendo-multiselect>
+        <span class="text-danger" *ngIf="!prMember.valid && prMember.touched">Members required</span>
+
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="Status" class="control-label col-md-2" style="text-align: left; padding-left:50px;">Status</label>
+      <div class="col-md-10">
+        <kendo-dropdownlist id="Status" [data]="listStatus" textField="text" valueField="value" [(ngModel)]="Status"
+          name="Status">
+        </kendo-dropdownlist>
+      </div>
+      <!-- <span class="help-block" *ngIf="!prCustomer.valid && prCustomer.touched">Status required</span> -->
+    </div>
+
+    <div class="form-group" id="start-end-date-parent-div">
+      <div class="form-group col-md-6">
+        <label for="StartDate" class="control-label col-md-4" style="text-align: left; padding-left:34px;">
+          Start Date</label>
+        <div class="col-md-8">
+          <!-- control -->
+          <kendo-datepicker [(ngModel)]="StartDate" name="StartDate"></kendo-datepicker>
+          <p>
+        </div>
+      </div>
+      <div id="end-date-div" class="form-group col-md-6">
+        <label for="EndDate" class="control-label col-md-3">End Date</label>
+        <div class="col-md-9">
+          <!-- control -->
+          <kendo-datepicker [(ngModel)]="EndDate" name="EndDate" style="width: 200px;"></kendo-datepicker>
+          <span class="text-danger" *ngIf="EndDate && EndDate<StartDate">End date can't be sooner than start
+            date</span>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+  <div id="cancel-submit-button-div" class="form-group">
+    <div id="cancel-button-div">
+      <input type="button" id="cancel-button" value="Cancel" class="btn btn-default"
+        onclick="location.href = '/Project';">
+    </div>
+    <div id="submit-button-div">
+      <input type="button" id="submit-button" [value]="IsEdit===true?'Save changes':'Create new'"
+        class="btn btn-primary" onclick="dfdfddfdf();">
+    </div>
+  </div>
+</form>

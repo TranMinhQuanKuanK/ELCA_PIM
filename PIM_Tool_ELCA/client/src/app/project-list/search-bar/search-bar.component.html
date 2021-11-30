@@ -1,0 +1,18 @@
+<form id="search-form" action="/Project/SearchProject" method="get">
+  <!-- <input id="search-input" type="text" class="form-control" name="SearchTerm" placeholder="Search theo ten bla bla"
+    [value]="searchTerm"> -->
+  <kendo-textbox id="search-input" placeholder="Search theo ten bla bla" [clearButton]="true" [(ngModel)]="searchTerm"
+    name="searchTerm">
+  </kendo-textbox>
+  <kendo-dropdownlist id="status-search-input" [data]="listStatus" textField="text" valueField="value"
+    [(ngModel)]="searchStatus" name="searchStatus" [defaultItem]="defaultStatus">
+  </kendo-dropdownlist>
+  <button kendoButton type="button" id="submit-button" (click)="onSubmitSearch()">Search
+  </button>
+  <!-- <input id="page-index-input" type="hidden" name="PageIndex" value="1">
+  <input id="page-size-input" type="hidden" name="PageSize" value="5"> -->
+  <button kendoButton type="button" id="reset-button" (click)="onReset()">
+    <a>Reset searchhh
+    </a>
+  </button>
+</form>

@@ -6,6 +6,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using NHibernate;
 using PersistenceLayer.Helper;
 using Resource.DefaultMessage;
@@ -16,7 +18,6 @@ namespace PIM_Tool_ELCA
       
         protected void Application_Start()
         {
-
             ClientDataTypeModelValidatorProvider.ResourceClassKey = "DefaultMessageRe";
             DefaultModelBinder.ResourceClassKey = "DefaultMessageRe";
             AreaRegistration.RegisterAllAreas();
@@ -24,6 +25,9 @@ namespace PIM_Tool_ELCA
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+            //serializerSettings.Converters.Add(new IsoDateTimeConverter());
+            //GlobalConfiguration.Configuration.Formatters[0] = new JsonNetFormatter();
         }
     }
 }

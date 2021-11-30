@@ -6,21 +6,25 @@ using PersistenceLayer.CustomException.Project;
 using PersistenceLayer.Helper;
 using System.Collections.Generic;
 using Utilities;
+using log4net;
 
 namespace TestProject1
 {
     public class ProjectRepoTests
     {
-        NHibernateSessionHelper helper;
-        ProjectRepo _proRepo;
+        private NHibernateSessionHelper helper;
+        private ProjectRepo _proRepo;
         private Employee emp1;
         private Employee emp2;
         private Employee emp3;
         private Group grp1;
         private Group grp2;
+        private static readonly ILog log = LogManager.GetLogger(typeof(ProjectRepoTests));
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
+            log4net.Config.XmlConfigurator.Configure();
+           //BasicConfigurator.Configure();
             helper = new NHibernateSessionHelper();
             _proRepo = new ProjectRepo();
             using (ISession session = helper.OpenSession())

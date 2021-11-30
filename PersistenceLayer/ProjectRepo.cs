@@ -117,6 +117,7 @@ namespace PersistenceLayer
                     {
                         Project _proj = new Project();
                         session.Load(_proj, item.Key);
+
                         if (item.Value != _proj.Version)
                         {
                             throw new CantDeleteProjectDueToLowerVersionException();

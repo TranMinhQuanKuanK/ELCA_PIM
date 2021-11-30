@@ -1,0 +1,152 @@
+option[value=""] {
+  display: none;
+}
+table {
+  color: rgb(105, 105, 105);
+  margin: 5px;
+  border: 1px solid rgb(168, 168, 168);
+  padding: 5px;
+  background-color: white;
+}
+
+#page-navigation {
+  text-align: right;
+  width: 70vw;
+}
+
+.pagination {
+  margin: 0;
+}
+
+th {
+  padding: 5px 10px 5px 10px;
+  border: 1px solid rgb(168, 168, 168);
+}
+
+td {
+  border-left: 1px solid rgb(168, 168, 168);
+  border-right: 1px solid rgb(168, 168, 168);
+  padding: 10px;
+}
+
+.project-number-column {
+  text-align: right;
+}
+
+.project-delete-column {
+  text-align: center;
+}
+
+#project-list-label {
+  border-bottom: 2px solid rgb(168, 168, 168);
+  border-radius: 2px;
+  width: 70%;
+  padding: 0 0 2vh 0;
+}
+
+#search-form {
+  display: flex;
+  margin: 5px 0 5px 0;
+}
+
+#search-input {
+  margin: 5px;
+  width: 280px;
+}
+
+#status-search-input {
+  margin: 5px;
+  width: 15vw;
+}
+
+#submit-button {
+  margin: 5px;
+  width: 10vw;
+}
+
+#reset-button {
+  margin: 5px;
+  border: none;
+}
+
+#item-count-td {
+  padding: 0 10px 0 10px;
+  margin: 10px 0 0 0;
+  border-top: 1px solid rgb(168, 168, 168);
+  border-left: 1px solid rgb(168, 168, 168);
+  border-bottom: 1px solid rgb(168, 168, 168);
+  border-right: 0;
+  color: rgb(64, 93, 255);
+}
+
+#delete-selected-button:hover {
+  cursor: pointer;
+}
+.wrap-table100 {
+  margin-top: 5px;
+}
+#delete-multiple-tr {
+  background-color: rgb(242, 244, 255);
+}
+
+#num-item-selected-text {
+  display: flex;
+  flex-direction: row;
+  text-align: right;
+  width: 50%;
+  font-weight: bold;
+  color: rgb(64, 93, 255);
+}
+
+p {
+  margin: 0;
+}
+
+#item-count {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+#delete-selected-form {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 50%;
+  padding: 0 10px 0 0px;
+  visibility: hidden;
+}
+
+#delete-multiple-td {
+  text-align: right;
+  border-top: 1px solid rgb(168, 168, 168);
+  border-right: 1px solid rgb(168, 168, 168);
+  border-bottom: 1px solid rgb(168, 168, 168);
+  border-left: 0;
+}
+
+#delete-selected-button {
+  font-weight: bold;
+  color: rgb(255, 89, 89);
+  flex-direction: row-reverse;
+  width: 50%;
+  padding: 0 10px 0 0px;
+  visibility: hidden;
+  text-align: right;
+}
+
+.delete-icon {
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(255, 89, 89);
+  margin: 0 5px 0 0px;
+}
+
+#project-cant-be-deleted-warning {
+  color: red;
+  padding: 0 0 0 10px;
+}
+
+ul {
+  font-weight: bold;
+  list-style-type: square;
+  list-style-position: inside;
+}
